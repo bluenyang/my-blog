@@ -294,7 +294,7 @@ div.tt_box_namecard > .tt_cont > .tt_btn_subscribe > .tt_ico_cross {
 }
 
 code.hljs {
-  @apply rounded-xl bg-gray-100 text-gray-800 shadow-md dark:bg-gray-700 dark:text-gray-200;
+  @apply overflow-x-auto rounded-xl bg-gray-100 text-gray-800 shadow-md dark:bg-gray-700 dark:text-gray-200;
 }
 
 code.hljs::-webkit-scrollbar {
