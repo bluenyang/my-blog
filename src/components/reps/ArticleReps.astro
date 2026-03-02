@@ -21,7 +21,7 @@ import ArticleNav from './ArticleNav.astro';
     </div>
 
     <div class="mb-8 flex">
-      <div class="article-view flex-3" id="article-view">
+      <div class="article-view flex-3 max-w-4/5" id="article-view">
         [##_article_rep_desc_##]
       </div>
       <ArticleNav />
@@ -30,9 +30,9 @@ import ArticleNav from './ArticleNav.astro';
     <div id="article-footer" class="flex w-full flex-col items-center">
       <s_tag_label>
         <div
-          class="mb-[46px] flex w-full flex-col border-b-2 border-gray-200 pb-[43px] dark:border-gray-700"
+          class="mb-12 flex w-full flex-col border-b-2 border-gray-200 pb-11 dark:border-gray-700"
         >
-          <h3 class="mr-[30px] w-full pt-4">Tags</h3>
+          <h3 class="mr-8 w-full pt-4">Tags</h3>
           <div id="article-tag-box" class="font-[0]">[##_tag_label_rep_##]</div>
         </div>
       </s_tag_label>
@@ -143,7 +143,7 @@ import ArticleNav from './ArticleNav.astro';
                     class="mx-4 block p-2 transition-all duration-500 hover:text-purple-700 dark:hover:text-indigo-300"
                   >
                     <span
-                      class="bg-position-center mb-4 block h-32 w-full rounded-xl bg-gradient-to-t from-black/50 to-transparent bg-no-repeat"
+                      class="bg-position-center bg-linear-to-t mb-4 block h-32 w-full rounded-xl from-black/50 to-transparent bg-no-repeat"
                     >
                       <s_article_related_rep_thumbnail>
                         <img

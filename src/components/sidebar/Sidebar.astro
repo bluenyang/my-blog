@@ -3,6 +3,45 @@ import Profile from '@/components/profile/Profile.astro';
 import SideCard from '../cards/SideCard.astro';
 import TagBadge from './TagBadge.astro';
 //import CatTest from './CatTest.astro';
+
+const sidebarPageContents = [
+  {
+    title: 'My Homepage',
+    url: 'https://bluenyang.kr/',
+    item: [],
+  },
+  {
+    title: 'Github',
+    url: '',
+    item: [
+      {
+        title: 'BlueNyang',
+        url: 'https://github.com/bluenyang/',
+        item: [],
+      },
+      {
+        title: 'Croffle Dev.',
+        url: 'https://github.com/team-croffle/',
+        item: [],
+      },
+      {
+        title: 'Gamesung Coding',
+        url: 'https://github.com/gscd-dev/',
+        item: [],
+      },
+    ],
+  },
+  {
+    title: 'Downloads',
+    url: 'https://ocis.croffledev.kr/s/hTHvjhkcEGwNevm',
+    item: [],
+  },
+  {
+    title: 'Docs',
+    url: 'https://docs.bluenyang.kr/s/public',
+    item: [],
+  },
+];
 ---
 
 <div
@@ -70,6 +109,52 @@ import TagBadge from './TagBadge.astro';
       </div>
     </s_sidebar_element>
 
+    <s_sidebar_element>
+      <div class="sidebar-pages">
+        <SideCard title="Pages" icon="🚩">
+          <div
+            class="relative w-full divide-y divide-gray-200 bg-gradient-to-r from-blue-300 to-purple-400 transition-all duration-300 dark:divide-gray-600 dark:from-blue-600 dark:to-purple-700"
+          >
+            {
+              sidebarPageContents.map((item) => (
+                <ul class="w-full">
+                  <li class="w-full">
+                    {item.item && item.item.length === 0 ? (
+                      <a
+                        href={item.url}
+                        target="_blank"
+                        class="relative flex w-full justify-between truncate bg-white px-4 py-2 text-gray-700 no-underline transition-all duration-200 hover:translate-x-1 hover:bg-gray-50 hover:text-purple-700 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700 dark:hover:text-indigo-300"
+                      >
+                        {item.title}
+                      </a>
+                    ) : (
+                      <Fragment>
+                        <span class="relative flex w-full justify-between truncate bg-white px-4 py-2 text-gray-700 no-underline transition-colors duration-300 hover:text-purple-700 dark:bg-gray-800 dark:text-gray-100 dark:hover:text-indigo-300">
+                          {item.title}
+                        </span>
+                        <ul class="w-full">
+                          {item.item.map((i) => (
+                            <li class="w-full">
+                              <a
+                                href={i.url}
+                                target="_blank"
+                                class="relative flex w-full justify-between truncate bg-white px-4 py-2 pl-8 text-gray-700 no-underline transition-all duration-200 hover:translate-x-1 hover:bg-gray-50 hover:text-purple-700 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700 dark:hover:text-indigo-300"
+                              >
+                                {i.title}
+                              </a>
+                            </li>
+                          ))}
+                        </ul>
+                      </Fragment>
+                    )}
+                  </li>
+                </ul>
+              ))
+            }
+          </div>
+        </SideCard>
+      </div>
+    </s_sidebar_element>
     <s_sidebar_element>
       <div>
         <SideCard title="Recent Posts" icon="📝">
