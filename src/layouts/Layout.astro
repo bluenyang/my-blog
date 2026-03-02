@@ -12,6 +12,9 @@ import Paging from '@/components/reps/Paging.astro';
 import Offcanvas from '@/components/sidebar/Offcanvas.astro';
 import Footer from '@/components/footer/Footer.astro';
 import '@/styles/global.css';
+
+const isPreview = import.meta.env.DEV;
+const isProd = import.meta.env.PROD;
 ---
 
 <body
@@ -20,9 +23,7 @@ import '@/styles/global.css';
 >
   <s_t3>
     <Header />
-
     <Banners />
-
     <main class="flex grow gap-4 pt-16">
       <div class="w-xs top-0 hidden pb-4 lg:block">
         <Sidebar />
@@ -46,6 +47,6 @@ import '@/styles/global.css';
     <Offcanvas />
     <Footer />
   </s_t3>
-  <!-- <script src=""></script> -->
-  <!-- <script src="/src/scripts/common.ts"></script> -->
+  {isProd && <script src="./images/common.js" is:inline />}
+  {isPreview && <script src="/src/scripts/common.ts" />}
 </body>
