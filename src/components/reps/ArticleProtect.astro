@@ -9,13 +9,13 @@ import OtherHero from '../banners/OtherHero.astro';
       desc="[##_article_rep_category_##]"
       imgSrc="[##_article_rep_thumbnail_url_##]"
     />
-    <div class="max-w-lg mx-auto text-center">
+    <div class="mx-auto max-w-lg text-center">
       <div
-        class="mb-8 pt-50 background-[url(./images/icon-exclamation.svg)] bg-center bg-top bg-no-repeat text-base"
+        class="pt-50 background-[url(./images/icon-exclamation.svg)] mb-8 bg-center bg-no-repeat text-base"
       >
         <p class="">
           보호되어 있는 글입니다. <br />
-          <span class="text-base h-8 text-gray-600 dark:text-gray-300">
+          <span class="h-8 text-base text-gray-600 dark:text-gray-300">
             내용을 보시려면 비밀번호를 입력하세요.
           </span>
         </p>
@@ -27,11 +27,11 @@ import OtherHero from '../banners/OtherHero.astro';
               name="[##_article_password_##]"
               value=""
               placeholder="비밀번호"
-              class="w-full h-20 mb-4 text-sm pl-8 border rounded-full focus:outline-none"
+              class="mb-4 h-20 w-full rounded-full border pl-8 text-sm focus:outline-none"
             />
             <button
               type="submit"
-              class="block w-full h-20 bg-gray-300 text-base dark:bg-gray-700 rounded-full hover:bg-gray-400 dark:hover:bg-gray-600 transition duration-300 text-black dark:text-white"
+              class="block h-20 w-full rounded-full bg-gray-300 text-base text-black transition duration-300 hover:bg-gray-400 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600"
             >
               확인
             </button>
