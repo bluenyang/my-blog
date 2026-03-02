@@ -11,15 +11,15 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^5.11.0"
+    "astro": "^5.18.0"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^16.0.1",
     "@rollup/plugin-typescript": "^12.1.4",
     "@tailwindcss/postcss": "^4.1.11",
     "@tailwindcss/vite": "^4.1.11",
-    "@tistory-skin-previewer/astro": "^0.6.4",
-    "@tistory-skin-previewer/core": "^0.6.4",
+    "@tistory-skin-previewer/astro": "^0.7.0",
+    "@tistory-skin-previewer/core": "^0.7.0",
     "@typescript-eslint/parser": "^8.36.0",
     "eslint": "^9.30.1",
     "eslint-config-prettier": "^10.1.5",
