@@ -255,11 +255,20 @@ div.tt_box_namecard > .tt_cont > .tt_btn_subscribe > .tt_ico_cross {
   @apply my-1 pl-2 text-base;
 }
 
-#article-view > div blockquote[data-ke-style="style2"] {
+#article-view > div blockquote[data-ke-style="style1"],
+#article-view > div blockquote[data-ke-style="style2"],
+#article-view > div blockquote[data-ke-style="style3"] {
   @apply my-2 rounded-lg border-l-4 border-gray-400 bg-gray-200 px-4 py-2 shadow-lg dark:bg-gray-600;
 }
-#article-view > div blockquote[data-ke-style="style2"] p {
+#article-view > div blockquote[data-ke-style="style1"] *,
+#article-view > div blockquote[data-ke-style="style2"] *,
+#article-view > div blockquote[data-ke-style="style3"] * {
   @apply text-gray-800 dark:text-gray-200;
+}
+#article-view > div blockquote[data-ke-style="style1"] a,
+#article-view > div blockquote[data-ke-style="style2"] a,
+#article-view > div blockquote[data-ke-style="style3"] a {
+  @apply text-blue-800 hover:text-cyan-600 dark:text-blue-200 dark:hover:text-cyan-400;
 }
 
 #article-view > div ul {
