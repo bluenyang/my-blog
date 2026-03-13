@@ -12,41 +12,29 @@ import Paging from '@/components/reps/Paging.astro';
 import Offcanvas from '@/components/sidebar/Offcanvas.astro';
 import Footer from '@/components/footer/Footer.astro';
 import '@/styles/global.css';
-
-const isPreview = import.meta.env.DEV;
-const isProd = import.meta.env.PROD;
 ---
 
-<body
-  id="[##_body_id_##]"
-  class="bg-white text-black transition-colors duration-500 dark:bg-gray-800 dark:text-white"
->
-  <s_t3>
-    <Header />
-    <Banners />
-    <main class="flex grow gap-4 pt-16">
-      <div class="w-xs top-0 hidden pb-4 lg:block">
-        <Sidebar />
-      </div>
-      <article
-        class="row relative mx-4 w-[calc(100vw-20rem-(var(--spacing)*16))] grow pt-2"
-      >
-        <s_cover_group>
-          <s_cover_rep>
-            <FeaturePosts />
-          </s_cover_rep>
-        </s_cover_group>
-        <SList />
-        <Articles />
-        <ArticleProtect />
-        <TagReps />
-        <Guestbook />
-        <Paging />
-      </article>
-    </main>
-    <Offcanvas />
-    <Footer />
-  </s_t3>
-  {isProd && <script src="./images/common.js" is:inline />}
-  {isPreview && <script src="/src/scripts/common.ts" />}
-</body>
+<Header />
+<Banners />
+<main class="flex grow gap-4 pt-16">
+  <div class="w-xs top-0 hidden pb-4 lg:block">
+    <Sidebar />
+  </div>
+  <article
+    class="row relative mx-4 w-[calc(100vw-20rem-(var(--spacing)*16))] grow pt-2"
+  >
+    <s_cover_group>
+      <s_cover_rep>
+        <FeaturePosts />
+      </s_cover_rep>
+    </s_cover_group>
+    <SList />
+    <Articles />
+    <ArticleProtect />
+    <TagReps />
+    <Guestbook />
+    <Paging />
+  </article>
+</main>
+<Offcanvas />
+<Footer />

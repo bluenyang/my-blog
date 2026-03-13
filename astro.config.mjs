@@ -11,18 +11,6 @@ export default defineConfig({
       // @ts-ignore
       tailwindcss()
     ],
-    build: {
-      rollupOptions: {
-        output: {
-          assetFileNames: (e) => {
-            if(e.names?.[0].endsWith('.css')) {
-              return 'style.css';
-            }
-            return 'assets/[name]-[hash][extname]';
-          }
-        }
-      }
-    }
   },
   build: {
     format: 'file',
