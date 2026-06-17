@@ -6,6 +6,7 @@ import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 import pluginPromise from 'eslint-plugin-promise';
 import pluginUnicorn from 'eslint-plugin-unicorn';
 import tseslint from 'typescript-eslint';
+import vueParser from 'vue-eslint-parser';
 
 import withNuxt from './.nuxt/eslint.config.mjs';
 
@@ -63,6 +64,13 @@ export default withNuxt(
   },
   {
     files: ['**/*.vue'],
+    languageOptions: {
+      parser: vueParser,
+      parserOptions: {
+        parser: tseslint.parser,
+        sourceType: 'module',
+      },
+    },
     rules: {
       'vue/attributes-order': [
         'warn',
