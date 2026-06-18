@@ -8475,6 +8475,7 @@ __metadata:
     "@tailwindcss/vite": "npm:^4.3.1"
     "@tiptap/starter-kit": "npm:^3.26.1"
     "@tiptap/vue-3": "npm:^3.26.1"
+    "@vueuse/core": "npm:^14.3.0"
     "@vueuse/motion": "npm:^3.0.3"
     "@vueuse/nuxt": "npm:14.3.0"
     eslint: "npm:^10.5.0"
