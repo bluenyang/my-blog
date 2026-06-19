@@ -19,9 +19,6 @@
   const marginInline = computed(() => smoothProgress.value * 20); // 0 -> 20
   const borderRadius = computed(() => smoothProgress.value * 32); // 0 -> 22
   const paddingY = computed(() => 16 - smoothProgress.value * 4); // 16 -> 12
-  const headerColor = computed(() =>
-    smoothProgress.value > 0.3 ? 'var(--header-tp)' : 'var(--header-bg)',
-  );
 
   const { menuItems } = useNavigationMenu();
 </script>
@@ -33,6 +30,7 @@
       enter: { opacity: 1, y: 0, transition: { duration: 550, ease: 'easeOut' } },
     }"
     class="fixed z-50 flex h-18 flex-row items-center justify-center px-4 backdrop-blur-xl backdrop-brightness-104 backdrop-saturate-190 transition-colors duration-500"
+    :class="cn(smoothProgress > 0.3 ? 'bg-header-tp' : 'bg-header-bg')"
     :style="{
       top: `${marginTop}px`,
       left: `${marginInline}px`,
@@ -40,7 +38,6 @@
       borderRadius: `${borderRadius}px`,
       paddingTop: `${paddingY}px`,
       paddingBottom: `${paddingY}px`,
-      backgroundColor: `${headerColor}`,
     }"
   >
     <!-- Left side - Mobile menu toggler and Brand -->
@@ -54,7 +51,7 @@
       <div class="flex py-5 lg:flex-1">
         <a class="group focus:outline-none" href="https://bluenyang-dev.tistory.com/">
           <span
-            class="transition-color bg-linear-to-r from-blue-600 to-purple-700 bg-clip-text font-[Pacifico] text-2xl font-bold duration-500 group-hover:text-transparent group-focus:text-transparent dark:from-blue-300 dark:to-purple-400"
+            class="transition-color font-pacifico bg-linear-to-r from-blue-600 to-purple-700 bg-clip-text text-2xl font-bold duration-500 group-hover:text-transparent group-focus:text-transparent dark:from-blue-300 dark:to-purple-400"
           >
             {{ 'BlueNyang' }}
           </span>
