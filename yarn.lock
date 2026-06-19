@@ -5358,6 +5358,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"clsx@npm:^2.1.1":
+  version: 2.1.1
+  resolution: "clsx@npm:2.1.1"
+  checksum: 10c0/c4c8eb865f8c82baab07e71bfa8897c73454881c4f99d6bc81585aecd7c441746c1399d08363dc096c550cceaf97bd4ce1e8854e1771e9998d9f94c4fe075839
+  languageName: node
+  linkType: hard
+
 "cluster-key-slot@npm:1.1.1":
   version: 1.1.1
   resolution: "cluster-key-slot@npm:1.1.1"
@@ -8502,6 +8509,7 @@ __metadata:
     "@vueuse/core": "npm:^14.3.0"
     "@vueuse/motion": "npm:^3.0.3"
     "@vueuse/nuxt": "npm:14.3.0"
+    clsx: "npm:^2.1.1"
     eslint: "npm:^10.5.0"
     eslint-config-prettier: "npm:^10.1.8"
     eslint-plugin-import-x: "npm:^4.16.2"
@@ -8515,6 +8523,7 @@ __metadata:
     pinia: "npm:^3.0.4"
     prettier: "npm:^3.8.4"
     prettier-plugin-tailwindcss: "npm:^0.8.0"
+    tailwind-merge: "npm:^3.6.0"
     tailwindcss: "npm:^4.3.1"
     typescript: "npm:^6.0.3"
     typescript-eslint: "npm:^8.61.0"
