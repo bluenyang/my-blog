@@ -14,7 +14,7 @@
       <div
         v-if="item.children && item.children.length > 0"
         :href="item.url"
-        class="w-full cursor-pointer hover:[&>.accordion-body]:grid-rows-[1fr] hover:[&>.accordion-body_ul]:opacity-100"
+        class="w-full cursor-default hover:[&>.accordion-body]:grid-rows-[1fr] hover:[&>.accordion-body_ul]:opacity-100"
       >
         <div
           class="flex items-center gap-3 rounded-md p-2 text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
