@@ -3,7 +3,7 @@ import type { NavigationItem } from '@/types/header';
 export function useNavigationMenu() {
   const config = useRuntimeConfig();
 
-  const { data, pending } = useAsyncData<NavigationItem[]>(
+  const { data } = useAsyncData<NavigationItem[]>(
     'global-navigation',
     async (): Promise<NavigationItem[]> => {
       const resp = await $fetch<{ data: NavigationItem[] }>(
@@ -11,13 +11,13 @@ export function useNavigationMenu() {
         {
           query: {
             filter: {
-              blog: {
+              blog_id: {
                 slug: {
                   _eq: config.public.blogSlug,
                 },
               },
             }, // 최상위 메뉴
-            fields: ['id', 'label', 'url', 'parent_id'],
+            fields: ['id', 'label', 'url', 'icon', 'parent_id'],
             sort: ['sort', 'id'],
           },
         },
@@ -28,6 +28,5 @@ export function useNavigationMenu() {
 
   return {
     menuItems: computed<NavigationItem[]>(() => data.value || []),
-    pending,
   };
 }
