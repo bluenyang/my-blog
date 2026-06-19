@@ -17,12 +17,12 @@ export function useNavigationMenu() {
                 },
               },
             }, // 최상위 메뉴
-            fields: ['id', 'label', 'url', 'icon', 'parent_id'],
-            sort: ['sort', 'id'],
+            fields: ['id', 'label', 'url', 'icon', 'is_category', 'parent_id'],
+            sort: ['sort_order', 'id'],
           },
         },
       );
-      return buildNavigationTree(resp.data);
+      return buildTree<NavigationItem>(resp.data);
     },
   );
 

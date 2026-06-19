@@ -1,8 +1,8 @@
-import type { NavigationItem } from '~/types/header';
-
-export function buildNavigationTree(items: NavigationItem[]): NavigationItem[] {
-  const itemMap = new Map<string, NavigationItem>();
-  const rootItems: NavigationItem[] = [];
+export function buildTree<T extends { id: string; parent_id: string | null; children?: T[] }>(
+  items: T[],
+): T[] {
+  const itemMap = new Map<string, T>();
+  const rootItems: T[] = [];
 
   // children을 빈 배열로 초기화
   items.forEach((item) => {

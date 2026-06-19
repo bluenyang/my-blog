@@ -24,7 +24,7 @@
         </div>
         <div class="accordion-body grid grid-rows-[0fr] transition-all duration-300 ease-in-out">
           <div class="min-h-0 overflow-hidden">
-            <MenuDropdown
+            <MenuDropdownItem
               :items="item.children"
               class="mt-1 border-l border-gray-100 pl-4 opacity-0 transition-opacity duration-300 dark:border-gray-700"
             />

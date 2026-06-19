@@ -24,7 +24,6 @@
   );
 
   const { menuItems } = useNavigationMenu();
-  console.log(menuItems.value);
 </script>
 
 <template>
