@@ -86,4 +86,10 @@ export default defineNuxtConfig({
       },
     },
   },
+
+  icon: {
+    mode: 'css',
+    cssLayer: 'base',
+    size: '1.25em',
+  },
 });
