@@ -1909,6 +1909,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nuxtjs/color-mode@npm:^4.0.1":
+  version: 4.0.1
+  resolution: "@nuxtjs/color-mode@npm:4.0.1"
+  dependencies:
+    "@nuxt/kit": "npm:^4.4.6"
+    exsolve: "npm:^1.0.8"
+    pathe: "npm:^2.0.3"
+    pkg-types: "npm:^2.3.1"
+    semver: "npm:^7.8.1"
+  checksum: 10c0/b1d7df6b8309085119d6e545e43e236150285fc5506bccd901ed6b83af581218239d22b40a1859cbe59a9b37e15693b909dbf28365d54a9230b2554465616c61
+  languageName: node
+  linkType: hard
+
 "@nuxtjs/robots@npm:6.1.1":
   version: 6.1.1
   resolution: "@nuxtjs/robots@npm:6.1.1"
@@ -8469,6 +8482,7 @@ __metadata:
     "@eslint/js": "npm:^10.0.1"
     "@nuxt/eslint": "npm:1.16.0"
     "@nuxt/icon": "npm:2.2.3"
+    "@nuxtjs/color-mode": "npm:^4.0.1"
     "@nuxtjs/robots": "npm:6.1.1"
     "@nuxtjs/sitemap": "npm:8.2.1"
     "@tailwindcss/typography": "npm:^0.5.20"
