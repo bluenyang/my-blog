@@ -3924,6 +3924,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/node@npm:^26.0.0":
+  version: 26.0.0
+  resolution: "@types/node@npm:26.0.0"
+  dependencies:
+    undici-types: "npm:~8.3.0"
+  checksum: 10c0/f36e21634fd8e8ded162ca486508bd8bb229d398a8d5541f6d8c1255968d4464e53327a77f403b216ef98e3b6f6956882eef83e4857d4bc2be9569dd55d37aae
+  languageName: node
+  linkType: hard
+
 "@types/resolve@npm:1.20.2":
   version: 1.20.2
   resolution: "@types/resolve@npm:1.20.2"
@@ -8489,6 +8498,7 @@ __metadata:
     "@tailwindcss/vite": "npm:^4.3.1"
     "@tiptap/starter-kit": "npm:^3.26.1"
     "@tiptap/vue-3": "npm:^3.26.1"
+    "@types/node": "npm:^26.0.0"
     "@vueuse/core": "npm:^14.3.0"
     "@vueuse/motion": "npm:^3.0.3"
     "@vueuse/nuxt": "npm:14.3.0"
@@ -11534,6 +11544,13 @@ __metadata:
     magic-string: "npm:^0.30.21"
     unplugin: "npm:^2.3.11"
   checksum: 10c0/007bf517866a1f523aff1821ee6380f964e0eb327b3499616fe4d02bbb0b08d8295627e78cacc2218e9f352f0faf0f25ac1993d66fedbb6a53b9d8bf699fed20
+  languageName: node
+  linkType: hard
+
+"undici-types@npm:~8.3.0":
+  version: 8.3.0
+  resolution: "undici-types@npm:8.3.0"
+  checksum: 10c0/c8aa7e2fbebfce519654dafadc0ece59be888d2ccaf180fb4495da875e7b536d2456345c384069c7e6f3e9c9ab7435f074957da306f142343eee86ff8048855a
   languageName: node
   linkType: hard
 
