@@ -2,13 +2,13 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineNuxtConfig({
   modules: [
+    '@nuxtjs/color-mode',
+    '@nuxt/eslint',
     '@nuxt/icon',
     '@vueuse/motion',
     '@vueuse/nuxt',
+    '@nuxtjs/robots',
     '@nuxtjs/sitemap',
-    '@nuxtjs/robots',
-    '@nuxt/eslint',
-    '@nuxtjs/robots',
   ],
   devtools: {
     enabled: true,
@@ -47,9 +47,16 @@ export default defineNuxtConfig({
   },
 
   css: ['~/assets/css/main.css'],
+
   site: {
     url: 'https://blog.bluenyang.kr',
     name: "BlueNyang's Dev-log",
+  },
+
+  colorMode: {
+    preference: 'system',
+    fallback: 'dark',
+    classSuffix: '',
   },
 
   routeRules: {
@@ -59,6 +66,9 @@ export default defineNuxtConfig({
 
   vite: {
     plugins: [tailwindcss()],
+    optimizeDeps: {
+      include: ['@vue/devtools-core', '@vue/devtools-kit'],
+    },
   },
 
   eslint: {
