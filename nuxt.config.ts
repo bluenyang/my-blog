@@ -59,6 +59,13 @@ export default defineNuxtConfig({
     classSuffix: '',
   },
 
+  runtimeConfig: {
+    public: {
+      blogSlug: process.env.BLOG_SLUG,
+      directusUrl: process.env.DIRECTUS_URL,
+    },
+  },
+
   routeRules: {
     '/': { prerender: false },
   },
