@@ -4,7 +4,24 @@ export const profileData = {
   nickname: 'BlueNyang',
   slug: 'bluenyang',
   githubProfileImage: 'https://avatars.githubusercontent.com/u/67052707?v=4',
-  github: 'https://github.com/bluenyang',
-  instagram: 'https://www.instagram.com/bluenyang2251',
-  website: 'https://www.bluenyang.kr/',
+  link: [
+    {
+      name: 'github',
+      url: 'https://github.com/bluenyang',
+      icon: 'mdi:github',
+      target: '_blank',
+    },
+    {
+      name: 'instagram',
+      url: 'https://www.instagram.com/bluenyang2251',
+      icon: 'mdi:instagram',
+      target: '_blank',
+    },
+    {
+      name: 'website',
+      url: 'https://www.bluenyang.kr/',
+      icon: 'mdi:home',
+      target: '_blank',
+    },
+  ],
 };
