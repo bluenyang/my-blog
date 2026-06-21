@@ -96,7 +96,7 @@
                     v-if="item.children && item.children.length > 0"
                     :items="item.children"
                   />
-                  <CategoryDropdown v-else-if="item.is_category" :items="categories" />
+                  <CategoryDropdown v-else-if="item.isCategory" :items="categories" />
                 </div>
               </div>
             </li>

@@ -1,4 +1,4 @@
-export function buildTree<T extends { id: string; parent_id: string | null; children?: T[] }>(
+export function buildTree<T extends { id: string; parentId: string | null; children?: T[] }>(
   items: T[],
 ): T[] {
   const itemMap = new Map<string, T>();
@@ -12,9 +12,9 @@ export function buildTree<T extends { id: string; parent_id: string | null; chil
   // 트리 구성
   items.forEach((item) => {
     const mappedItem = itemMap.get(item.id)!;
-    if (item.parent_id) {
+    if (item.parentId) {
       // parent_id 가 있다면 부모 항목을 찾아서 추가
-      const parent = itemMap.get(item.parent_id);
+      const parent = itemMap.get(item.parentId);
       if (parent) {
         parent.children?.push(mappedItem);
       }
