@@ -14,11 +14,13 @@ export interface CategoryListResponse {
   blog_id: string;
   parent_id: string;
   name: string;
-  slug: string;
   icon?: string;
+  slug: string;
 }
 
 export interface CategoryPostCountResponse {
-  category_id: string;
-  count: string | number;
+  categories_id: string;
+  count: {
+    posts_id: string;
+  };
 }
