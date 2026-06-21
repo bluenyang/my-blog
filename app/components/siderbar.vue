@@ -41,19 +41,22 @@
     >
       <div
         v-if="isSidebarOpen"
-        class="fixed inset-y-0 left-0 flex h-full w-72 flex-col bg-white p-5 shadow-xl"
+        class="fixed inset-y-0 left-0 flex h-full w-xs flex-col p-4 shadow-xl"
       >
         <button class="mb-4 self-end p-2 text-gray-500 hover:text-gray-800" @click="closeSidebar">
           ✕
         </button>
+        <SidebarContent />
       </div>
     </Transition>
   </div>
 
   <aside
-    class="sticky top-0 hidden h-screen overflow-hidden border-r border-gray-200 bg-white transition-all duration-300 ease-in-out md:block"
-    :class="isSidebarOpen ? 'w-64 p-5' : 'w-0 border-r-0 p-0'"
+    class="sticky top-0 hidden h-screen overflow-hidden border-r transition-all duration-300 ease-in-out md:block"
+    :class="isSidebarOpen ? 'w-xs p-4' : 'w-0 border-r-0 p-0'"
   >
-    <div class="flex h-full w-54 flex-col"></div>
+    <div class="flex h-full flex-col overflow-y-auto pt-3">
+      <SidebarContent />
+    </div>
   </aside>
 </template>
