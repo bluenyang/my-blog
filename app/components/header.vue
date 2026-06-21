@@ -1,8 +1,6 @@
 <script setup lang="ts">
   import { TransitionPresets } from '@vueuse/core';
 
-  import MenuDropdownItem from './menu-dropdown-item.vue';
-
   const { y } = useWindowScroll();
   const rawProgress = computed(() => {
     const progress = y.value / 160;
@@ -21,6 +19,8 @@
   const paddingY = computed(() => 16 - smoothProgress.value * 4); // 16 -> 12
 
   const { menuItems } = useNavigationMenu();
+  const { categories } = useCategory();
+  console.log(categories.value);
 </script>
 
 <template>
@@ -63,25 +63,29 @@
     <nav class="container hidden items-center justify-center lg:flex lg:flex-1">
       <ul class="flex flex-1 items-center justify-center space-x-4">
         <li v-for="item of menuItems" :key="item.id" class="group relative cursor-default">
-          <div v-if="item.children && item.children.length > 0">
+          <NuxtLink
+            v-if="item.url"
+            :to="item.url"
+            class="hover:text-accent block cursor-pointer px-4 py-5 font-medium transition-all duration-200 hover:-translate-y-1"
+          >
+            {{ item.label }}
+          </NuxtLink>
+          <div v-else>
             <span
               class="hover:text-accent block px-4 py-5 font-medium transition-all duration-200 hover:-translate-y-1"
             >
               {{ item.label }}
             </span>
             <div
-              class="invisible absolute left-1/2 mt-1 w-max max-w-4xl -translate-x-1/2 rounded-lg border-2 border-gray-100 bg-white p-4 opacity-0 shadow-xl/30 transition-all duration-500 group-hover:visible group-hover:opacity-100 dark:border-none dark:bg-gray-800"
+              class="invisible absolute left-1/2 mt-1 w-max max-w-4xl -translate-x-1/2 rounded-lg border-2 border-gray-100 bg-white p-4 opacity-0 shadow-xl/30 transition-all duration-800 group-hover:visible group-hover:opacity-100 dark:border-none dark:bg-gray-800"
             >
-              <MenuDropdownItem :items="item.children" />
+              <MenuDropdownItem
+                v-if="item.children && item.children.length > 0"
+                :items="item.children"
+              />
+              <CategoryDropdown v-else-if="item.is_category" :items="categories" />
             </div>
           </div>
-          <NuxtLink
-            v-else
-            :to="item.url"
-            class="hover:text-accent block px-4 py-5 font-medium transition-all duration-200 hover:-translate-y-1"
-          >
-            {{ item.label }}
-          </NuxtLink>
         </li>
       </ul>
     </nav>
