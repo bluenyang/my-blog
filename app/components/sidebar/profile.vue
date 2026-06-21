@@ -1,5 +1,7 @@
 <script setup lang="ts">
   import { profileData } from '~/constants/sidebar-data';
+
+  const { total } = useCategory();
 </script>
 
 <template>
@@ -15,7 +17,7 @@
         {{ profileData.desc }}
       </p>
     </div>
-    <div class="mb-4 flex justify-center gap-3 px-4">
+    <div class="flex justify-center gap-3 px-4">
       <a
         v-for="(link, index) in profileData.link"
         :key="index"
@@ -26,6 +28,16 @@
       >
         <Icon :name="link.icon" class="size-6" />
       </a>
+    </div>
+    <div class="divide-sidebar-border flex items-center justify-center divide-x">
+      <div class="flex flex-1 flex-col items-center">
+        <span class="font-jua text-lg font-bold">{{ total }}</span>
+        <span class="text-xs text-gray-600 dark:text-gray-400">{{ '포스트' }}</span>
+      </div>
+      <!-- <div class="flex flex-1 flex-col items-center">
+        <span class="font-jua text-lg font-bold">{{ total }}</span>
+        <span class="text-xs text-gray-600 dark:text-gray-400">{{ '포스트' }}</span>
+      </div> -->
     </div>
   </div>
 </template>

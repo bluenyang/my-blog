@@ -3,13 +3,14 @@ import type {
   CategoryListResponse,
   CategoryPostCountResponse,
 } from '~/types/category';
+import { accumulatePostCount } from '~/utils/post-counter';
 
 export function useCategory() {
   const config = useRuntimeConfig();
 
-  const { data } = useAsyncData<CategoryItem[]>(
+  const { data } = useAsyncData<{ categories: CategoryItem[]; total: number }>(
     'global-category',
-    async (): Promise<CategoryItem[]> => {
+    async (): Promise<{ categories: CategoryItem[]; total: number }> => {
       // 카테고리 목록 조회 및 포스트 갯수 집계를 Promise.all로 병렬 처리
       const [categoriesReq, countsReq] = await Promise.all([
         // Category 조회
@@ -17,9 +18,7 @@ export function useCategory() {
           query: {
             filter: {
               blog_id: {
-                slug: {
-                  _eq: config.public.blogSlug,
-                },
+                slug: { _eq: config.public.blogSlug },
               },
             },
             fields: ['id', 'blog_id', 'parent_id', 'name', 'icon', 'slug'],
@@ -27,16 +26,23 @@ export function useCategory() {
           },
         }),
         // 포스트 수 집계
-        $fetch<{ data: CategoryPostCountResponse[] }>(`${config.public.directusUrl}/items/posts`, {
-          query: {
-            filter: {
-              status: { _eq: 'published' },
-              blog_id: { slug: { _eq: config.public.blogSlug } },
+        $fetch<{ data: CategoryPostCountResponse[] }>(
+          `${config.public.directusUrl}/items/posts_categories`,
+          {
+            query: {
+              aggregate: { count: 'posts_id' },
+              groupBy: ['categories_id'],
+              filter: {
+                posts_id: {
+                  blog_id: {
+                    slug: { _eq: config.public.blogSlug },
+                  },
+                  status: { _eq: 'published' },
+                },
+              },
             },
-            groupBy: ['category_id'],
-            aggregate: { count: '* ' },
           },
-        }),
+        ),
       ]);
 
       const rawCategories = categoriesReq.data;
@@ -44,8 +50,8 @@ export function useCategory() {
 
       const countMap = new Map<string, number>();
       rawCounts.forEach((item) => {
-        if (item.category_id) {
-          countMap.set(item.category_id, Number(item.count));
+        if (item.categories_id) {
+          countMap.set(item.categories_id, Number(item.count.posts_id));
         }
       });
 
@@ -61,14 +67,17 @@ export function useCategory() {
         };
       });
 
-      return buildTree<CategoryItem>(categoriesWithCount);
+      const tree = buildTree<CategoryItem>(categoriesWithCount);
+      const total = accumulatePostCount(tree);
+      return { categories: tree, total };
     },
     {
-      default: () => [],
+      default: () => ({ categories: [], total: 0 }),
     },
   );
 
   return {
-    categories: computed<CategoryItem[]>(() => data.value || []),
+    categories: computed<CategoryItem[]>(() => data.value?.categories || []),
+    total: computed<number>(() => data.value?.total || 0),
   };
 }

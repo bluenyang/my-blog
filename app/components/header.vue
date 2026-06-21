@@ -21,7 +21,7 @@
   const paddingY = computed(() => 16 - smoothProgress.value * 4); // 16 -> 12
 
   const { menuItems } = useNavigationMenu();
-  const { categories } = useCategory();
+  const { categories, total } = useCategory();
 
   const { isOpen, toggle } = useSidebar();
 </script>
@@ -96,7 +96,11 @@
                     v-if="item.children && item.children.length > 0"
                     :items="item.children"
                   />
-                  <CategoryDropdown v-else-if="item.isCategory" :items="categories" />
+                  <CategoryDropdown
+                    v-else-if="item.isCategory"
+                    :items="categories"
+                    :total="total"
+                  />
                 </div>
               </div>
             </li>
