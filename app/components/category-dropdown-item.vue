@@ -18,7 +18,7 @@
         <Icon v-if="item.icon" :name="item.icon" class="size-5 text-sky-600" />
         <span
           class="flex w-full rounded-lg border border-transparent bg-linear-to-r from-gray-800 to-gray-800 bg-clip-text py-2 text-center text-transparent transition-colors duration-200 ease-in-out hover:from-blue-600 hover:to-purple-700 dark:from-gray-50 dark:to-gray-50 dark:hover:from-blue-300 dark:hover:to-purple-400"
-          :class="cn(item.parent_id ? 'text-sm font-medium' : 'text-lg font-bold')"
+          :class="cn(item.parentId ? 'text-sm font-medium' : 'text-lg font-bold')"
         >
           {{ item.name }}
         </span>
