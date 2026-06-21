@@ -1,6 +1,8 @@
 <script setup lang="ts">
   import { TransitionPresets } from '@vueuse/core';
 
+  import { profileData } from '~/constants/sidebar-data';
+
   const { y } = useWindowScroll();
   const rawProgress = computed(() => {
     const progress = y.value / 160;
@@ -29,7 +31,7 @@
     :class="
       cn(
         'pointer-events-none fixed top-0 right-0 z-50 flex h-18 transition-[left] duration-300 ease-in-out',
-        isOpen ? 'left-64' : 'left-0',
+        isOpen ? 'left-80' : 'left-0',
       )
     "
   >
@@ -54,7 +56,7 @@
         <div class="container flex flex-1 items-center gap-x-4">
           <button
             type="button"
-            class="group inline-flex size-10 cursor-pointer items-center justify-center rounded-full p-2 transition-colors duration-300 hover:bg-white/30 focus:outline-none"
+            class="group inline-flex size-10 cursor-pointer items-center justify-center rounded-full p-2 transition-colors duration-300 hover:bg-white/30"
             @click="toggle()"
           >
             <Icon name="lucide:menu" class="size-6" />
@@ -64,7 +66,7 @@
               <span
                 class="transition-color font-pacifico bg-linear-to-r from-blue-600 to-purple-700 bg-clip-text text-2xl font-bold duration-500 group-hover:text-transparent group-focus:text-transparent dark:from-blue-300 dark:to-purple-400"
               >
-                {{ 'BlueNyang' }}
+                {{ profileData.nickname }}
               </span>
             </a>
           </div>
