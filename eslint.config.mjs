@@ -17,7 +17,6 @@ const promisePlugin = /** @type {any} */ (pluginPromise);
  */
 export default withNuxt(
   eslint.configs.recommended,
-  ...tseslint.configs.recommended,
   {
     plugins: {
       import: pluginImport,
