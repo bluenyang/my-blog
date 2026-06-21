@@ -61,8 +61,10 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
+      blogUrl: process.env.BLOG_URL,
       blogSlug: process.env.BLOG_SLUG,
       directusUrl: process.env.DIRECTUS_URL,
+      emailAddress: process.env.EMAIL_ADDRESS,
     },
   },
 
