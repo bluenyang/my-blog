@@ -23,5 +23,11 @@ export const profileData = {
       icon: 'mdi:home',
       target: '_blank',
     },
+    {
+      name: 'rss',
+      url: '/rss.xml',
+      icon: 'mdi:rss',
+      target: '_blank',
+    },
   ],
 };
