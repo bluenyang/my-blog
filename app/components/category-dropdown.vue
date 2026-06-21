@@ -3,9 +3,10 @@
 
   interface MenuItemProps {
     items: CategoryItem[];
+    total: number;
   }
 
-  const { items } = defineProps<MenuItemProps>();
+  const { items, total } = defineProps<MenuItemProps>();
 </script>
 
 <template>
@@ -19,6 +20,11 @@
       >
         <Icon name="ph:note-pencil-light" class="size-5 text-sky-600" />
         <span class="font-medium">{{ '전체 글' }}</span>
+        <span
+          class="bg-muted-foreground text-foreground ml-2 inline-flex items-center gap-1 rounded-full px-2.5 text-base font-bold"
+        >
+          {{ total || 0 }}
+        </span>
       </NuxtLink>
     </li>
     <li

@@ -17,10 +17,16 @@
       <NuxtLink :to="`/categories/${item.slug}`" class="flex items-center gap-2">
         <Icon v-if="item.icon" :name="item.icon" class="size-5 text-sky-600" />
         <span
-          class="flex w-full rounded-lg border border-transparent bg-linear-to-r from-gray-800 to-gray-800 bg-clip-text py-2 text-center text-transparent transition-colors duration-200 ease-in-out hover:from-blue-600 hover:to-purple-700 dark:from-gray-50 dark:to-gray-50 dark:hover:from-blue-300 dark:hover:to-purple-400"
+          class="flex rounded-lg border border-transparent bg-linear-to-r from-gray-800 to-gray-800 bg-clip-text py-2 text-center text-transparent transition-colors duration-200 ease-in-out hover:from-blue-600 hover:to-purple-700 dark:from-gray-50 dark:to-gray-50 dark:hover:from-blue-300 dark:hover:to-purple-400"
           :class="cn(item.parentId ? 'text-sm font-medium' : 'text-lg font-bold')"
         >
           {{ item.name }}
+        </span>
+        <span
+          class="bg-muted-foreground ml-2 inline-flex items-center gap-1 rounded-full px-2"
+          :class="cn(item.parentId ? 'text-xs font-semibold' : 'text-sm font-bold')"
+        >
+          {{ item.postCount || 0 }}
         </span>
       </NuxtLink>
       <div class="accordion-body grid grid-rows-[0fr] transition-all duration-300 ease-in-out">
@@ -32,9 +38,14 @@
     <NuxtLink v-else :to="`/categories/${item.slug}`" class="flex items-center gap-2">
       <Icon v-if="item.icon" :name="item.icon" class="size-5 text-sky-600" />
       <span
-        class="flex w-full rounded-lg border border-transparent bg-linear-to-r from-gray-800 to-gray-800 bg-clip-text py-2 text-center text-sm font-medium text-transparent transition-colors duration-200 ease-in-out hover:from-blue-600 hover:to-purple-700 dark:from-gray-50 dark:to-gray-50 dark:hover:from-blue-300 dark:hover:to-purple-400"
+        class="flex rounded-lg border border-transparent bg-linear-to-r from-gray-800 to-gray-800 bg-clip-text py-2 text-center text-sm font-medium text-transparent transition-colors duration-200 ease-in-out hover:from-blue-600 hover:to-purple-700 dark:from-gray-50 dark:to-gray-50 dark:hover:from-blue-300 dark:hover:to-purple-400"
       >
         {{ item.name }}
+      </span>
+      <span
+        class="bg-muted-foreground ml-2 inline-flex items-center gap-1 rounded-full px-2 text-xs font-semibold"
+      >
+        {{ item.postCount || 0 }}
       </span>
     </NuxtLink>
   </li>
