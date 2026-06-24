@@ -43,9 +43,6 @@
         v-if="isSidebarOpen"
         class="fixed inset-y-0 left-0 flex h-full w-72 flex-col p-4 shadow-xl"
       >
-        <button class="mb-4 self-end p-2 text-gray-500 hover:text-gray-800" @click="closeSidebar">
-          ✕
-        </button>
         <SidebarContent />
       </div>
     </Transition>
