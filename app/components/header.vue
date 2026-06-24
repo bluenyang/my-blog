@@ -56,7 +56,7 @@
         <div class="container flex flex-1 items-center gap-x-4">
           <button
             type="button"
-            class="group inline-flex size-10 cursor-pointer items-center justify-center rounded-full p-2 transition-colors duration-300 hover:bg-white/30"
+            class="group inline-flex size-10 cursor-pointer items-center justify-center rounded-full p-2 transition-colors duration-300 hover:bg-white/80 dark:hover:bg-white/20"
             @click="toggle()"
           >
             <Icon name="lucide:menu" class="size-6" />
@@ -109,7 +109,7 @@
 
         <!-- Right Items - Theme Control Button -->
         <div class="container flex flex-1 items-center justify-end">
-          <span>theme</span>
+          <ThemeButton />
         </div>
       </div>
     </ClientOnly>
