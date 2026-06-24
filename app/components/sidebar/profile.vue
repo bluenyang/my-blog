@@ -5,7 +5,7 @@
 </script>
 
 <template>
-  <div class="flex flex-col space-y-3 px-4">
+  <div class="flex flex-col space-y-3 px-2 pb-4">
     <div class="flex items-center justify-start gap-4">
       <img
         :src="profileData.githubProfileImage"
