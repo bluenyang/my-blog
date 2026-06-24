@@ -6,23 +6,23 @@
   --font-weight-normal: 400;
   --radius: 0.75rem;
 
-  --background: var(--color-zinc-100);
-  --foreground: var(--color-zinc-950);
+  --background: var(--color-neutral-100);
+  --foreground: var(--color-neutral-950);
 
   --card: var(--color-white);
-  --card-foreground: var(--color-zinc-950);
+  --card-foreground: var(--color-neutral-950);
 
   --popover: var(--color-white);
-  --popover-foreground: var(--color-zinc-950);
+  --popover-foreground: var(--color-neutral-950);
 
   --primary: var(--color-blue-600);
   --primary-foreground: var(--color-white);
 
-  --secondary: var(--color-zinc-200);
-  --secondary-foreground: var(--color-zinc-950);
+  --secondary: var(--color-neutral-200);
+  --secondary-foreground: var(--color-neutral-950);
 
-  --muted: var(--color-zinc-200);
-  --muted-foreground: var(--color-zinc-500);
+  --muted: var(--color-neutral-200);
+  --muted-foreground: var(--color-neutral-500);
 
   --accent: var(--color-sky-500);
   --accent-foreground: var(--color-white);
@@ -30,10 +30,11 @@
   --destructive: var(--color-red-600);
   --destructive-foreground: var(--color-white);
 
-  --border: var(--color-zinc-200);
+  --border: var(--color-neutral-200);
   --input: transparent;
-  --input-background: var(--color-zinc-50);
-  --switch-background: var(--color-zinc-300);
+  --input-background: color-mix(in oklch, var(--color-neutral-950) 8%, transparent);
+  --input-background-focus: color-mix(in oklch, var(--color-neutral-950) 15%, transparent);
+  --switch-background: var(--color-neutral-300);
   --ring: var(--color-blue-600);
 
   --chart-1: var(--color-orange-500);
@@ -42,51 +43,52 @@
   --chart-4: var(--color-amber-400);
   --chart-5: var(--color-lime-500);
 
-  --sidebar: var(--color-zinc-50);
-  --sidebar-foreground: var(--color-zinc-900);
+  --sidebar: var(--color-neutral-50);
+  --sidebar-foreground: var(--color-neutral-900);
   --sidebar-primary: var(--color-blue-600);
   --sidebar-primary-foreground: var(--color-white);
-  --sidebar-accent: var(--color-zinc-200);
-  --sidebar-accent-foreground: var(--color-zinc-800);
-  --sidebar-border: var(--color-zinc-200);
+  --sidebar-accent: var(--color-neutral-200);
+  --sidebar-accent-foreground: var(--color-neutral-800);
+  --sidebar-border: var(--color-neutral-200);
   --sidebar-ring: var(--color-blue-600);
 
-  --header-bg: color-mix(in oklch, var(--color-zinc-50) 70%, transparent);
-  --header-tp: color-mix(in oklch, var(--color-zinc-50) 50%, transparent);
+  --header-bg: color-mix(in oklch, var(--color-neutral-50) 70%, transparent);
+  --header-tp: color-mix(in oklch, var(--color-neutral-50) 50%, transparent);
 }
 
 .dark {
   --font-weight-medium: 500;
   --font-weight-normal: 400;
 
-  --background: var(--color-zinc-900);
-  --foreground: var(--color-zinc-100);
+  --background: var(--color-neutral-900);
+  --foreground: var(--color-neutral-100);
 
-  --card: var(--color-zinc-800);
-  --card-foreground: var(--color-zinc-100);
+  --card: var(--color-neutral-800);
+  --card-foreground: var(--color-neutral-100);
 
-  --popover: var(--color-zinc-900);
-  --popover-foreground: var(--color-zinc-100);
+  --popover: var(--color-neutral-900);
+  --popover-foreground: var(--color-neutral-100);
 
   --primary: var(--color-blue-500);
   --primary-foreground: var(--color-white);
 
-  --secondary: var(--color-zinc-800);
-  --secondary-foreground: var(--color-zinc-200);
+  --secondary: var(--color-neutral-800);
+  --secondary-foreground: var(--color-neutral-200);
 
-  --muted: var(--color-zinc-800);
-  --muted-foreground: var(--color-zinc-400);
+  --muted: var(--color-neutral-800);
+  --muted-foreground: var(--color-neutral-400);
 
   --accent: var(--color-sky-400);
-  --accent-foreground: var(--color-zinc-950);
+  --accent-foreground: var(--color-neutral-950);
 
   --destructive: var(--color-red-700);
   --destructive-foreground: var(--color-red-50);
 
-  --border: var(--color-zinc-800);
-  --input: var(--color-zinc-800);
-  --input-background: var(--color-zinc-800);
-  --switch-background: var(--color-zinc-700);
+  --border: var(--color-neutral-800);
+  --input: var(--color-neutral-800);
+  --input-background: color-mix(in oklch, var(--color-neutral-50) 10%, transparent);
+  --input-background-focus: color-mix(in oklch, var(--color-neutral-50) 20%, transparent);
+  --switch-background: var(--color-neutral-700);
   --ring: var(--color-blue-500);
 
   --chart-1: var(--color-blue-500);
@@ -95,17 +97,17 @@
   --chart-4: var(--color-fuchsia-500);
   --chart-5: var(--color-rose-500);
 
-  --sidebar: var(--color-zinc-800);
-  --sidebar-foreground: var(--color-zinc-100);
+  --sidebar: var(--color-neutral-800);
+  --sidebar-foreground: var(--color-neutral-100);
   --sidebar-primary: var(--color-blue-500);
-  --sidebar-primary-foreground: var(--color-zinc-950);
-  --sidebar-accent: var(--color-zinc-800);
-  --sidebar-accent-foreground: var(--color-zinc-200);
-  --sidebar-border: var(--color-zinc-600);
+  --sidebar-primary-foreground: var(--color-neutral-950);
+  --sidebar-accent: var(--color-neutral-800);
+  --sidebar-accent-foreground: var(--color-neutral-200);
+  --sidebar-border: var(--color-neutral-600);
   --sidebar-ring: var(--color-blue-500);
 
-  --header-bg: color-mix(in oklch, var(--color-zinc-800) 70%, transparent);
-  --header-tp: color-mix(in oklch, var(--color-zinc-700) 50%, transparent);
+  --header-bg: color-mix(in oklch, var(--color-neutral-800) 70%, transparent);
+  --header-tp: color-mix(in oklch, var(--color-neutral-700) 50%, transparent);
 }
 
 @theme inline {
@@ -144,6 +146,7 @@
 
   --color-input: var(--input);
   --color-input-background: var(--input-background);
+  --color-input-background-focus: var(--input-background-focus);
   --color-switch-background: var(--switch-background);
   --color-ring: var(--ring);
 
