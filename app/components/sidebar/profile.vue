@@ -5,19 +5,31 @@
 </script>
 
 <template>
-  <div class="flex flex-col space-y-3">
-    <img
-      :src="profileData.githubProfileImage"
-      alt="BlueNyang"
-      class="mx-auto mt-4 h-24 w-24 rounded-full border-4 border-white"
-    />
-    <div class="space-y-1 px-6">
-      <h3 class="text-center text-xl font-bold">{{ profileData.nickname }}</h3>
-      <p class="font-jua text-center text-sm text-gray-600 dark:text-gray-400">
-        {{ profileData.desc }}
-      </p>
+  <div class="flex flex-col space-y-3 px-4">
+    <div class="flex items-center justify-start gap-4">
+      <img
+        :src="profileData.githubProfileImage"
+        alt="BlueNyang"
+        class="size-10 rounded-full border-2 border-white"
+      />
+      <div class="space-y-1">
+        <h3 class="text-start text-xl font-bold">{{ profileData.nickname }}</h3>
+        <p class="font-jua text-start text-sm text-gray-600 dark:text-gray-400">
+          {{ profileData.desc }}
+        </p>
+      </div>
     </div>
-    <div class="flex justify-center gap-3 px-4">
+    <div class="flex items-center justify-start gap-6">
+      <div class="flex items-center gap-1">
+        <span class="font-jua text-base font-bold">{{ total }}</span>
+        <span class="flex text-sm text-gray-600 dark:text-gray-400">{{ '포스트' }}</span>
+      </div>
+      <!-- <div class="flex items-center gap-1">
+        <span class="font-jua text-base font-bold">{{ total }}</span>
+        <span class="text-sm text-gray-600 dark:text-gray-400">{{ '포스트' }}</span>
+      </div> -->
+    </div>
+    <div class="flex justify-start gap-3">
       <a
         v-for="(link, index) in profileData.link"
         :key="index"
@@ -26,18 +38,8 @@
         :aria-label="link.name"
         :target="link.target"
       >
-        <Icon :name="link.icon" class="size-6" />
+        <Icon :name="link.icon" class="size-5" />
       </a>
-    </div>
-    <div class="divide-sidebar-border flex items-center justify-center divide-x">
-      <div class="flex flex-1 flex-col items-center">
-        <span class="font-jua text-lg font-bold">{{ total }}</span>
-        <span class="text-xs text-gray-600 dark:text-gray-400">{{ '포스트' }}</span>
-      </div>
-      <!-- <div class="flex flex-1 flex-col items-center">
-        <span class="font-jua text-lg font-bold">{{ total }}</span>
-        <span class="text-xs text-gray-600 dark:text-gray-400">{{ '포스트' }}</span>
-      </div> -->
     </div>
   </div>
 </template>
