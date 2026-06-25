@@ -41,6 +41,8 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@iconify-json/lucide": "^1.2.114",
+    "@iconify-json/mdi": "^1.2.3",
     "@nuxtjs/color-mode": "^4.0.1",
     "@tailwindcss/typography": "^0.5.20",
     "@types/node": "^26.0.0",
