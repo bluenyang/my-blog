@@ -90,7 +90,7 @@
                   {{ item.label }}
                 </span>
                 <div
-                  class="invisible absolute left-1/2 mt-1 w-max max-w-4xl -translate-x-1/2 rounded-lg border-2 border-gray-100 bg-white p-4 opacity-0 shadow-xl/30 transition-all duration-800 group-hover:visible group-hover:opacity-100 dark:border-none dark:bg-gray-800"
+                  class="bg-background/80 invisible absolute left-1/2 mt-1 w-max max-w-4xl -translate-x-1/2 rounded-lg border-2 border-gray-100 p-4 opacity-0 shadow-xl/30 transition-all duration-800 group-hover:visible group-hover:opacity-100 dark:border-none"
                 >
                   <MenuDropdownItem
                     v-if="item.children && item.children.length > 0"
