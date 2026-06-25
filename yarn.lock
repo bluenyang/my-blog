@@ -1118,6 +1118,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@iconify-json/lucide@npm:^1.2.114":
+  version: 1.2.114
+  resolution: "@iconify-json/lucide@npm:1.2.114"
+  dependencies:
+    "@iconify/types": "npm:*"
+  checksum: 10c0/1e2bf5a6d1c71e1bd2a0e25a4dbfd3f84ca195b1e0a73a1f6b219f0f5458791a32b0ea8a57adf45bfd92e04f6626fbc41a23357c544435a8031fe1bc58ae22c3
+  languageName: node
+  linkType: hard
+
+"@iconify-json/mdi@npm:^1.2.3":
+  version: 1.2.3
+  resolution: "@iconify-json/mdi@npm:1.2.3"
+  dependencies:
+    "@iconify/types": "npm:*"
+  checksum: 10c0/4d11426abba03464e5ebe4675c87cc39c720e54b7c28265ff9ccd93f229a51f7616bb0a8f1c01412eac3cc9a1ebdc0a122bbaa3395c14d30834d96f8a141e96d
+  languageName: node
+  linkType: hard
+
 "@iconify/collections@npm:^1.0.691":
   version: 1.0.696
   resolution: "@iconify/collections@npm:1.0.696"
@@ -9060,6 +9078,8 @@ __metadata:
     "@directus/sdk": "npm:^22.0.0"
     "@eslint/js": "npm:^10.0.1"
     "@floating-ui/dom": "npm:^1.7.6"
+    "@iconify-json/lucide": "npm:^1.2.114"
+    "@iconify-json/mdi": "npm:^1.2.3"
     "@nuxt/eslint": "npm:^1.16.0"
     "@nuxt/icon": "npm:^2.2.3"
     "@nuxtjs/color-mode": "npm:^4.0.1"
