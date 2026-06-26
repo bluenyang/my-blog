@@ -20,9 +20,6 @@
   const borderRadius = computed(() => smoothProgress.value * 32); // 0 -> 22
   const paddingY = computed(() => 16 - smoothProgress.value * 4); // 16 -> 12
 
-  const { menuItems } = useNavigationMenu();
-  const { categories, total } = useCategory();
-
   const { isOpen, toggle } = useSidebar();
 </script>
 
@@ -71,41 +68,6 @@
             </a>
           </div>
         </div>
-
-        <!-- Center Items - Menu Links (Mobile : Hidden) -->
-        <nav class="container hidden items-center justify-center lg:flex lg:flex-1">
-          <ul class="flex flex-1 items-center justify-center space-x-4">
-            <li v-for="item of menuItems" :key="item.id" class="group relative cursor-default">
-              <NuxtLink
-                v-if="item.url"
-                :to="item.url"
-                class="hover:text-accent block cursor-pointer px-4 py-5 font-medium transition-all duration-200 hover:-translate-y-1"
-              >
-                {{ item.label }}
-              </NuxtLink>
-              <div v-else>
-                <span
-                  class="hover:text-accent block px-4 py-5 font-medium transition-all duration-200 hover:-translate-y-1"
-                >
-                  {{ item.label }}
-                </span>
-                <div
-                  class="bg-background/80 invisible absolute left-1/2 mt-1 w-max max-w-4xl -translate-x-1/2 rounded-lg border-2 border-gray-100 p-4 opacity-0 shadow-xl/30 transition-all duration-800 group-hover:visible group-hover:opacity-100 dark:border-none"
-                >
-                  <MenuDropdownItem
-                    v-if="item.children && item.children.length > 0"
-                    :items="item.children"
-                  />
-                  <CategoryDropdown
-                    v-else-if="item.isCategory"
-                    :items="categories"
-                    :total="total"
-                  />
-                </div>
-              </div>
-            </li>
-          </ul>
-        </nav>
 
         <!-- Right Items - Theme Control Button -->
         <div class="container flex flex-1 items-center justify-end">
