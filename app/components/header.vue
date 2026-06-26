@@ -27,8 +27,8 @@
   <header
     :class="
       cn(
-        'pointer-events-none fixed top-0 right-0 z-50 flex h-18 transition-[left] duration-300 ease-in-out',
-        isOpen ? 'left-72' : 'left-0',
+        'pointer-events-none fixed top-0 right-0 left-0 z-50 flex h-18 transition-[left] duration-300 ease-in-out',
+        isOpen && 'md:left-72',
       )
     "
   >
