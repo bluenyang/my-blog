@@ -3,11 +3,23 @@
 
   const { isOpen: isSidebarOpen, close: closeSidebar } = useSidebar();
 
+  const isLocked = useScrollLock(import.meta.client ? document.body : null);
+
+  watch(isSidebarOpen, (isOpen) => {
+    if (import.meta.client) {
+      if (isOpen && window.innerWidth < 768) {
+        isLocked.value = true;
+      } else {
+        isLocked.value = false;
+      }
+    }
+  });
+
   const route = useRoute();
   watch(
     () => route.fullPath,
     () => {
-      if (window.innerWidth < 768) {
+      if (import.meta.client && window.innerWidth < 768) {
         closeSidebar();
       }
     },
