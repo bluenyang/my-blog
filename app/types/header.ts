@@ -1,7 +1,7 @@
 export interface NavigationItem {
   id: string;
   label: string;
-  url: string;
+  url: string | null;
   icon: string | null;
   isCategory: boolean;
   parentId: string | null;
@@ -11,7 +11,7 @@ export interface NavigationItem {
 export interface NavigationListResponse {
   id: string;
   label: string;
-  url: string;
+  url: string | null;
   icon: string | null;
   is_category: boolean;
   parent_id: string | null;
