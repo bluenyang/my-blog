@@ -17,33 +17,33 @@
 </script>
 
 <template>
-  <li class="relative w-full">
+  <li class="">
     <div
-      class="w-full bg-linear-to-r from-blue-300 to-purple-400 dark:from-blue-600 dark:to-purple-700"
+      class="md:bg-linear-to-b md:from-blue-300 md:to-purple-400 dark:md:from-blue-400 dark:md:to-purple-500"
     >
       <NuxtLink
         :to="`/categories/${item.slug}`"
-        class="bg-sidebar group relative flex w-full items-center justify-between gap-2 truncate px-2 py-1 transition-all duration-200 hover:translate-x-1"
+        class="bg-sidebar group flex items-center justify-between gap-2 transition-all duration-200 md:hover:translate-x-1"
       >
-        <div class="flex items-center gap-2">
-          <Icon v-if="item.icon" :name="item.icon" class="size-4 text-sky-600" />
+        <div class="flex min-w-0 items-center gap-2 px-2 py-1">
+          <Icon v-if="item.icon" :name="item.icon" class="size-4 shrink-0 text-sky-600" />
           <span
-            class="text-base font-medium group-hover:text-purple-700 group-hover:dark:text-indigo-300"
+            class="flex-1 truncate text-base font-medium md:group-hover:text-purple-700 md:group-hover:dark:text-indigo-300"
           >
             {{ item.name }}
           </span>
-          <span class="bg-muted-foreground rounded-full px-2 text-xs font-semibold">
+          <span class="bg-muted-foreground shrink-0 rounded-full px-2 text-xs font-semibold">
             {{ item.postCount || 0 }}
           </span>
         </div>
         <button
           v-if="hasChildren"
-          class="flex cursor-pointer focus:outline-none"
+          class="hover:bg-sidebar-accent me-1 flex size-6 cursor-pointer items-center justify-center rounded-full focus:outline-none"
           @click="toggleChildOpen"
         >
           <Icon
             name="radix-icons:caret-down"
-            class="size-4 transition-transform duration-200"
+            class="size-6 transition-transform duration-200"
             :class="isChildOpen ? 'rotate-180' : ''"
           />
         </button>
