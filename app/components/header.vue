@@ -59,13 +59,13 @@
             <Icon name="lucide:menu" class="size-6" />
           </button>
           <div class="flex py-5 lg:flex-1">
-            <a class="group focus:outline-none" href="https://bluenyang-dev.tistory.com/">
+            <NuxtLink class="group focus:outline-none" to="/">
               <span
                 class="transition-color font-pacifico bg-linear-to-r from-blue-600 to-purple-700 bg-clip-text text-2xl font-bold duration-500 group-hover:text-transparent group-focus:text-transparent dark:from-blue-300 dark:to-purple-400"
               >
                 {{ profileData.nickname }}
               </span>
-            </a>
+            </NuxtLink>
           </div>
         </div>
 
