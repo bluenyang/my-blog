@@ -2,6 +2,7 @@
   import Categories from './sidebar/categories.vue';
   import Links from './sidebar/links.vue';
   import SearchBar from './sidebar/search-bar.vue';
+  import Tags from './sidebar/tags.vue';
 </script>
 
 <template>
@@ -11,6 +12,7 @@
     <SidebarProfile />
     <SearchBar />
     <Categories />
+    <Tags />
     <Links />
   </div>
 </template>
