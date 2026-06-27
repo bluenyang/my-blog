@@ -8,7 +8,7 @@
     <ul class="flex flex-wrap gap-2 px-2">
       <li v-for="tag in tags" :key="tag.id">
         <NuxtLink
-          :to="`/tags/${tag.slug}`"
+          :to="{ path: '/search', query: { tag: tag.slug } }"
           class="bg-sidebar-accent hover:bg-sidebar-accent-hover flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium transition-colors"
         >
           <span>{{ tag.name }}</span>

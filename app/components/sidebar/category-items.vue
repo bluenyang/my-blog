@@ -22,7 +22,7 @@
       class="md:bg-linear-to-b md:from-blue-300 md:to-purple-400 dark:md:from-blue-400 dark:md:to-purple-500"
     >
       <NuxtLink
-        :to="`/categories/${item.slug}`"
+        :to="{ path: '/search', query: { category: item.slug } }"
         class="bg-sidebar group flex items-center justify-between gap-2 transition-all duration-200 md:hover:translate-x-1"
       >
         <div class="flex min-w-0 items-center gap-2 px-2 py-1">
