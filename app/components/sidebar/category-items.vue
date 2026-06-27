@@ -7,7 +7,33 @@
 
   const { item } = defineProps<MenuItemProps>();
   const hasChildren = computed(() => item.children && item.children.length > 0);
-  const isChildOpen = ref<boolean>(false);
+  const route = useRoute();
+
+  const isActive = computed(() => route.path === '/search' && route.query.category === item.slug);
+
+  const checkActiveChild = (category: CategoryItem): boolean => {
+    if (route.path === '/search' && route.query.category === category.slug) return true;
+    if (category.children) {
+      return category.children.some((child) => checkActiveChild(child));
+    }
+    return false;
+  };
+
+  const hasActiveChild = computed(() => {
+    if (!item.children) return false;
+    return item.children.some((child) => checkActiveChild(child));
+  });
+
+  const isChildOpen = ref<boolean>(hasActiveChild.value);
+
+  watch(
+    () => route.query.category,
+    () => {
+      if (hasActiveChild.value) {
+        isChildOpen.value = true;
+      }
+    },
+  );
 
   const toggleChildOpen = (e: Event) => {
     e.preventDefault();
@@ -21,24 +47,37 @@
     <div
       class="md:bg-linear-to-b md:from-blue-300 md:to-purple-400 dark:md:from-blue-400 dark:md:to-purple-500"
     >
-      <NuxtLink
-        :to="{ path: '/search', query: { category: item.slug } }"
+      <div
         class="bg-sidebar group flex items-center justify-between gap-2 transition-all duration-200 md:hover:translate-x-1"
+        :class="isActive ? 'bg-sidebar-accent text-sidebar-accent-foreground' : ''"
       >
-        <div class="flex min-w-0 items-center gap-2 px-2 py-1">
+        <NuxtLink
+          :to="{ path: '/search', query: { category: item.slug } }"
+          class="flex min-w-0 flex-1 items-center gap-2 px-2 py-1"
+        >
           <Icon v-if="item.icon" :name="item.icon" class="size-4 shrink-0 text-sky-600" />
           <span
-            class="flex-1 truncate text-base font-medium md:group-hover:text-purple-700 md:group-hover:dark:text-indigo-300"
+            class="flex-1 truncate text-base font-medium transition-colors"
+            :class="
+              isActive
+                ? 'text-sidebar-primary font-bold'
+                : 'md:group-hover:text-purple-700 md:group-hover:dark:text-indigo-300'
+            "
           >
             {{ item.name }}
           </span>
-          <span class="bg-muted-foreground shrink-0 rounded-full px-2 text-xs font-semibold">
+          <span
+            class="bg-muted-foreground shrink-0 rounded-full px-2 text-xs font-semibold"
+            :class="isActive ? 'text-sidebar-primary-foreground bg-sidebar-primary' : 'text-white'"
+          >
             {{ item.postCount || 0 }}
           </span>
-        </div>
+        </NuxtLink>
         <button
           v-if="hasChildren"
-          class="hover:bg-sidebar-accent me-1 flex size-6 cursor-pointer items-center justify-center rounded-full focus:outline-none"
+          class="hover:bg-sidebar-accent-hover me-1 flex size-6 cursor-pointer items-center justify-center rounded-full focus:outline-none"
+          :aria-expanded="isChildOpen"
+          aria-label="Toggle children"
           @click="toggleChildOpen"
         >
           <Icon
@@ -47,11 +86,11 @@
             :class="isChildOpen ? 'rotate-180' : ''"
           />
         </button>
-      </NuxtLink>
+      </div>
     </div>
     <div
       v-if="hasChildren"
-      class="grid overflow-hidden transition-[grid-template-rows] duration-200 ease-in-out"
+      class="grid transition-[grid-template-rows] duration-200 ease-in-out"
       :class="isChildOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'"
     >
       <div class="overflow-hidden">
