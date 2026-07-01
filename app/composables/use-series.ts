@@ -70,6 +70,9 @@ export function useSeries() {
     },
     {
       default: () => ({ series: [], total: 0 }),
+      getCachedData(key, nuxtApp) {
+        return nuxtApp.payload.data[key] || nuxtApp.static.data[key];
+      },
     },
   );
 

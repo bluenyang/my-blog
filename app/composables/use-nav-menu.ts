@@ -37,6 +37,12 @@ export function useNavigationMenu() {
 
       return buildTree<NavigationItem>(menuItems);
     },
+    {
+      default: () => [],
+      getCachedData(key, nuxtApp) {
+        return nuxtApp.payload.data[key] || nuxtApp.static.data[key];
+      },
+    },
   );
 
   return {
