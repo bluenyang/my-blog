@@ -52,7 +52,7 @@
       <!-- 게시글 그리드 -->
       <div
         v-else
-        class="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8"
+        class="grid grid-cols-1 gap-x-6 gap-y-2 sm:grid-cols-2 sm:gap-y-10 lg:grid-cols-3 xl:gap-x-8"
       >
         <PostCard v-for="post in posts" :key="post.id" :post="post" />
       </div>
@@ -78,7 +78,7 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
           <NuxtLink
             v-for="item in series"
             :key="item.id"

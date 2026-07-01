@@ -28,7 +28,6 @@ export interface PostListResponse {
   slug: string;
   summary: string;
   content?: string;
-  excerpt: string | null;
   thumbnail: string | null; // Directus Image UUID
   status: 'draft' | 'published' | 'archived';
   visibility: 'public' | 'private' | 'protected';
@@ -49,7 +48,6 @@ export interface PostItem {
   slug: string;
   summary: string;
   content?: string;
-  excerpt: string | null;
   thumbnail: string | null;
   status: 'draft' | 'published' | 'archived';
   visibility: 'public' | 'private' | 'protected';
