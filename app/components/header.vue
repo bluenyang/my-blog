@@ -38,8 +38,12 @@
           initial: { opacity: 0, y: -20 },
           enter: { opacity: 1, y: 0, transition: { duration: 550, ease: 'easeOut' } },
         }"
-        class="pointer-events-auto absolute flex h-full flex-row items-center justify-center px-4 backdrop-blur-xl backdrop-brightness-104 backdrop-saturate-190 transition-colors duration-500"
-        :class="cn(smoothProgress > 0.3 ? 'bg-header-tp' : 'bg-header-bg')"
+        :class="
+          cn(
+            'pointer-events-auto absolute flex h-full flex-row items-center justify-center px-4 backdrop-blur-xl backdrop-brightness-104 backdrop-saturate-190 transition-colors duration-500',
+            smoothProgress > 0.3 ? 'bg-header-tp' : 'bg-header-bg',
+          )
+        "
         :style="{
           top: `${marginTop}px`,
           left: `${marginInline}px`,
