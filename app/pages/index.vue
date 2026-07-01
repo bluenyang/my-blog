@@ -83,28 +83,22 @@
             v-for="item in series"
             :key="item.id"
             :to="{ path: '/search', query: { series: item.slug } }"
-            class="bg-card border-border hover:border-primary/50 group relative flex flex-col justify-between rounded-2xl border p-6 shadow-sm transition-all hover:shadow-md"
+            class="group bg-card hover:bg-card-hover hover:border-border flex flex-col overflow-hidden rounded-2xl border border-transparent transition-all"
           >
-            <div>
+            <div class="bg-muted h-2 w-full dark:bg-white/10"></div>
+            <div class="flex flex-1 flex-col p-5">
               <h3
-                class="text-card-foreground group-hover:text-primary mb-2 text-xl font-bold transition-colors"
+                class="text-foreground group-hover:text-muted-foreground mb-3 line-clamp-2 text-xl font-bold tracking-tight transition-colors"
               >
                 {{ item.name }}
               </h3>
-              <p class="text-muted-foreground line-clamp-2 text-sm">
+              <p class="text-muted-foreground mb-5 line-clamp-2 text-sm leading-relaxed">
                 {{ item.description || '이 시리즈에 대한 설명이 없습니다.' }}
               </p>
-            </div>
-            <div class="mt-6 flex items-center justify-between">
-              <span
-                class="bg-primary/10 text-primary inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold"
-              >
-                {{ item.postCount || 0 }}개의 글
-              </span>
-              <Icon
-                name="lucide:arrow-right"
-                class="text-muted-foreground size-4 transition-transform group-hover:translate-x-1"
-              />
+              <div class="text-muted-foreground mt-auto flex items-center text-sm">
+                <Icon name="lucide:layers" class="mr-2 size-4" />
+                <span>{{ `${item.postCount || 0}개의 글` }}</span>
+              </div>
             </div>
           </NuxtLink>
         </div>
