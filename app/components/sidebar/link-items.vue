@@ -23,8 +23,12 @@
       :to="item.url ?? ''"
       :target="item.url ? '_blank' : undefined"
       rel="noopener noreferrer"
-      class="flex items-center justify-between rounded-lg"
-      :class="cn(!hasChild && 'md:hover:bg-accent md:hover:text-accent-foreground cursor-pointer')"
+      :class="
+        cn(
+          'flex items-center justify-between rounded-lg',
+          !hasChild && 'md:hover:bg-accent md:hover:text-accent-foreground cursor-pointer',
+        )
+      "
     >
       <div class="flex min-w-0 items-center gap-2 px-2 py-1.5">
         <Icon :name="item.icon || 'lucide:link'" class="size-4 shrink-0" />
@@ -32,22 +36,25 @@
       </div>
       <button
         v-if="hasChild"
-        class="md:hover:bg-sidebar-accent me-1 flex size-6 shrink-0 items-center justify-center rounded-full"
+        class="md:hover:bg-sidebar-accent me-1 flex size-6 shrink-0 cursor-pointer items-center justify-center rounded-full"
         @click="toggleChild"
       >
         <Icon
           name="radix-icons:caret-down"
-          class="size-6 transition-transform duration-200"
-          :class="childOpen ? 'rotate-180' : ''"
+          :class="cn('size-6 transition-transform duration-200', childOpen && 'rotate-180')"
         />
       </button>
     </NuxtLink>
     <ul
       v-if="hasChild"
-      class="ml-3 overflow-hidden transition-all duration-200 ease-in-out"
-      :class="cn(childOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0')"
+      class="grid grid-rows-[0fr] overflow-hidden transition-[grid-template-rows] duration-200 ease-in-out"
+      :class="cn(childOpen && 'grid-rows-[1fr]')"
     >
-      <LinkItems v-for="child in item.children" :key="child.id" :item="child" />
+      <div class="overflow-hidden">
+        <ul class="ps-3">
+          <LinkItems v-for="child in item.children" :key="child.id" :item="child" />
+        </ul>
+      </div>
     </ul>
   </li>
 </template>
