@@ -61,8 +61,12 @@
   </div>
 
   <aside
-    class="bg-sidebar border-sidebar-border sticky top-0 hidden h-screen overflow-hidden border-r transition-all duration-300 ease-in-out md:block"
-    :class="isSidebarOpen ? 'w-72' : 'w-0 border-r-0'"
+    :class="
+      cn(
+        'bg-sidebar border-sidebar-border sticky top-0 hidden h-screen overflow-hidden border-r transition-all duration-300 ease-in-out md:block',
+        isSidebarOpen ? 'w-72' : 'w-0 border-r-0',
+      )
+    "
   >
     <div class="flex h-full w-72 flex-col overflow-y-auto">
       <SidebarContent />
