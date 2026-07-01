@@ -73,6 +73,9 @@ export function useCategory() {
     },
     {
       default: () => ({ categories: [], total: 0 }),
+      getCachedData(key, nuxtApp) {
+        return nuxtApp.payload.data[key] || nuxtApp.static.data[key];
+      },
     },
   );
 

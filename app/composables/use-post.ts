@@ -61,6 +61,9 @@ export function useRecentPosts(limit = 6) {
     },
     {
       default: () => ({ posts: [] }),
+      getCachedData(key, nuxtApp) {
+        return nuxtApp.payload.data[key] || nuxtApp.static.data[key];
+      },
     },
   );
 

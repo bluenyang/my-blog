@@ -65,6 +65,9 @@ export function useTag() {
     },
     {
       default: () => ({ tags: [], total: 0 }),
+      getCachedData(key, nuxtApp) {
+        return nuxtApp.payload.data[key] || nuxtApp.static.data[key];
+      },
     },
   );
 
