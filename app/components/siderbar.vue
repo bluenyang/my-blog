@@ -63,7 +63,7 @@
   <aside
     :class="
       cn(
-        'bg-sidebar border-sidebar-border sticky top-0 hidden h-screen overflow-hidden border-r transition-all duration-300 ease-in-out md:block',
+        'bg-sidebar border-sidebar-border sticky top-0 hidden h-screen shrink-0 overflow-hidden border-r transition-all duration-300 ease-in-out md:block',
         isSidebarOpen ? 'w-72' : 'w-0 border-r-0',
       )
     "
