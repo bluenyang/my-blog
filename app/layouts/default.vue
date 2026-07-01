@@ -1,4 +1,6 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+  const route = useRoute();
+</script>
 
 <template>
   <div class="flex flex-row">
@@ -6,7 +8,7 @@
 
     <div class="relative flex grow flex-col">
       <Header />
-      <main class="flex-1">
+      <main :class="cn('flex-1', route.path !== '/' && 'pt-12')">
         <slot />
       </main>
       <Footer />
