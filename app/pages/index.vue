@@ -8,7 +8,7 @@
 </script>
 
 <template>
-  <div class="w-full">
+  <main class="w-full">
     <BannerHero />
 
     <!-- 최신 글 섹션 -->
@@ -104,5 +104,5 @@
         </div>
       </div>
     </section>
-  </div>
+  </main>
 </template>
