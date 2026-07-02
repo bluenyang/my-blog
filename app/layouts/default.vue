@@ -8,9 +8,9 @@
 
     <div class="relative flex grow flex-col">
       <Header />
-      <main :class="cn('flex-1', route.path !== '/' && 'pt-12')">
+      <div :class="cn('flex-1', route.path !== '/' && 'pt-12')">
         <slot />
-      </main>
+      </div>
       <Footer />
     </div>
   </div>
