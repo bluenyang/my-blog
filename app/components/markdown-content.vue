@@ -50,7 +50,7 @@
       <MDCRenderer v-if="postContent" :body="postContent.body" :data="postContent.data" />
     </main>
     <!-- Floating Nav (TOC) - Left Side -->
-    <aside v-if="postContent" class="hidden w-64 shrink-0 lg:sticky lg:top-36 lg:block">
+    <aside v-if="postContent" class="hidden w-52 shrink-0 lg:sticky lg:top-36 lg:block">
       <div class="flex flex-col text-sm">
         <div class="text-foreground mb-4 font-bold">{{ '목차' }}</div>
         <TocLink v-if="postContent.toc" :links="postContent.toc.links" />
