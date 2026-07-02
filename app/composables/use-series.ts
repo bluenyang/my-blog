@@ -81,3 +81,51 @@ export function useSeries() {
     total: computed<number>(() => data.value?.total || 0),
   };
 }
+
+export function useSeriesBySlug(slug: Ref<string | undefined> | string | undefined) {
+  const config = useRuntimeConfig();
+  const slugRef = computed(() => unref(slug));
+
+  const { data, pending } = useAsyncData<{ series: SeriesItem | null }>(
+    computed(() => `series-by-slug-${slugRef.value}`).value,
+    async () => {
+      if (!slugRef.value) return { series: null };
+
+      const response = await $fetch<{ data: SeriesResponse[] }>(
+        `${config.public.directusUrl}/items/series`,
+        {
+          query: {
+            filter: {
+              blog_id: { slug: { _eq: config.public.blogSlug } },
+              slug: { _eq: slugRef.value },
+            },
+            fields: ['id', 'blog_id', 'name', 'slug', 'description', 'thumbnail'],
+            limit: 1,
+          },
+        },
+      );
+
+      const [raw] = response.data;
+      if (!raw) return { series: null };
+
+      return {
+        series: {
+          id: raw.id,
+          blogId: raw.blog_id,
+          name: raw.name,
+          slug: raw.slug,
+          description: raw.description,
+          thumbnail: raw.thumbnail,
+        },
+      };
+    },
+    {
+      watch: [slugRef],
+    },
+  );
+
+  return {
+    series: computed<SeriesItem | null>(() => data.value?.series ?? null),
+    pending,
+  };
+}
