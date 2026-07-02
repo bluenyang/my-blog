@@ -73,7 +73,7 @@
 </script>
 
 <template>
-  <div class="container mx-auto px-4 py-12 sm:px-6 lg:px-8">
+  <div class="mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
     <div v-if="pending" class="flex justify-center py-24">
       <Icon name="lucide:loader-2" class="text-primary size-10 animate-spin" />
     </div>

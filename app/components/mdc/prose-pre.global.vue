@@ -17,14 +17,16 @@
 
 <template>
   <div
-    class="bg-block-bg border-codeblock-accent divide-sidebar-border my-4 flex flex-col gap-2 divide-y rounded-2xl border-s-3 p-4"
+    class="bg-block-bg border-codeblock-accent divide-sidebar-border my-4 flex flex-col gap-2 divide-y rounded-2xl border-s-3 px-4"
   >
-    <div class="flex justify-between px-2 pb-2">
+    <div class="flex items-center justify-between px-2 py-4">
       <span class="text-primary! font-jua">{{ language || 'text' }}</span>
       <button class="size-4 cursor-pointer" @click="copyCode(code)">
         <Icon :name="copied ? 'lucide:copy-check' : 'lucide:copy'" class="size-4 text-white" />
       </button>
     </div>
-    <pre class="[&>code]:font-cascadia-code text-sm"><slot /></pre>
+    <pre
+      class="[&>code]:font-cascadia-code scrollbar-thumb-sidebar-border min-w-0 scrollbar-thin scrollbar-track-transparent overflow-x-auto py-2 text-sm"
+    ><slot /></pre>
   </div>
 </template>
