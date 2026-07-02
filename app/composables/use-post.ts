@@ -235,3 +235,83 @@ export function useSeriesPosts(seriesId: Ref<string | undefined> | string | unde
     error,
   };
 }
+
+export interface SearchPostsOptions {
+  search?: string;
+  category?: string;
+  tag?: string;
+  series?: string;
+}
+
+export function useSearchPosts(options: Ref<SearchPostsOptions>) {
+  const config = useRuntimeConfig();
+
+  const { data, pending, error, refresh } = useAsyncData<{ posts: PostItem[] }>(
+    computed(() => `search-posts-${JSON.stringify(options.value)}`).value,
+    async () => {
+      const { search, category, tag, series } = options.value;
+
+      const filter: Record<string, unknown> = {
+        blog_id: { slug: { _eq: config.public.blogSlug } },
+        status: { _eq: 'published' },
+        visibility: { _eq: 'public' },
+      };
+
+      if (search) {
+        filter['_or'] = [{ title: { _contains: search } }, { summary: { _contains: search } }];
+      }
+      if (category) {
+        filter['categories'] = { categories_id: { slug: { _eq: category } } };
+      }
+      if (tag) {
+        filter['tags'] = { tags_id: { slug: { _eq: tag } } };
+      }
+      if (series) {
+        filter['series'] = { series_id: { slug: { _eq: series } } };
+      }
+
+      const response = await $fetch<{ data: RawPostItem[] }>(
+        `${config.public.directusUrl}/items/posts`,
+        {
+          query: {
+            filter,
+            sort: ['-post_idx'],
+            limit: -1,
+            fields: [
+              'id',
+              'post_idx',
+              'title',
+              'slug',
+              'summary',
+              'thumbnail',
+              'published_at',
+              'updated_at',
+              'categories.categories_id.name',
+              'categories.categories_id.slug',
+              'tags.tags_id.name',
+              'tags.tags_id.slug',
+              'series.series_id.name',
+              'series.series_id.slug',
+            ],
+          },
+        },
+      );
+
+      const posts: PostItem[] = [];
+      for (const rawPost of response.data || []) {
+        posts.push(await rawPostItemToPostItem(rawPost));
+      }
+      return { posts };
+    },
+    {
+      watch: [options],
+    },
+  );
+
+  return {
+    posts: computed(() => data.value?.posts || []),
+    pending,
+    error,
+    refresh,
+  };
+}
