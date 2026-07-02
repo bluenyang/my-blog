@@ -7,6 +7,7 @@ export default defineNuxtConfig({
     '@nuxt/icon',
     '@vueuse/motion',
     '@vueuse/nuxt',
+    '@nuxtjs/mdc',
     '@nuxtjs/robots',
     '@nuxtjs/sitemap',
   ],
@@ -22,25 +23,7 @@ export default defineNuxtConfig({
         // Google Fonts
         {
           rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Jua&family=Pacifico&family=Tektur:wght@400..900&display=swap',
-        },
-        // Highlight.js CSS
-        {
-          rel: 'stylesheet',
-          href: 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/a11y-dark.min.css',
-        },
-      ],
-      script: [
-        // Highlight.js Library
-        {
-          src: 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js',
-          defer: true,
-        },
-        // Inline Script 실행
-        {
-          innerHTML:
-            'document.addEventListener("DOMContentLoaded", (event) => { hljs.highlightAll(); });',
-          type: 'text/javascript',
+          href: 'https://fonts.googleapis.com/css2?family=Cascadia+Code:ital,wght@0,200..700;1,200..700&family=Jua&family=Pacifico&family=Tektur:wght@400..900&display=swap',
         },
       ],
     },
@@ -57,6 +40,42 @@ export default defineNuxtConfig({
     preference: 'system',
     fallback: 'dark',
     classSuffix: '',
+  },
+
+  mdc: {
+    highlight: {
+      theme: 'one-dark-pro',
+      langs: [
+        'sh',
+        'bash',
+        'c',
+        'c++',
+        'cpp',
+        'js',
+        'javascript',
+        'jsx',
+        'ts',
+        'typescript',
+        'tsx',
+        'vue',
+        'css',
+        'html',
+        'json',
+        'md',
+        'mdc',
+        'yaml',
+        'yml',
+        'go',
+        'java',
+        'kotlin',
+        'xml',
+        'py',
+        'dockerfile',
+      ],
+    },
+    components: {
+      prose: true,
+    },
   },
 
   runtimeConfig: {
@@ -90,7 +109,7 @@ export default defineNuxtConfig({
   },
 
   icon: {
-    mode: 'css',
+    mode: 'svg',
     cssLayer: 'base',
     size: '1.25em',
   },
