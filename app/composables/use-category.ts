@@ -1,8 +1,4 @@
-import type {
-  CategoryItem,
-  CategoryListResponse,
-  CategoryPostCountResponse,
-} from '~/types/category';
+import type { CategoryItem, RawCategoryItem, RawCategoryPostCount } from '~/types/category';
 import { accumulatePostCount } from '~/utils/post-counter';
 
 export function useCategory() {
@@ -14,7 +10,7 @@ export function useCategory() {
       // 카테고리 목록 조회 및 포스트 갯수 집계를 Promise.all로 병렬 처리
       const [categoriesReq, countsReq] = await Promise.all([
         // Category 조회
-        $fetch<{ data: CategoryListResponse[] }>(`${config.public.directusUrl}/items/categories`, {
+        $fetch<{ data: RawCategoryItem[] }>(`${config.public.directusUrl}/items/categories`, {
           query: {
             filter: {
               blog_id: {
@@ -26,7 +22,7 @@ export function useCategory() {
           },
         }),
         // 포스트 수 집계
-        $fetch<{ data: CategoryPostCountResponse[] }>(
+        $fetch<{ data: RawCategoryPostCount[] }>(
           `${config.public.directusUrl}/items/posts_categories`,
           {
             query: {

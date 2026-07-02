@@ -1,4 +1,4 @@
-import type { PostItem, PostListResponse } from '~/types/post';
+import type { PostItem, RawPostItem } from '~/types/post';
 
 export function useRecentPosts(limit = 6) {
   const config = useRuntimeConfig();
@@ -6,7 +6,7 @@ export function useRecentPosts(limit = 6) {
   const { data, pending, error } = useAsyncData<{ posts: PostItem[] }>(
     `recent-posts-${limit}`,
     async () => {
-      const response = await $fetch<{ data: PostListResponse[] }>(
+      const response = await $fetch<{ data: RawPostItem[] }>(
         `${config.public.directusUrl}/items/posts`,
         {
           query: {
@@ -31,29 +31,21 @@ export function useRecentPosts(limit = 6) {
               'updated_at',
               'categories.categories_id.name',
               'tags.tags_id.name',
+              'author_id.first_name',
+              'author_id.last_name',
+              'author_id.nickname',
+              'author_id.avatar',
             ],
           },
         },
       );
 
       const rawPosts = response.data || [];
-      const posts: PostItem[] = rawPosts.map((post) => ({
-        id: post.id,
-        blogId: post.blog_id,
-        authorId: post.author_id,
-        postIdx: post.post_idx,
-        title: post.title,
-        slug: post.slug,
-        summary: post.summary,
-        thumbnail: post.thumbnail,
-        status: post.status,
-        visibility: post.visibility,
-        publishedAt: post.published_at,
-        updatedAt: post.updated_at,
-        categories: post.categories,
-        tags: post.tags,
-        series: post.series,
-      }));
+      const posts: PostItem[] = [];
+
+      for (const rawPost of rawPosts) {
+        posts.push(await rawPostItemToPostItem(rawPost));
+      }
 
       return { posts };
     },
@@ -78,7 +70,7 @@ export function usePosts() {
   const { data, pending, error } = useAsyncData<{ posts: PostItem[] }>(
     'all-posts',
     async () => {
-      const response = await $fetch<{ data: PostListResponse[] }>(
+      const response = await $fetch<{ data: RawPostItem[] }>(
         `${config.public.directusUrl}/items/posts`,
         {
           query: {
@@ -108,23 +100,11 @@ export function usePosts() {
       );
 
       const rawPosts = response.data || [];
-      const posts: PostItem[] = rawPosts.map((post) => ({
-        id: post.id,
-        blogId: post.blog_id,
-        authorId: post.author_id,
-        postIdx: post.post_idx,
-        title: post.title,
-        slug: post.slug,
-        summary: post.summary,
-        thumbnail: post.thumbnail,
-        status: post.status,
-        visibility: post.visibility,
-        publishedAt: post.published_at,
-        updatedAt: post.updated_at,
-        categories: post.categories,
-        tags: post.tags,
-        series: post.series,
-      }));
+      const posts: PostItem[] = [];
+
+      for (const rawPost of rawPosts) {
+        posts.push(await rawPostItemToPostItem(rawPost));
+      }
 
       return { posts };
     },
@@ -133,6 +113,119 @@ export function usePosts() {
       getCachedData(key, nuxtApp) {
         return nuxtApp.payload.data[key] || nuxtApp.static.data[key];
       },
+    },
+  );
+
+  return {
+    posts: computed(() => data.value?.posts || []),
+    pending,
+    error,
+  };
+}
+
+export function usePostDetail(idx: number | string) {
+  const config = useRuntimeConfig();
+
+  const { data, pending, error } = useAsyncData<{ post: PostItem | null }>(
+    `post-detail-${idx}`,
+    async () => {
+      const response = await $fetch<{ data: RawPostItem[] }>(
+        `${config.public.directusUrl}/items/posts`,
+        {
+          query: {
+            filter: {
+              blog_id: { slug: { _eq: config.public.blogSlug } },
+              post_idx: { _eq: Number(idx) },
+              status: { _eq: 'published' },
+            },
+            limit: 1,
+            fields: [
+              'id',
+              'post_idx',
+              'title',
+              'slug',
+              'summary',
+              'thumbnail',
+              'content',
+              'published_at',
+              'updated_at',
+              'categories.categories_id.name',
+              'categories.categories_id.slug',
+              'tags.tags_id.name',
+              'tags.tags_id.slug',
+              'series.series_id.id',
+              'series.series_id.name',
+              'series.series_id.slug',
+              'author_id.first_name',
+              'author_id.last_name',
+              'author_id.nickname',
+              'author_id.avatar',
+            ],
+          },
+        },
+      );
+
+      const [rawPost] = response.data ?? [];
+      if (!rawPost) return { post: null };
+
+      return { post: await rawPostItemToPostItem(rawPost) };
+    },
+  );
+
+  return {
+    post: computed(() => data.value?.post || null),
+    pending,
+    error,
+  };
+}
+
+export function useSeriesPosts(seriesId: Ref<string | undefined> | string | undefined) {
+  const config = useRuntimeConfig();
+  const idRef = computed(() => unref(seriesId));
+
+  const { data, pending, error } = useAsyncData<{ posts: PostItem[] }>(
+    `series-posts-${idRef.value}`,
+    async () => {
+      if (!idRef.value) return { posts: [] };
+      const response = await $fetch<{ data: RawPostItem[] }>(
+        `${config.public.directusUrl}/items/posts`,
+        {
+          query: {
+            filter: {
+              blog_id: { slug: { _eq: config.public.blogSlug } },
+              status: { _eq: 'published' },
+              series: {
+                series_id: { id: { _eq: idRef.value } },
+              },
+            },
+            sort: ['published_at'],
+            fields: [
+              'id',
+              'post_idx',
+              'title',
+              'slug',
+              'summary',
+              'thumbnail',
+              'published_at',
+              'updated_at',
+              'categories.categories_id.name',
+              'tags.tags_id.name',
+            ],
+          },
+        },
+      );
+
+      const posts: PostItem[] = [];
+      const rawPosts = response.data || [];
+      for (const rawPost of rawPosts) {
+        posts.push(await rawPostItemToPostItem(rawPost));
+      }
+
+      return { posts };
+    },
+    {
+      immediate: !!idRef.value,
+      watch: [idRef],
     },
   );
 

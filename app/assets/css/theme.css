@@ -16,7 +16,7 @@
   --popover: var(--color-white);
   --popover-foreground: var(--color-neutral-950);
 
-  --primary: var(--color-blue-600);
+  --primary: var(--color-sky-600);
   --primary-foreground: var(--color-white);
 
   --secondary: var(--color-neutral-200);
@@ -30,6 +30,10 @@
 
   --destructive: var(--color-red-600);
   --destructive-foreground: var(--color-white);
+
+  --blockquote-accent: var(--color-emerald-400);
+  --codeblock-accent: var(--color-purple-400);
+  --block-bg: var(--color-neutral-200);
 
   --border: var(--color-neutral-200);
   --input: transparent;
@@ -72,7 +76,7 @@
   --popover: var(--color-neutral-900);
   --popover-foreground: var(--color-neutral-100);
 
-  --primary: var(--color-blue-500);
+  --primary: var(--color-sky-500);
   --primary-foreground: var(--color-white);
 
   --secondary: var(--color-neutral-800);
@@ -86,6 +90,10 @@
 
   --destructive: var(--color-red-700);
   --destructive-foreground: var(--color-red-50);
+
+  --blockquote-accent: var(--color-emerald-300);
+  --codeblock-accent: var(--color-purple-300);
+  --block-bg: var(--color-neutral-800);
 
   --border: var(--color-neutral-800);
   --input: var(--color-neutral-800);
@@ -121,6 +129,7 @@
   --font-tektur: 'Tektur', sans-serif;
   --font-pacifico: 'Pacifico', cursive;
   --font-jua: 'Jua', sans-serif;
+  --font-cascadia-code: 'Cascadia Code', monospace;
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -146,6 +155,10 @@
 
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
+
+  --color-blockquote-accent: var(--blockquote-accent);
+  --color-codeblock-accent: var(--codeblock-accent);
+  --color-block-bg: var(--block-bg);
 
   --color-border: var(--border);
 
@@ -187,56 +200,5 @@
 
   body {
     @apply bg-background text-foreground;
-  }
-
-  /**
-  * Default typography styles for HTML elements (h1-h4, p, label, button, input).
-  * These are in @layer base, so Tailwind utility classes (like text-sm, text-lg) automatically override them.
-  */
-
-  html {
-    font-size: var(--font-size);
-  }
-
-  h1 {
-    font-size: var(--text-2xl);
-    font-weight: var(--font-weight-medium);
-    line-height: 1.5;
-  }
-
-  h2 {
-    font-size: var(--text-xl);
-    font-weight: var(--font-weight-medium);
-    line-height: 1.5;
-  }
-
-  h3 {
-    font-size: var(--text-lg);
-    font-weight: var(--font-weight-medium);
-    line-height: 1.5;
-  }
-
-  h4 {
-    font-size: var(--text-base);
-    font-weight: var(--font-weight-medium);
-    line-height: 1.5;
-  }
-
-  label {
-    font-size: var(--text-base);
-    font-weight: var(--font-weight-medium);
-    line-height: 1.5;
-  }
-
-  button {
-    font-size: var(--text-base);
-    font-weight: var(--font-weight-medium);
-    line-height: 1.5;
-  }
-
-  input {
-    font-size: var(--text-base);
-    font-weight: var(--font-weight-normal);
-    line-height: 1.5;
   }
 }
