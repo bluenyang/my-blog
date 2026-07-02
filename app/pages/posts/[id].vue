@@ -73,7 +73,7 @@
 </script>
 
 <template>
-  <div class="mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+  <div class="w-full px-4 py-32 sm:px-6 lg:px-8">
     <div v-if="pending" class="flex justify-center py-24">
       <Icon name="lucide:loader-2" class="text-primary size-10 animate-spin" />
     </div>
@@ -86,9 +86,9 @@
       <p class="text-destructive text-lg">{{ '게시글을 찾을 수 없습니다.' }}</p>
     </div>
 
-    <div v-else>
+    <div v-else class="ms-auto max-w-6xl space-y-8">
       <!-- Hero Section -->
-      <div class="mb-12 flex flex-col items-center text-center">
+      <div class="flex flex-col items-start text-center">
         <!-- Thumbnail -->
         <div
           v-if="thumbnailUrl"
@@ -97,22 +97,22 @@
           <img :src="thumbnailUrl" :alt="post.title" class="aspect-2/1 w-full object-cover" />
         </div>
 
-        <div class="mx-auto max-w-3xl">
-          <div class="mb-4 flex flex-wrap items-center justify-center gap-2 text-sm">
-            <span class="text-primary font-bold">{{ categoryName }}</span>
+        <div class="flex flex-col">
+          <div class="mb-4 flex flex-wrap items-center justify-start gap-2 text-sm">
+            <span class="text-muted-foreground font-bold">{{ categoryName }}</span>
             <template v-if="seriesName && seriesOrder">
-              <span class="text-muted-foreground">·</span>
+              <span class="text-muted-foreground">{{ '·' }}</span>
               <NuxtLink
                 :to="`/search?series=${post.series![0]?.slug}`"
                 class="text-muted-foreground hover:text-primary transition-colors"
               >
                 <Icon name="lucide:layers" class="mr-1 mb-0.5 inline size-4" />
-                {{ seriesName }} ({{ seriesOrder }}편)
+                {{ `${seriesName} (${seriesOrder}편)` }}
               </NuxtLink>
             </template>
           </div>
 
-          <h1 class="mb-6 text-3xl leading-tight font-extrabold tracking-tight sm:text-5xl">
+          <h1 class="mb-6 text-start text-3xl leading-tight font-bold sm:text-5xl">
             {{ post.title }}
           </h1>
 
@@ -135,19 +135,19 @@
             <span>·</span>
             <time :datetime="post.publishedAt || ''">{{ formattedDate }}</time>
           </div>
+        </div>
 
-          <div
-            v-if="post.tags && post.tags.length > 0"
-            class="flex flex-wrap items-center justify-center gap-2"
+        <div
+          v-if="post.tags && post.tags.length > 0"
+          class="flex flex-wrap items-center justify-center gap-2"
+        >
+          <span
+            v-for="tag in post.tags"
+            :key="tag.slug"
+            class="bg-muted text-muted-foreground rounded-full px-3 py-1 text-xs font-medium"
           >
-            <span
-              v-for="tag in post.tags"
-              :key="tag.slug"
-              class="bg-muted text-muted-foreground rounded-full px-3 py-1 text-xs font-medium"
-            >
-              #{{ tag.name }}
-            </span>
-          </div>
+            {{ `# ${tag.name}` }}
+          </span>
         </div>
       </div>
 
