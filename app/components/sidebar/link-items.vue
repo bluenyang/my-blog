@@ -40,7 +40,7 @@
         @click="toggleChild"
       >
         <Icon
-          name="radix-icons:caret-down"
+          name="lucide:chevron-down"
           :class="cn('size-6 transition-transform duration-200', childOpen && 'rotate-180')"
         />
       </button>
