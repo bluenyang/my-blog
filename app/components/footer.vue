@@ -97,7 +97,7 @@
             </li>
             <li>
               <a
-                href="https://docs.bluenyang.kr/"
+                href="https://docs.bluenyang.kr/s/public"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="text-muted-foreground hover:text-primary text-sm transition-colors"
