@@ -22,7 +22,7 @@
 </script>
 
 <template>
-  <div class="container mx-auto px-4 py-16 sm:px-6 lg:px-8">
+  <main class="container mx-auto px-4 py-16 sm:px-6 lg:px-8">
     <div class="mb-12">
       <h1 class="text-3xl font-extrabold tracking-tight sm:text-4xl">{{ '전체 글' }}</h1>
       <p class="text-muted-foreground mt-3 text-lg">
@@ -86,5 +86,5 @@
         </div>
       </NuxtLink>
     </div>
-  </div>
+  </main>
 </template>
