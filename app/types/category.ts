@@ -9,7 +9,7 @@ export interface CategoryItem {
   children?: CategoryItem[];
 }
 
-export interface CategoryListResponse {
+export interface RawCategoryItem {
   id: string;
   blog_id: string;
   parent_id: string;
@@ -18,7 +18,7 @@ export interface CategoryListResponse {
   slug: string;
 }
 
-export interface CategoryPostCountResponse {
+export interface RawCategoryPostCount {
   categories_id: string;
   count: {
     posts_id: string;

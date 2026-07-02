@@ -14,9 +14,7 @@
 
   const categories = computed(() => {
     if (!props.post.categories) return [];
-    return props.post.categories
-      .map((c) => c.categories_id?.name)
-      .filter((name): name is string => !!name);
+    return props.post.categories.map((c) => c?.name).filter((name): name is string => !!name);
   });
 </script>
 

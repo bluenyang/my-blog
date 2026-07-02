@@ -17,7 +17,7 @@
     if (!post.categories || post.categories.length === 0) {
       return 'Uncategorized';
     }
-    return post.categories[0]?.categories_id?.name || 'Uncategorized';
+    return post.categories[0]?.name || 'Uncategorized';
   }
 </script>
 

@@ -23,10 +23,10 @@
           <NuxtLink :to="`/posts`" class="flex min-w-0 flex-1 items-center gap-2 px-2 py-1">
             <Icon
               v-if="!route.path.startsWith('/posts')"
-              name="radix-icons:archive"
+              name="lucide:archive"
               class="size-4 shrink-0 text-sky-600"
             />
-            <Icon v-else name="radix-icons:archive" class="text-sidebar-primary size-4 shrink-0" />
+            <Icon v-else name="lucide:archive" class="text-sidebar-primary size-4 shrink-0" />
             <span
               :class="
                 cn(

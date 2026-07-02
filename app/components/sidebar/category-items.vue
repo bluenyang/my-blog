@@ -91,7 +91,7 @@
           @click="toggleChildOpen"
         >
           <Icon
-            name="radix-icons:caret-down"
+            name="lucide:chevron-down"
             :class="cn('size-6 transition-transform duration-200', isChildOpen && 'rotate-180')"
           />
         </button>
