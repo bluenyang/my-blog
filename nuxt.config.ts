@@ -5,12 +5,15 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
     '@nuxt/eslint',
     '@nuxt/icon',
-    '@vueuse/motion',
-    '@vueuse/nuxt',
     '@nuxtjs/mdc',
     '@nuxtjs/robots',
     '@nuxtjs/sitemap',
+    '@vueuse/motion',
+    '@vueuse/nuxt',
   ],
+
+  ssr: true,
+
   devtools: {
     enabled: true,
   },
@@ -83,6 +86,7 @@ export default defineNuxtConfig({
       blogUrl: process.env.BLOG_URL,
       blogSlug: process.env.BLOG_SLUG,
       directusUrl: process.env.DIRECTUS_URL,
+      directusOidcProvider: process.env.DIRECTUS_OIDC_PROVIDER,
       emailAddress: process.env.EMAIL_ADDRESS,
     },
   },
@@ -90,12 +94,23 @@ export default defineNuxtConfig({
   routeRules: {
     '/': { prerender: false },
   },
+
   compatibilityDate: '2026-06-15',
+
+  nitro: {
+    preset: 'netlify',
+  },
 
   vite: {
     plugins: [tailwindcss()],
     optimizeDeps: {
-      include: ['@vue/devtools-core', '@vue/devtools-kit', 'clsx', 'tailwind-merge'],
+      include: [
+        '@directus/sdk',
+        '@vue/devtools-core',
+        '@vue/devtools-kit',
+        'clsx',
+        'tailwind-merge',
+      ],
     },
   },
 
