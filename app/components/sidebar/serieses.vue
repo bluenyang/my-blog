@@ -4,7 +4,7 @@
 </script>
 
 <template>
-  <div class="px-2 py-4">
+  <div v-if="series.length > 0" class="px-2 py-4">
     <div class="mb-1 px-2 text-sm font-bold">{{ '시리즈' }}</div>
     <ul class="flex flex-col">
       <li
@@ -26,7 +26,7 @@
             :to="{ path: '/search', query: { series: item.slug } }"
             class="flex min-w-0 flex-1 items-center gap-2 px-2 py-1"
           >
-            <Icon name="radix-icons:bookmark" class="size-4 shrink-0 text-sky-600" />
+            <Icon name="mdi:bookmark" class="size-4 shrink-0 text-sky-600" />
             <span
               :class="
                 cn(
