@@ -44,7 +44,7 @@
 
   const formattedDate = computed(() => {
     if (!post.value?.publishedAt) return '';
-    return new Intl.DateTimeFormat('ko-KR', {
+    return new Intl.DateTimeFormat('en-GB', {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
@@ -86,13 +86,22 @@
       <p class="text-destructive text-lg">{{ '게시글을 찾을 수 없습니다.' }}</p>
     </div>
 
-    <div v-else class="ms-auto max-w-6xl space-y-8">
+    <div v-else class="ms-auto max-w-6xl">
+      <NuxtLink
+        to="/posts"
+        class="text-muted-foreground hover:text-primary mb-4 inline-flex items-center gap-1 transition-colors hover:underline"
+      >
+        <Icon name="lucide:arrow-left" class="size-4" />
+        <span class="mt-0.5">
+          {{ '목록으로 돌아가기' }}
+        </span>
+      </NuxtLink>
       <!-- Hero Section -->
-      <div class="flex flex-col items-start text-center">
+      <div class="mb-8 flex flex-col items-start text-center">
         <!-- Thumbnail -->
         <div
           v-if="thumbnailUrl"
-          class="mb-8 w-full max-w-4xl overflow-hidden rounded-2xl shadow-lg"
+          class="relative mb-8 w-full max-w-4xl overflow-hidden rounded-2xl shadow-lg"
         >
           <img :src="thumbnailUrl" :alt="post.title" class="aspect-2/1 w-full object-cover" />
         </div>
@@ -116,7 +125,7 @@
             {{ post.title }}
           </h1>
 
-          <div class="text-muted-foreground mb-6 flex items-center justify-center gap-4 text-sm">
+          <div class="text-muted-foreground mb-6 flex items-center justify-center gap-2 text-sm">
             <div class="flex items-center gap-2">
               <img
                 v-if="authorInfo.avatarUrl"
@@ -126,14 +135,17 @@
               />
               <div
                 v-else
-                class="bg-primary/10 text-primary flex size-6 items-center justify-center rounded-full"
+                class="bg-block-bg text-foreground flex size-6 items-center justify-center rounded-full"
               >
                 <Icon name="lucide:user" class="size-4" />
               </div>
-              <span class="text-foreground font-medium">{{ authorInfo.name }}</span>
+              <span class="font-medium">{{ authorInfo.name }}</span>
             </div>
-            <span>·</span>
-            <time :datetime="post.publishedAt || ''">{{ formattedDate }}</time>
+            <span>{{ '·' }}</span>
+            <div class="flex items-center gap-2">
+              <Icon name="lucide:calendar-days" class="size-4" />
+              <time :datetime="post.publishedAt || ''">{{ formattedDate }}</time>
+            </div>
           </div>
         </div>
 
@@ -141,13 +153,14 @@
           v-if="post.tags && post.tags.length > 0"
           class="flex flex-wrap items-center justify-center gap-2"
         >
-          <span
+          <NuxtLink
             v-for="tag in post.tags"
             :key="tag.slug"
+            :to="{ path: '/search', query: { tag: tag.slug } }"
             class="bg-muted text-muted-foreground rounded-full px-3 py-1 text-xs font-medium"
           >
             {{ `# ${tag.name}` }}
-          </span>
+          </NuxtLink>
         </div>
       </div>
 
