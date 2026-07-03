@@ -49,7 +49,12 @@
       />
 
       <!-- Markdown Content -->
-      <MDCRenderer v-if="postContent" :body="postContent.body" :data="postContent.data" />
+      <MDCRenderer
+        v-if="postContent"
+        class="mdc-content"
+        :body="postContent.body"
+        :data="postContent.data"
+      />
     </main>
     <!-- Floating Nav (TOC) - Left Side -->
     <aside v-if="postContent" class="hidden w-52 shrink-0 lg:sticky lg:top-36 lg:block">
@@ -60,3 +65,35 @@
     </aside>
   </div>
 </template>
+
+<style lang="css">
+  @reference "~/assets/css/main.css";
+
+  .mdc-content :where(p) {
+    @apply my-2 leading-relaxed;
+  }
+
+  .mdc-content :where(ul) {
+    @apply my-2 ml-6 list-disc;
+  }
+
+  .mdc-content :where(ol) {
+    @apply my-2 ml-6 list-decimal;
+  }
+
+  .mdc-content :where(li) {
+    @apply my-2;
+  }
+
+  .mdc-content :where(strong) {
+    @apply font-bold;
+  }
+
+  .mdc-content :where(em) {
+    @apply italic;
+  }
+
+  .mdc-content > p > a {
+    @apply text-primary underline;
+  }
+</style>
