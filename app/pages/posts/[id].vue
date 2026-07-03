@@ -70,6 +70,10 @@
     }
     return { name, avatarUrl };
   });
+
+  function goBack() {
+    window.history.back();
+  }
 </script>
 
 <template>
@@ -87,15 +91,15 @@
     </div>
 
     <div v-else class="ms-auto max-w-6xl">
-      <NuxtLink
-        to="/posts"
+      <button
         class="text-muted-foreground hover:text-primary mb-4 inline-flex items-center gap-1 transition-colors hover:underline"
+        @click="goBack"
       >
         <Icon name="lucide:arrow-left" class="size-4" />
         <span class="mt-0.5">
-          {{ '목록으로 돌아가기' }}
+          {{ '이전으로 돌아가기' }}
         </span>
-      </NuxtLink>
+      </button>
       <!-- Hero Section -->
       <div class="mb-8 flex flex-col items-start text-center">
         <!-- Thumbnail -->
