@@ -7,5 +7,7 @@
   },
   "editor.tabSize": 2,
   "typescript.tsdk": "node_modules\\typescript\\lib",
-  "material-icon-theme.activeIconPack": "vue"
+  "material-icon-theme.activeIconPack": "vue",
+
+  "css.customData": [".vscode/tailwind.css-data.json"]
 }
