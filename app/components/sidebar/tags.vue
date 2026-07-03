@@ -4,7 +4,7 @@
 </script>
 
 <template>
-  <div class="px-2 py-4">
+  <div v-if="tags.length > 0" class="px-2 py-4">
     <div class="mb-3 px-2 text-sm font-bold">{{ '태그' }}</div>
     <ul class="flex flex-wrap gap-2 px-2">
       <li v-for="tag in tags" :key="tag.id">

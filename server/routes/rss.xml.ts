@@ -16,8 +16,8 @@ export default defineEventHandler(async (event) => {
         status: { _eq: 'published' },
         blog_id: { slug: { _eq: blogSlug } },
       },
-      fields: ['id', 'title', 'slug', 'post_idx', 'summary', 'content', 'published_date'],
-      sort: ['-published_date'],
+      fields: ['id', 'title', 'slug', 'post_idx', 'summary', 'content', 'published_at'],
+      sort: ['-published_at'],
       limit: 50,
     },
   });
