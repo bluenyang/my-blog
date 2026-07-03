@@ -1136,6 +1136,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@iconify-json/simple-icons@npm:^1.2.88":
+  version: 1.2.88
+  resolution: "@iconify-json/simple-icons@npm:1.2.88"
+  dependencies:
+    "@iconify/types": "npm:*"
+  checksum: 10c0/b4ddd44b6bb5112d6be32f7fe5197bedf64079b9848837fe8fbacd85314f64b5a39efc3af6e183c3c01bd004d854c11bcfff947bd2577eb928907e1934472837
+  languageName: node
+  linkType: hard
+
 "@iconify/collections@npm:^1.0.691":
   version: 1.0.696
   resolution: "@iconify/collections@npm:1.0.696"
@@ -10062,6 +10071,7 @@ __metadata:
     "@floating-ui/dom": "npm:^1.7.6"
     "@iconify-json/lucide": "npm:^1.2.114"
     "@iconify-json/mdi": "npm:^1.2.3"
+    "@iconify-json/simple-icons": "npm:^1.2.88"
     "@nuxt/eslint": "npm:^1.16.0"
     "@nuxt/icon": "npm:^2.2.3"
     "@nuxtjs/color-mode": "npm:^4.0.1"
