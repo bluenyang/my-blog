@@ -105,7 +105,7 @@
         <!-- Thumbnail -->
         <div
           v-if="thumbnailUrl"
-          class="relative mb-8 w-full max-w-4xl overflow-hidden rounded-2xl shadow-lg"
+          class="relative mb-8 w-full max-w-4xl overflow-hidden rounded-2xl bg-linear-to-br shadow-lg md:from-blue-200 md:to-purple-300 dark:md:from-blue-800 dark:md:to-purple-900"
         >
           <img :src="thumbnailUrl" :alt="post.title" class="aspect-2/1 w-full object-cover" />
         </div>
@@ -129,7 +129,7 @@
             {{ post.title }}
           </h1>
 
-          <div class="text-muted-foreground mb-6 flex items-center justify-center gap-2 text-sm">
+          <div class="text-muted-foreground mb-6 flex items-center justify-start gap-2 text-sm">
             <div class="flex items-center gap-2">
               <img
                 v-if="authorInfo.avatarUrl"
