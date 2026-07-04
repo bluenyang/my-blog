@@ -64,35 +64,3 @@
     </aside>
   </div>
 </template>
-
-<style lang="css">
-  @reference "~/assets/css/main.css";
-
-  .mdc-content :where(p) {
-    @apply my-2 leading-relaxed;
-  }
-
-  .mdc-content :where(ul) {
-    @apply my-2 ml-6 list-disc;
-  }
-
-  .mdc-content :where(ol) {
-    @apply my-2 ml-6 list-decimal;
-  }
-
-  .mdc-content :where(li) {
-    @apply my-2;
-  }
-
-  .mdc-content :where(strong) {
-    @apply font-bold;
-  }
-
-  .mdc-content :where(em) {
-    @apply italic;
-  }
-
-  .mdc-content > p > a {
-    @apply text-primary underline;
-  }
-</style>
