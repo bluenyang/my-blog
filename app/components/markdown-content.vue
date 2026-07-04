@@ -18,7 +18,6 @@
 </script>
 
 <template>
-  <!-- Main Layout -->
   <div
     class="relative mx-auto flex max-w-7xl flex-col items-start space-y-12 space-x-8 lg:flex-row"
   >
@@ -45,7 +44,7 @@
         :series-id="seriesId"
         :series-name="seriesName"
         :current-post-idx="currentPostIdx"
-        :series-posts="seriesPosts"
+        :series-posts="seriesPosts!"
       />
 
       <!-- Markdown Content -->

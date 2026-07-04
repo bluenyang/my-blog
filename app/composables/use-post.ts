@@ -1,4 +1,4 @@
-import type { PostItem, RawPostItem } from '~/types/post';
+import type { PostDetailStruct, PostItem, RawPostItem } from '~/types/post';
 
 export function useRecentPosts(limit = 6) {
   const config = useRuntimeConfig();
@@ -126,10 +126,10 @@ export function usePosts() {
 export function usePostDetail(idx: number | string) {
   const config = useRuntimeConfig();
 
-  const { data, pending, error } = useAsyncData<{ post: PostItem | null }>(
+  const { data, pending, error } = useAsyncData<PostDetailStruct>(
     `post-detail-${idx}`,
     async () => {
-      const response = await $fetch<{ data: RawPostItem[] }>(
+      const { data: rawPosts } = await $fetch<{ data: RawPostItem[] }>(
         `${config.public.directusUrl}/items/posts`,
         {
           query: {
@@ -165,74 +165,64 @@ export function usePostDetail(idx: number | string) {
         },
       );
 
-      const [rawPost] = response.data ?? [];
-      if (!rawPost) return { post: null };
+      const [rawPost] = rawPosts ?? [];
+      if (!rawPost)
+        return {
+          post: null,
+          seriesPosts: null,
+        };
 
-      return { post: await rawPostItemToPostItem(rawPost) };
+      const post = await rawPostItemToPostItem(rawPost);
+      const seriesPosts: PostItem[] = [];
+
+      if (post.series && post.series.length > 0) {
+        const [series] = post.series;
+        if (series) {
+          const { data: rawSeriesPostData } = await $fetch<{ data: RawPostItem[] }>(
+            `${config.public.directusUrl}/items/posts`,
+            {
+              query: {
+                filter: {
+                  blog_id: { slug: { _eq: config.public.blogSlug } },
+                  post_idx: { _eq: Number(idx) },
+                  status: { _eq: 'published' },
+                },
+                limit: 1,
+                fields: [
+                  'id',
+                  'post_idx',
+                  'title',
+                  'slug',
+                  'summary',
+                  'thumbnail',
+                  'published_at',
+                  'updated_at',
+                  'categories.categories_id.name',
+                  'tags.tags_id.name',
+                ],
+              },
+            },
+          );
+
+          const rawSeriesPosts = rawSeriesPostData || [];
+          for (const rawSeriesPost of rawSeriesPosts) {
+            seriesPosts.push(await rawPostItemToPostItem(rawSeriesPost));
+          }
+        }
+      }
+
+      return {
+        post,
+        seriesPosts,
+      };
     },
   );
 
   return {
     post: computed(() => data.value?.post || null),
-    pending,
-    error,
-  };
-}
-
-export function useSeriesPosts(seriesId: Ref<string | undefined> | string | undefined) {
-  const config = useRuntimeConfig();
-  const idRef = computed(() => unref(seriesId));
-
-  const { data, pending, error } = useAsyncData<{ posts: PostItem[] }>(
-    `series-posts-${idRef.value}`,
-    async () => {
-      if (!idRef.value) return { posts: [] };
-      const response = await $fetch<{ data: RawPostItem[] }>(
-        `${config.public.directusUrl}/items/posts`,
-        {
-          query: {
-            filter: {
-              blog_id: { slug: { _eq: config.public.blogSlug } },
-              status: { _eq: 'published' },
-              series: {
-                series_id: { id: { _eq: idRef.value } },
-              },
-            },
-            sort: ['published_at'],
-            fields: [
-              'id',
-              'post_idx',
-              'title',
-              'slug',
-              'summary',
-              'thumbnail',
-              'published_at',
-              'updated_at',
-              'categories.categories_id.name',
-              'tags.tags_id.name',
-            ],
-          },
-        },
-      );
-
-      const posts: PostItem[] = [];
-      const rawPosts = response.data || [];
-      for (const rawPost of rawPosts) {
-        posts.push(await rawPostItemToPostItem(rawPost));
-      }
-
-      return { posts };
-    },
-    {
-      immediate: !!idRef.value,
-      watch: [idRef],
-    },
-  );
-
-  return {
-    posts: computed(() => data.value?.posts || []),
-    pending,
-    error,
+    seriesPosts: computed(() => data.value?.seriesPosts || []),
+    pending: computed(() => pending.value),
+    error: computed(() => error.value),
   };
 }
 

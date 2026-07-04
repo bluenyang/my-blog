@@ -83,3 +83,8 @@ export interface PostItem {
   tags: PostM2MBridge[] | null;
   series: PostM2MBridge[] | null;
 }
+
+export interface PostDetailStruct {
+  post: PostItem | null;
+  seriesPosts: PostItem[] | null;
+}
