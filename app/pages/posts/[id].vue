@@ -3,13 +3,14 @@
   import { useRoute } from 'vue-router';
 
   import MarkdownContent from '~/components/markdown-content.vue';
-  import { usePostDetail, useSeriesPosts } from '~/composables/use-post';
+  import { usePostDetail } from '~/composables/use-post';
 
   const route = useRoute();
+
   const idParam = route.params.id as string;
   const postIdx = parseInt(idParam, 10);
 
-  const { post, pending, error } = usePostDetail(postIdx);
+  const { post, seriesPosts, pending, error } = usePostDetail(postIdx);
 
   const config = useRuntimeConfig();
 
@@ -33,8 +34,6 @@
     }
     return undefined;
   });
-
-  const { posts: seriesPosts } = useSeriesPosts(seriesId);
 
   const seriesOrder = computed(() => {
     if (!seriesPosts.value.length || !post.value) return null;
@@ -114,14 +113,18 @@
           <div class="mb-4 flex flex-wrap items-center justify-start gap-2 text-sm">
             <span class="text-muted-foreground font-bold">{{ categoryName }}</span>
             <template v-if="seriesName && seriesOrder">
-              <span class="text-muted-foreground">{{ '·' }}</span>
-              <NuxtLink
-                :to="`/search?series=${post.series![0]?.slug}`"
-                class="text-muted-foreground hover:text-primary transition-colors"
-              >
-                <Icon name="lucide:layers" class="mr-1 mb-0.5 inline size-4" />
-                {{ `${seriesName} (${seriesOrder}편)` }}
-              </NuxtLink>
+              <div class="flex items-center gap-1">
+                <span class="text-muted-foreground">
+                  {{ '·' }}
+                </span>
+                <NuxtLink
+                  :to="`/search?series=${post.series![0]?.slug}`"
+                  class="text-muted-foreground hover:text-primary transition-colors"
+                >
+                  <Icon name="lucide:layers" class="mr-1 mb-0.5 inline size-4" />
+                  {{ `${seriesName} (${seriesOrder}편)` }}
+                </NuxtLink>
+              </div>
             </template>
           </div>
 
