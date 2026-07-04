@@ -1,4 +1,5 @@
 import type { PostItem, RawPostItem } from '~/types/post';
+import { rehypeUnwrapImages } from '~/utils/rehype-unwrap';
 
 export async function rawPostItemToPostItem(rawPostItem: RawPostItem): Promise<PostItem> {
   const postItem: PostItem = {
@@ -41,7 +42,15 @@ export async function rawPostItemToPostItem(rawPostItem: RawPostItem): Promise<P
   };
 
   if (rawPostItem.content) {
-    const ast = await parseMarkdown(rawPostItem.content);
+    const ast = await parseMarkdown(rawPostItem.content, {
+      rehype: {
+        plugins: {
+          unwrapImages: {
+            instance: rehypeUnwrapImages,
+          },
+        },
+      },
+    });
     postItem.content = ast;
   }
 
