@@ -128,4 +128,9 @@ export default defineNuxtConfig({
     cssLayer: 'base',
     size: '1.25em',
   },
+
+  sitemap: {
+    sources: ['/api/sitemap-urls'],
+    exclude: ['/api/**', '/rss.xml'],
+  },
 });
