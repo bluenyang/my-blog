@@ -17,10 +17,10 @@
 
 <template>
   <div
-    class="bg-block-bg border-codeblock-accent divide-sidebar-border my-4 flex flex-col gap-2 divide-y rounded-2xl border-s-3 px-4"
+    class="bg-codeblock-bg border-codeblock-accent divide-sidebar-border my-4 flex flex-col gap-2 divide-y rounded-2xl border-s-3 px-4"
   >
     <div class="flex items-center justify-between px-2 py-4">
-      <span class="text-primary! font-jua">{{ language || 'text' }}</span>
+      <span class="font-jua text-emerald-300!">{{ language || 'text' }}</span>
       <button class="size-4 cursor-pointer" @click="copyCode(code)">
         <Icon :name="copied ? 'lucide:copy-check' : 'lucide:copy'" class="size-4 text-white" />
       </button>

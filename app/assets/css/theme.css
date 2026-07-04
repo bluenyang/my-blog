@@ -33,8 +33,16 @@
 
   --blockquote-accent: var(--color-emerald-400);
   --codeblock-accent: var(--color-cyan-400);
-  --codeblock-bg: var(--color-neutral-600);
+  --codeblock-bg: var(--color-neutral-700);
   --block-bg: var(--color-neutral-200);
+  --code-bg: var(--color-neutral-300);
+
+  --table-bg: transparent;
+  --table-head-bg: var(--color-neutral-200);
+  --table-row-even-bg: var(--color-neutral-100);
+  --table-row-odd-bg: transparent;
+  --table-row-hover-bg: color-mix(in oklch, var(--color-primary) 15%, transparent);
+  --table-cell-border: var(--color-neutral-300);
 
   --border: var(--color-neutral-200);
   --input: transparent;
@@ -96,6 +104,14 @@
   --codeblock-accent: var(--color-cyan-300);
   --codeblock-bg: var(--color-neutral-800);
   --block-bg: var(--color-neutral-800);
+  --code-bg: var(--color-neutral-700);
+
+  --table-bg: transparent;
+  --table-head-bg: var(--color-neutral-700);
+  --table-row-even-bg: var(--color-neutral-800);
+  --table-row-odd-bg: transparent;
+  --table-row-hover-bg: color-mix(in oklch, var(--color-primary) 20%, transparent);
+  --table-cell-border: var(--color-neutral-700);
 
   --border: var(--color-neutral-800);
   --input: var(--color-neutral-800);
@@ -162,6 +178,14 @@
   --color-codeblock-accent: var(--codeblock-accent);
   --color-codeblock-bg: var(--codeblock-bg);
   --color-block-bg: var(--block-bg);
+  --color-code-bg: var(--code-bg);
+
+  --color-table-bg: var(--table-bg);
+  --color-table-head-bg: var(--table-head-bg);
+  --color-table-row-even-bg: var(--table-row-even-bg);
+  --color-table-row-odd-bg: var(--table-row-odd-bg);
+  --color-table-row-hover-bg: var(--table-row-hover-bg);
+  --color-table-cell-border: var(--table-cell-border);
 
   --color-border: var(--border);
 
