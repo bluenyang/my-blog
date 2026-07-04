@@ -1,18 +1,17 @@
 <script setup lang="ts">
-  import { useSeriesPosts } from '~/composables/use-post';
+  import type { PostItem } from '~/types/post';
 
-  const props = defineProps<{
-    seriesId: string;
+  interface SeriesBoxProps {
     seriesName: string;
+    seriesPosts: PostItem[];
     currentPostIdx: number;
-  }>();
+  }
 
-  const { posts, error } = useSeriesPosts(props.seriesId);
+  const { seriesName, seriesPosts: posts, currentPostIdx } = defineProps<SeriesBoxProps>();
 </script>
 
 <template>
   <div class="border-border bg-block-bg mb-12 rounded-xl border p-6">
-    {{ error }}
     <div class="text-muted-foreground font-jua mb-4 flex items-center text-sm">
       <Icon name="lucide:layers" class="mr-2 size-4" />
       <span>{{ '시리즈' }}</span>
