@@ -82,6 +82,9 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
+    // Directus Flow → /api/rebuild → Netlify Build Hook (서버 전용)
+    rebuildSecret: process.env.REBUILD_SECRET,
+    netlifyBuildHookUrl: process.env.NETLIFY_BUILD_HOOK_URL,
     public: {
       blogUrl: process.env.BLOG_URL,
       blogSlug: process.env.BLOG_SLUG,
