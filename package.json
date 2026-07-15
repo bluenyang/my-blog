@@ -16,17 +16,12 @@
   "dependencies": {
     "@directus/sdk": "^22.0.0",
     "@floating-ui/dom": "^1.7.6",
-    "@iconify-json/simple-icons": "^1.2.88",
     "@nuxt/eslint": "^1.16.0",
     "@nuxt/icon": "^2.2.3",
     "@nuxtjs/mdc": "^0.22.0",
     "@nuxtjs/robots": "^6.1.1",
     "@nuxtjs/sitemap": "^8.2.2",
     "@tailwindcss/vite": "^4.3.1",
-    "@tiptap/core": "^3.27.1",
-    "@tiptap/pm": "^3.27.1",
-    "@tiptap/starter-kit": "^3.27.1",
-    "@tiptap/vue-3": "^3.27.1",
     "@vueuse/core": "^14.3.0",
     "@vueuse/motion": "^3.0.3",
     "@vueuse/nuxt": "^14.3.0",
@@ -38,13 +33,13 @@
     "tailwindcss": "^4.3.1",
     "typescript": "^6.0.3",
     "vue": "^3.5.38",
-    "vue-router": "^5.1.0",
-    "zod": "^4.4.3"
+    "vue-router": "^5.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@iconify-json/lucide": "^1.2.114",
     "@iconify-json/mdi": "^1.2.3",
+    "@iconify-json/simple-icons": "^1.2.88",
     "@nuxtjs/color-mode": "^4.0.1",
     "@tailwindcss/typography": "^0.5.20",
     "@types/node": "^26.0.0",
