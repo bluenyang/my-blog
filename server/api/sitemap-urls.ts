@@ -1,29 +1,26 @@
 import { readItems } from '@directus/sdk';
 
-import type { SitemapPost, SitemapSlugItem, SitemapUrlEntry } from '../types/sitemap';
+import type { SitemapSlugItem, SitemapUrlEntry } from '../types/sitemap';
+import { fetchPublishedPostPaths } from '../utils/content-routes';
+
+function toEntry(path: string): SitemapUrlEntry {
+  const normalized = path.startsWith('/') ? path.slice(1) : path;
+  return { loc: normalized, _path: normalized };
+}
 
 function toSearchUrl(queryKey: 'category' | 'tag' | 'series', slug: string): SitemapUrlEntry {
-  const path = `search?${queryKey}=${encodeURIComponent(slug)}`;
-  return { loc: path, _path: path };
+  return toEntry(`/search?${queryKey}=${encodeURIComponent(slug)}`);
 }
 
 export default defineEventHandler(async (): Promise<SitemapUrlEntry[]> => {
   const config = useRuntimeConfig();
   const directus = useDirectus();
   const blogSlug = config.public.blogSlug;
+  const directusUrl = config.public.directusUrl;
 
   try {
-    const [posts, categories, tags, series] = await Promise.all([
-      directus.request<SitemapPost[]>(
-        readItems('posts', {
-          filter: {
-            blog_id: { slug: { _eq: blogSlug } },
-            status: { _eq: 'published' },
-          },
-          fields: ['post_idx', 'slug'],
-          limit: -1,
-        }),
-      ),
+    const [postPaths, categories, tags, series] = await Promise.all([
+      fetchPublishedPostPaths(directusUrl, blogSlug),
       directus.request<SitemapSlugItem[]>(
         readItems('categories', {
           filter: {
@@ -53,11 +50,7 @@ export default defineEventHandler(async (): Promise<SitemapUrlEntry[]> => {
       ),
     ]);
 
-    const postUrls: SitemapUrlEntry[] = (posts || []).map((post) => {
-      const path = `posts/${post.post_idx}-${post.slug}`;
-      return { loc: path, _path: path };
-    });
-
+    const postUrls = postPaths.map(toEntry);
     const categoryUrls = (categories || []).map((item) => toSearchUrl('category', item.slug));
     const tagUrls = (tags || []).map((item) => toSearchUrl('tag', item.slug));
     const seriesUrls = (series || []).map((item) => toSearchUrl('series', item.slug));
