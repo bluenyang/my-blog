@@ -1,17 +1,18 @@
+import { aggregate, readItems } from '@directus/sdk';
+
 import type { CategoryItem, RawCategoryItem, RawCategoryPostCount } from '~/types/category';
 import { accumulatePostCount } from '~/utils/post-counter';
 
 export function useCategory() {
   const config = useRuntimeConfig();
+  const directus = useDirectus();
 
   const { data } = useAsyncData<{ categories: CategoryItem[]; total: number }>(
     'global-category',
     async (): Promise<{ categories: CategoryItem[]; total: number }> => {
-      // 카테고리 목록 조회 및 포스트 갯수 집계를 Promise.all로 병렬 처리
-      const [categoriesReq, countsReq] = await Promise.all([
-        // Category 조회
-        $fetch<{ data: RawCategoryItem[] }>(`${config.public.directusUrl}/items/categories`, {
-          query: {
+      const [rawCategories, rawCounts] = await Promise.all([
+        directus.request<RawCategoryItem[]>(
+          readItems('categories', {
             filter: {
               blog_id: {
                 slug: { _eq: config.public.blogSlug },
@@ -19,15 +20,13 @@ export function useCategory() {
             },
             fields: ['id', 'blog_id', 'parent_id', 'name', 'icon', 'slug'],
             sort: ['sort_order', 'slug'],
-          },
-        }),
-        // 포스트 수 집계
-        $fetch<{ data: RawCategoryPostCount[] }>(
-          `${config.public.directusUrl}/items/posts_categories`,
-          {
+          }),
+        ),
+        directus.request<RawCategoryPostCount[]>(
+          aggregate('posts_categories', {
+            aggregate: { count: 'posts_id' },
+            groupBy: ['categories_id'],
             query: {
-              aggregate: { count: 'posts_id' },
-              groupBy: ['categories_id'],
               filter: {
                 posts_id: {
                   blog_id: {
@@ -37,21 +36,18 @@ export function useCategory() {
                 },
               },
             },
-          },
+          }),
         ),
       ]);
 
-      const rawCategories = categoriesReq.data;
-      const rawCounts = countsReq.data;
-
       const countMap = new Map<string, number>();
-      rawCounts.forEach((item) => {
+      (rawCounts || []).forEach((item) => {
         if (item.categories_id) {
           countMap.set(item.categories_id, Number(item.count.posts_id));
         }
       });
 
-      const categoriesWithCount: CategoryItem[] = rawCategories.map((category) => {
+      const categoriesWithCount: CategoryItem[] = (rawCategories || []).map((category) => {
         return {
           id: category.id,
           blogId: category.blog_id,
