@@ -1,29 +1,29 @@
+import { readItems } from '@directus/sdk';
+
 import type { NavigationItem, NavigationListResponse } from '@/types/header';
 
 export function useNavigationMenu() {
   const config = useRuntimeConfig();
+  const directus = useDirectus();
 
   const { data } = useAsyncData<NavigationItem[]>(
     'global-navigation',
     async (): Promise<NavigationItem[]> => {
-      const resp = await $fetch<{ data: NavigationListResponse[] }>(
-        `${config.public.directusUrl}/items/navigations`,
-        {
-          query: {
-            filter: {
-              blog_id: {
-                slug: {
-                  _eq: config.public.blogSlug,
-                },
+      const rawItems = await directus.request<NavigationListResponse[]>(
+        readItems('navigations', {
+          filter: {
+            blog_id: {
+              slug: {
+                _eq: config.public.blogSlug,
               },
-            }, // 최상위 메뉴
-            fields: ['id', 'label', 'url', 'icon', 'is_category', 'parent_id'],
-            sort: ['sort_order', 'id'],
+            },
           },
-        },
+          fields: ['id', 'label', 'url', 'icon', 'is_category', 'parent_id'],
+          sort: ['sort_order', 'id'],
+        }),
       );
 
-      const menuItems: NavigationItem[] = resp.data.map((item) => {
+      const menuItems: NavigationItem[] = (rawItems || []).map((item) => {
         return {
           id: item.id,
           label: item.label,
