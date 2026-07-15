@@ -29,3 +29,5 @@ logs
 
 # TypeScript build info
 *.tsbuildinfo
+
+.netlify
