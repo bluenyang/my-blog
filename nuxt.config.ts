@@ -86,7 +86,6 @@ export default defineNuxtConfig({
       blogUrl: process.env.BLOG_URL,
       blogSlug: process.env.BLOG_SLUG,
       directusUrl: process.env.DIRECTUS_URL,
-      directusOidcProvider: process.env.DIRECTUS_OIDC_PROVIDER,
       emailAddress: process.env.EMAIL_ADDRESS,
     },
   },
