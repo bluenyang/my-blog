@@ -82,9 +82,6 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
-    // Directus Flow → /api/rebuild → Netlify Build Hook (서버 전용)
-    rebuildSecret: process.env.REBUILD_SECRET,
-    netlifyBuildHookUrl: process.env.NETLIFY_BUILD_HOOK_URL,
     public: {
       blogUrl: process.env.BLOG_URL,
       blogSlug: process.env.BLOG_SLUG,
@@ -95,22 +92,16 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    '/': { prerender: true },
-    '/posts': { prerender: true },
-    '/posts/**': { prerender: true },
-    // 쿼리 조합이 많아 프리렌더하지 않음 (요청 시 SSR)
-    '/search': { prerender: false },
+    '/': { swr: 60 },
+    '/posts': { swr: 60 },
+    '/posts/**': { swr: 60 },
+    '/search': { swr: 60 },
   },
 
   compatibilityDate: '2026-06-15',
 
   nitro: {
     preset: 'netlify',
-    prerender: {
-      // 홈·목록 링크 크롤 + hooks['prerender:routes']의 글 상세 경로
-      crawlLinks: true,
-      routes: ['/', '/posts'],
-    },
   },
 
   vite: {
@@ -123,23 +114,6 @@ export default defineNuxtConfig({
         'clsx',
         'tailwind-merge',
       ],
-    },
-  },
-
-  hooks: {
-    async 'prerender:routes'(ctx) {
-      const { fetchPublishedPostPaths } = await import('./server/utils/content-routes');
-      const directusUrl = process.env.DIRECTUS_URL || '';
-      const blogSlug = process.env.BLOG_SLUG || '';
-
-      try {
-        const paths = await fetchPublishedPostPaths(directusUrl, blogSlug);
-        for (const path of paths) {
-          ctx.routes.add(path);
-        }
-      } catch (error) {
-        console.error('[prerender:routes] Failed to load post paths:', error);
-      }
     },
   },
 
