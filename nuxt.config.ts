@@ -114,6 +114,23 @@ export default defineNuxtConfig({
     },
   },
 
+  hooks: {
+    async 'prerender:routes'(ctx) {
+      const { fetchPublishedPostPaths } = await import('./server/utils/content-routes');
+      const directusUrl = process.env.DIRECTUS_URL || '';
+      const blogSlug = process.env.BLOG_SLUG || '';
+
+      try {
+        const paths = await fetchPublishedPostPaths(directusUrl, blogSlug);
+        for (const path of paths) {
+          ctx.routes.add(path);
+        }
+      } catch (error) {
+        console.error('[prerender:routes] Failed to load post paths:', error);
+      }
+    },
+  },
+
   eslint: {
     config: {
       stylistic: {
