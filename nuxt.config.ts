@@ -92,13 +92,22 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    '/': { prerender: false },
+    '/': { prerender: true },
+    '/posts': { prerender: true },
+    '/posts/**': { prerender: true },
+    // 쿼리 조합이 많아 프리렌더하지 않음 (요청 시 SSR)
+    '/search': { prerender: false },
   },
 
   compatibilityDate: '2026-06-15',
 
   nitro: {
     preset: 'netlify',
+    prerender: {
+      // 홈·목록 링크 크롤 + hooks['prerender:routes']의 글 상세 경로
+      crawlLinks: true,
+      routes: ['/', '/posts'],
+    },
   },
 
   vite: {
