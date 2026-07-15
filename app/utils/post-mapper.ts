@@ -1,6 +1,10 @@
 import type { PostItem, RawPostItem } from '~/types/post';
 import { rehypeUnwrapImages } from '~/utils/rehype-unwrap';
 
+export async function rawPostsToPostItems(rawPosts: RawPostItem[]): Promise<PostItem[]> {
+  return Promise.all(rawPosts.map(rawPostItemToPostItem));
+}
+
 export async function rawPostItemToPostItem(rawPostItem: RawPostItem): Promise<PostItem> {
   const postItem: PostItem = {
     id: rawPostItem.id,

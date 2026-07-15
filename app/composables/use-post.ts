@@ -1,52 +1,44 @@
+import { readItems } from '@directus/sdk';
+
 import type { PostDetailStruct, PostItem, RawPostItem } from '~/types/post';
+import { rawPostItemToPostItem, rawPostsToPostItems } from '~/utils/post-mapper';
 
 export function useRecentPosts(limit = 6) {
   const config = useRuntimeConfig();
+  const directus = useDirectus();
 
   const { data, pending, error } = useAsyncData<{ posts: PostItem[] }>(
     `recent-posts-${limit}`,
     async () => {
-      const response = await $fetch<{ data: RawPostItem[] }>(
-        `${config.public.directusUrl}/items/posts`,
-        {
-          query: {
-            filter: {
-              blog_id: {
-                slug: { _eq: config.public.blogSlug },
-              },
-              status: { _eq: 'published' },
-              visibility: { _eq: 'public' },
-            },
-            sort: ['-published_at', '-updated_at'], // 최신순 정렬
-            limit,
-            // 목록 표시에 필요한 필드만 가져오기 (Directus 쿼리이므로 snake_case 유지)
-            fields: [
-              'id',
-              'post_idx',
-              'title',
-              'slug',
-              'summary',
-              'thumbnail',
-              'published_at',
-              'updated_at',
-              'categories.categories_id.name',
-              'tags.tags_id.name',
-              'author_id.first_name',
-              'author_id.last_name',
-              'author_id.nickname',
-              'author_id.avatar',
-            ],
+      const rawPosts = await directus.request<RawPostItem[]>(
+        readItems('posts', {
+          filter: {
+            blog_id: { slug: { _eq: config.public.blogSlug } },
+            status: { _eq: 'published' },
+            visibility: { _eq: 'public' },
           },
-        },
+          sort: ['-published_at', '-updated_at'],
+          limit,
+          fields: [
+            'id',
+            'post_idx',
+            'title',
+            'slug',
+            'summary',
+            'thumbnail',
+            'published_at',
+            'updated_at',
+            'categories.categories_id.name',
+            'tags.tags_id.name',
+            'author_id.first_name',
+            'author_id.last_name',
+            'author_id.nickname',
+            'author_id.avatar',
+          ],
+        }),
       );
 
-      const rawPosts = response.data || [];
-      const posts: PostItem[] = [];
-
-      for (const rawPost of rawPosts) {
-        posts.push(await rawPostItemToPostItem(rawPost));
-      }
-
+      const posts = await rawPostsToPostItems(rawPosts || []);
       return { posts };
     },
     {
@@ -66,46 +58,36 @@ export function useRecentPosts(limit = 6) {
 
 export function usePosts() {
   const config = useRuntimeConfig();
+  const directus = useDirectus();
 
   const { data, pending, error } = useAsyncData<{ posts: PostItem[] }>(
     'all-posts',
     async () => {
-      const response = await $fetch<{ data: RawPostItem[] }>(
-        `${config.public.directusUrl}/items/posts`,
-        {
-          query: {
-            filter: {
-              blog_id: {
-                slug: { _eq: config.public.blogSlug },
-              },
-              status: { _eq: 'published' },
-              visibility: { _eq: 'public' },
-            },
-            sort: ['-post_idx'],
-            limit: -1,
-            fields: [
-              'id',
-              'post_idx',
-              'title',
-              'slug',
-              'summary',
-              'thumbnail',
-              'published_at',
-              'updated_at',
-              'categories.categories_id.name',
-              'tags.tags_id.name',
-            ],
+      const rawPosts = await directus.request<RawPostItem[]>(
+        readItems('posts', {
+          filter: {
+            blog_id: { slug: { _eq: config.public.blogSlug } },
+            status: { _eq: 'published' },
+            visibility: { _eq: 'public' },
           },
-        },
+          sort: ['-post_idx'],
+          limit: -1,
+          fields: [
+            'id',
+            'post_idx',
+            'title',
+            'slug',
+            'summary',
+            'thumbnail',
+            'published_at',
+            'updated_at',
+            'categories.categories_id.name',
+            'tags.tags_id.name',
+          ],
+        }),
       );
 
-      const rawPosts = response.data || [];
-      const posts: PostItem[] = [];
-
-      for (const rawPost of rawPosts) {
-        posts.push(await rawPostItemToPostItem(rawPost));
-      }
-
+      const posts = await rawPostsToPostItems(rawPosts || []);
       return { posts };
     },
     {
@@ -125,95 +107,89 @@ export function usePosts() {
 
 export function usePostDetail(idx: number | string) {
   const config = useRuntimeConfig();
+  const directus = useDirectus();
 
   const { data, pending, error } = useAsyncData<PostDetailStruct>(
     `post-detail-${idx}`,
     async () => {
-      const { data: rawPosts } = await $fetch<{ data: RawPostItem[] }>(
-        `${config.public.directusUrl}/items/posts`,
-        {
-          query: {
-            filter: {
-              blog_id: { slug: { _eq: config.public.blogSlug } },
-              post_idx: { _eq: Number(idx) },
-              status: { _eq: 'published' },
-            },
-            limit: 1,
-            fields: [
-              'id',
-              'post_idx',
-              'title',
-              'slug',
-              'summary',
-              'thumbnail',
-              'content',
-              'published_at',
-              'updated_at',
-              'categories.categories_id.name',
-              'categories.categories_id.slug',
-              'tags.tags_id.name',
-              'tags.tags_id.slug',
-              'series.series_id.id',
-              'series.series_id.name',
-              'series.series_id.slug',
-              'author_id.first_name',
-              'author_id.last_name',
-              'author_id.nickname',
-              'author_id.avatar',
-            ],
+      const rawPosts = await directus.request<RawPostItem[]>(
+        readItems('posts', {
+          filter: {
+            blog_id: { slug: { _eq: config.public.blogSlug } },
+            post_idx: { _eq: Number(idx) },
+            status: { _eq: 'published' },
           },
-        },
+          limit: 1,
+          fields: [
+            'id',
+            'post_idx',
+            'title',
+            'slug',
+            'summary',
+            'thumbnail',
+            'content',
+            'published_at',
+            'updated_at',
+            'categories.categories_id.name',
+            'categories.categories_id.slug',
+            'tags.tags_id.name',
+            'tags.tags_id.slug',
+            'series.series_id.id',
+            'series.series_id.name',
+            'series.series_id.slug',
+            'author_id.first_name',
+            'author_id.last_name',
+            'author_id.nickname',
+            'author_id.avatar',
+          ],
+        }),
       );
 
       const [rawPost] = rawPosts ?? [];
-      if (!rawPost)
-        return {
-          post: null,
-          seriesPosts: null,
-        };
+      if (!rawPost) {
+        return { post: null, seriesPosts: [] };
+      }
 
       const post = await rawPostItemToPostItem(rawPost);
-      const seriesPosts: PostItem[] = [];
-
       if (post.series && post.series.length > 0) {
         const [series] = post.series;
         if (series) {
-          const { data: rawSeriesPostData } = await $fetch<{ data: RawPostItem[] }>(
-            `${config.public.directusUrl}/items/posts`,
-            {
-              query: {
-                filter: {
-                  blog_id: { slug: { _eq: config.public.blogSlug } },
-                  post_idx: { _eq: Number(idx) },
-                  status: { _eq: 'published' },
-                },
-                limit: 1,
-                fields: [
-                  'id',
-                  'post_idx',
-                  'title',
-                  'slug',
-                  'summary',
-                  'thumbnail',
-                  'published_at',
-                  'updated_at',
-                  'categories.categories_id.name',
-                  'tags.tags_id.name',
-                ],
+          const rawSeriesPosts = await directus.request<RawPostItem[]>(
+            readItems('posts', {
+              filter: {
+                blog_id: { slug: { _eq: config.public.blogSlug } },
+                series: { series_id: { id: { _eq: series.id } } },
+                status: { _eq: 'published' },
               },
-            },
+              sort: ['-post_idx'],
+              limit: -1,
+              fields: [
+                'id',
+                'post_idx',
+                'title',
+                'slug',
+                'summary',
+                'thumbnail',
+                'published_at',
+                'updated_at',
+                'categories.categories_id.name',
+                'tags.tags_id.name',
+              ],
+            }),
           );
 
-          const rawSeriesPosts = rawSeriesPostData || [];
-          for (const rawSeriesPost of rawSeriesPosts) {
-            seriesPosts.push(await rawPostItemToPostItem(rawSeriesPost));
-          }
+          const seriesPosts = await rawPostsToPostItems(rawSeriesPosts || []);
+
+          return {
+            post,
+            seriesPosts,
+          };
         }
       }
 
       return {
         post,
-        seriesPosts,
+        seriesPosts: [],
       };
     },
   );
@@ -235,9 +211,10 @@ export interface SearchPostsOptions {
 
 export function useSearchPosts(options: Ref<SearchPostsOptions>) {
   const config = useRuntimeConfig();
+  const directus = useDirectus();
 
   const { data, pending, error, refresh } = useAsyncData<{ posts: PostItem[] }>(
-    computed(() => `search-posts-${JSON.stringify(options.value)}`).value,
+    () => `search-posts-${JSON.stringify(options.value)}`,
     async () => {
       const { search, category, tag, series } = options.value;
 
@@ -260,37 +237,31 @@ export function useSearchPosts(options: Ref<SearchPostsOptions>) {
         filter['series'] = { series_id: { slug: { _eq: series } } };
       }
 
-      const response = await $fetch<{ data: RawPostItem[] }>(
-        `${config.public.directusUrl}/items/posts`,
-        {
-          query: {
-            filter,
-            sort: ['-post_idx'],
-            limit: -1,
-            fields: [
-              'id',
-              'post_idx',
-              'title',
-              'slug',
-              'summary',
-              'thumbnail',
-              'published_at',
-              'updated_at',
-              'categories.categories_id.name',
-              'categories.categories_id.slug',
-              'tags.tags_id.name',
-              'tags.tags_id.slug',
-              'series.series_id.name',
-              'series.series_id.slug',
-            ],
-          },
-        },
+      const rawPosts = await directus.request<RawPostItem[]>(
+        readItems('posts', {
+          filter,
+          sort: ['-post_idx'],
+          limit: -1,
+          fields: [
+            'id',
+            'post_idx',
+            'title',
+            'slug',
+            'summary',
+            'thumbnail',
+            'published_at',
+            'updated_at',
+            'categories.categories_id.name',
+            'categories.categories_id.slug',
+            'tags.tags_id.name',
+            'tags.tags_id.slug',
+            'series.series_id.name',
+            'series.series_id.slug',
+          ],
+        }),
       );
 
-      const posts: PostItem[] = [];
-      for (const rawPost of response.data || []) {
-        posts.push(await rawPostItemToPostItem(rawPost));
-      }
+      const posts = await rawPostsToPostItems(rawPosts || []);
       return { posts };
     },
     {
@@ -298,10 +269,5 @@ export function useSearchPosts(options: Ref<SearchPostsOptions>) {
     },
   );
 
-  return {
-    posts: computed(() => data.value?.posts || []),
-    pending,
-    error,
-    refresh,
-  };
+  return { posts: computed(() => data.value?.posts || []), pending, error, refresh };
 }
