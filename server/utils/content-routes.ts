@@ -3,7 +3,7 @@ import { readItems } from '@directus/sdk';
 import { createDirectusClient } from '../../shared/directus';
 import type { SitemapPost } from '../types/sitemap';
 
-/** 앱·sitemap·prerender에서 쓰는 글 상세 경로 */
+/** 앱·sitemap에서 쓰는 글 상세 경로 */
 export function toPostPath(postIdx: number, slug: string): string {
   return `/posts/${postIdx}-${slug}`;
 }
