@@ -1,23 +1,13 @@
-export interface RawPostForSitemap {
-  data: {
-    posts: {
-      post_idx: number | string;
-      slug: string;
-    }[];
-    categories: {
-      slug: string;
-    }[];
-    series: {
-      slug: string;
-    }[];
-  };
-}
-
-export interface PostForSitemap {
-  postIdx: number;
+export interface SitemapPost {
+  post_idx: number;
   slug: string;
 }
 
-export interface DataForSitemap {
+export interface SitemapSlugItem {
   slug: string;
+}
+
+export interface SitemapUrlEntry {
+  loc: string;
+  _path: string;
 }

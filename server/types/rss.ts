@@ -1,9 +1,9 @@
 export interface DirectusPost {
-  id: number;
+  id: string;
   title: string;
   slug: string;
   post_idx: number;
   summary: string;
   content: string;
-  published_date: string;
+  published_at: string | null;
 }

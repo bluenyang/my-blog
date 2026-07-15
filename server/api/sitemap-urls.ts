@@ -1,46 +1,68 @@
-import type { PostForSitemap, RawPostForSitemap } from '../types/sitemap';
+import { readItems } from '@directus/sdk';
 
-export default defineEventHandler(async () => {
+import type { SitemapPost, SitemapSlugItem, SitemapUrlEntry } from '../types/sitemap';
+
+function toSearchUrl(queryKey: 'category' | 'tag' | 'series', slug: string): SitemapUrlEntry {
+  const path = `search?${queryKey}=${encodeURIComponent(slug)}`;
+  return { loc: path, _path: path };
+}
+
+export default defineEventHandler(async (): Promise<SitemapUrlEntry[]> => {
   const config = useRuntimeConfig();
-  const directusUrl = config.public.directusUrl;
-
-  const query = `
-    query {
-      posts(filter: {blog_id: {slug: {_eq: "${config.public.blogSlug}"}}, status: {_eq: "published" }}, limit: -1) { post_idx, slug }
-      categories(filter: {blog_id: {slug: {_eq: "${config.public.blogSlug}"}}}, limit: -1) { slug }
-      series(filter: {blog_id: {slug: {_eq: "${config.public.blogSlug}"}}}, limit: -1) { slug }
-    }
-  `;
+  const directus = useDirectus();
+  const blogSlug = config.public.blogSlug;
 
   try {
-    const { data } = await $fetch<RawPostForSitemap>(`${directusUrl}/graphql`, {
-      method: 'POST',
-      body: { query },
+    const [posts, categories, tags, series] = await Promise.all([
+      directus.request<SitemapPost[]>(
+        readItems('posts', {
+          filter: {
+            blog_id: { slug: { _eq: blogSlug } },
+            status: { _eq: 'published' },
+          },
+          fields: ['post_idx', 'slug'],
+          limit: -1,
+        }),
+      ),
+      directus.request<SitemapSlugItem[]>(
+        readItems('categories', {
+          filter: {
+            blog_id: { slug: { _eq: blogSlug } },
+          },
+          fields: ['slug'],
+          limit: -1,
+        }),
+      ),
+      directus.request<SitemapSlugItem[]>(
+        readItems('tags', {
+          filter: {
+            blog_id: { slug: { _eq: blogSlug } },
+          },
+          fields: ['slug'],
+          limit: -1,
+        }),
+      ),
+      directus.request<SitemapSlugItem[]>(
+        readItems('series', {
+          filter: {
+            blog_id: { slug: { _eq: blogSlug } },
+          },
+          fields: ['slug'],
+          limit: -1,
+        }),
+      ),
+    ]);
+
+    const postUrls: SitemapUrlEntry[] = (posts || []).map((post) => {
+      const path = `posts/${post.post_idx}-${post.slug}`;
+      return { loc: path, _path: path };
     });
 
-    const { posts, categories, series } = data;
+    const categoryUrls = (categories || []).map((item) => toSearchUrl('category', item.slug));
+    const tagUrls = (tags || []).map((item) => toSearchUrl('tag', item.slug));
+    const seriesUrls = (series || []).map((item) => toSearchUrl('series', item.slug));
 
-    const postData: PostForSitemap[] = posts.map((post) => ({
-      postIdx: Number(post.post_idx),
-      slug: post.slug,
-    }));
-
-    const postMapUrls = postData.map((post) => ({
-      loc: `posts/${post.postIdx}-${post.slug}`,
-      _path: `posts/${post.postIdx}-${post.slug}`,
-    }));
-
-    const categoryMapUrls = categories.map((category) => ({
-      loc: `categories/${category.slug}`,
-      _path: `categories/${category.slug}`,
-    }));
-
-    const seriesMapUrls = series.map((series) => ({
-      loc: `series/${series.slug}`,
-      _path: `series/${series.slug}`,
-    }));
-
-    return [...postMapUrls, ...categoryMapUrls, ...seriesMapUrls];
+    return [...postUrls, ...categoryUrls, ...tagUrls, ...seriesUrls];
   } catch (error) {
     console.error('Failed to fetch sitemap URLs:', error);
     return [];

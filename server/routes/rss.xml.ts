@@ -1,28 +1,28 @@
+import { readItems } from '@directus/sdk';
 import { Feed } from 'feed';
 
 import type { DirectusPost } from '../types/rss';
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
+  const directus = useDirectus();
 
   const blogUrl = config.public.blogUrl || '';
   const blogSlug = config.public.blogSlug || '';
-  const directusUrl = config.public.directusUrl || '';
   const emailAddress = config.public.emailAddress || '';
 
-  const resp = await $fetch<{ data: DirectusPost[] }>(`${directusUrl}/items/posts`, {
-    query: {
-      filter: {
-        status: { _eq: 'published' },
-        blog_id: { slug: { _eq: blogSlug } },
-      },
-      fields: ['id', 'title', 'slug', 'post_idx', 'summary', 'content', 'published_at'],
-      sort: ['-published_at'],
-      limit: 50,
-    },
-  });
-
-  const posts = resp.data || [];
+  const posts =
+    (await directus.request<DirectusPost[]>(
+      readItems('posts', {
+        filter: {
+          status: { _eq: 'published' },
+          blog_id: { slug: { _eq: blogSlug } },
+        },
+        fields: ['id', 'title', 'slug', 'post_idx', 'summary', 'content', 'published_at'],
+        sort: ['-published_at'],
+        limit: 50,
+      }),
+    )) || [];
 
   const feed = new Feed({
     title: "BlueNyang's Devlog",
@@ -45,7 +45,7 @@ export default defineEventHandler(async (event) => {
       link: `${blogUrl}/posts/${post.post_idx}-${post.slug}`,
       description: post.summary,
       content: post.content,
-      date: new Date(post.published_date),
+      date: new Date(post.published_at || Date.now()),
       author: [
         {
           name: 'BlueNyang',
