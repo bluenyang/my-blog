@@ -267,6 +267,10 @@ export function useSearchPosts(options: MaybeRefOrGetter<SearchPostsOptions>) {
     },
     {
       watch: [optionsRef],
+      default: () => ({ posts: [] }),
+      getCachedData(key, nuxtApp) {
+        return nuxtApp.payload.data[key] || nuxtApp.static.data[key];
+      },
     },
   );
 

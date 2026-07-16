@@ -9,10 +9,19 @@
   const hasChildren = computed(() => item.children && item.children.length > 0);
   const route = useRoute();
 
-  const isActive = computed(() => route.path === `/categories/${item.slug}`);
+  const isActive = computed(
+    () =>
+      route.name === 'categories-slug' &&
+      decodeRouteSlug(String(route.params.slug || '')) === item.slug,
+  );
 
   const checkActiveChild = (category: CategoryItem): boolean => {
-    if (route.path === `/categories/${category.slug}`) return true;
+    if (
+      route.name === 'categories-slug' &&
+      decodeRouteSlug(String(route.params.slug || '')) === category.slug
+    ) {
+      return true;
+    }
     if (category.children) {
       return category.children.some((child) => checkActiveChild(child));
     }

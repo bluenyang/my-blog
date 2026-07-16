@@ -1,6 +1,10 @@
 <script setup lang="ts">
   const { tags } = useTag();
   const route = useRoute();
+
+  function isActiveTag(slug: string) {
+    return route.name === 'tags-slug' && decodeRouteSlug(String(route.params.slug || '')) === slug;
+  }
 </script>
 
 <template>
@@ -15,10 +19,9 @@
             cn(
               'flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium transition-colors',
               {
-                'bg-sidebar-primary text-sidebar-primary-foreground':
-                  route.path === `/tags/${tag.slug}`,
+                'bg-sidebar-primary text-sidebar-primary-foreground': isActiveTag(tag.slug),
                 'bg-sidebar-accent hover:bg-sidebar-accent-hover text-sidebar-foreground':
-                  route.path !== `/tags/${tag.slug}`,
+                  !isActiveTag(tag.slug),
               },
             )
           "
@@ -28,7 +31,7 @@
             :class="
               cn(
                 'text-muted-foreground text-xs',
-                route.path === `/tags/${tag.slug}` && 'text-sidebar-primary-foreground/80',
+                isActiveTag(tag.slug) && 'text-sidebar-primary-foreground/80',
               )
             "
             >{{ tag.postCount }}</span

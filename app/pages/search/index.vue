@@ -6,15 +6,24 @@
     () => route.query,
     (query) => {
       if (typeof query.category === 'string' && query.category) {
-        navigateTo(`/categories/${query.category}`, { replace: true });
+        navigateTo(
+          { name: 'categories-slug', params: { slug: decodeRouteSlug(query.category) } },
+          { replace: true },
+        );
         return;
       }
       if (typeof query.tag === 'string' && query.tag) {
-        navigateTo(`/tags/${query.tag}`, { replace: true });
+        navigateTo(
+          { name: 'tags-slug', params: { slug: decodeRouteSlug(query.tag) } },
+          { replace: true },
+        );
         return;
       }
       if (typeof query.series === 'string' && query.series) {
-        navigateTo(`/series/${query.series}`, { replace: true });
+        navigateTo(
+          { name: 'series-slug', params: { slug: decodeRouteSlug(query.series) } },
+          { replace: true },
+        );
       }
     },
     { immediate: true },
@@ -24,5 +33,7 @@
 </script>
 
 <template>
-  <FilteredPostsView filter-type="search" :filter-value="searchValue" />
+  <div>
+    <FilteredPostsView filter-type="search" :filter-value="searchValue" />
+  </div>
 </template>

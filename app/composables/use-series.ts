@@ -81,7 +81,10 @@ export function useSeries() {
 export function useSeriesBySlug(slug: Ref<string | undefined> | string | undefined) {
   const config = useRuntimeConfig();
   const directus = useDirectus();
-  const slugRef = computed(() => unref(slug));
+  const slugRef = computed(() => {
+    const value = unref(slug);
+    return value ? decodeRouteSlug(value) : undefined;
+  });
 
   const { data, pending } = useAsyncData<{ series: SeriesItem | null }>(
     () => `series-by-slug-${slugRef.value}`,
@@ -115,6 +118,9 @@ export function useSeriesBySlug(slug: Ref<string | undefined> | string | undefin
     },
     {
       watch: [slugRef],
+      getCachedData(key, nuxtApp) {
+        return nuxtApp.payload.data[key] || nuxtApp.static.data[key];
+      },
     },
   );
 

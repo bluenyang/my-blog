@@ -82,7 +82,7 @@
           <NuxtLink
             v-for="item in series"
             :key="item.id"
-            :to="`/series/${item.slug}`"
+            :to="{ name: 'series-slug', params: { slug: item.slug } }"
             prefetch-on="interaction"
             class="group bg-card hover:bg-card-hover hover:border-border flex flex-col overflow-hidden rounded-2xl border border-transparent transition-all"
           >
