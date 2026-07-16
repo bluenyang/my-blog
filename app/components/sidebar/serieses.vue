@@ -16,14 +16,14 @@
           :class="
             cn(
               'bg-sidebar group relative flex w-full items-center gap-2 truncate transition-all duration-200 md:hover:translate-x-1',
-              route.path === '/search' &&
-                route.query.series === item.slug &&
+              route.path === `/series/${item.slug}` &&
                 'bg-sidebar-accent text-sidebar-accent-foreground',
             )
           "
         >
           <NuxtLink
-            :to="{ path: '/search', query: { series: item.slug } }"
+            :to="`/series/${item.slug}`"
+            prefetch-on="interaction"
             class="flex min-w-0 flex-1 items-center gap-2 px-2 py-1"
           >
             <Icon name="mdi:bookmark" class="size-4 shrink-0 text-sky-600" />
@@ -31,7 +31,7 @@
               :class="
                 cn(
                   'truncate text-base font-medium transition-colors',
-                  route.path === '/search' && route.query.series === item.slug
+                  route.path === `/series/${item.slug}`
                     ? 'text-sidebar-primary font-bold'
                     : 'md:group-hover:text-purple-700 md:group-hover:dark:text-indigo-300',
                 )
@@ -43,8 +43,7 @@
               class="bg-sidebar-accent-hover rounded-full px-2 text-xs font-semibold"
               :class="
                 cn(
-                  route.path === '/search' &&
-                    route.query.series === item.slug &&
+                  route.path === `/series/${item.slug}` &&
                     'text-sidebar-primary-foreground bg-sidebar-primary',
                 )
               "

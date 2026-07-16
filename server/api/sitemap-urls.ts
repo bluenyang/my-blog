@@ -8,10 +8,6 @@ function toEntry(path: string): SitemapUrlEntry {
   return { loc: normalized, _path: normalized };
 }
 
-function toSearchUrl(queryKey: 'category' | 'tag' | 'series', slug: string): SitemapUrlEntry {
-  return toEntry(`/search?${queryKey}=${encodeURIComponent(slug)}`);
-}
-
 export default defineEventHandler(async (): Promise<SitemapUrlEntry[]> => {
   const config = useRuntimeConfig();
   const directus = useDirectus();
@@ -51,9 +47,9 @@ export default defineEventHandler(async (): Promise<SitemapUrlEntry[]> => {
     ]);
 
     const postUrls = postPaths.map(toEntry);
-    const categoryUrls = (categories || []).map((item) => toSearchUrl('category', item.slug));
-    const tagUrls = (tags || []).map((item) => toSearchUrl('tag', item.slug));
-    const seriesUrls = (series || []).map((item) => toSearchUrl('series', item.slug));
+    const categoryUrls = (categories || []).map((item) => toEntry(`/categories/${item.slug}`));
+    const tagUrls = (tags || []).map((item) => toEntry(`/tags/${item.slug}`));
+    const seriesUrls = (series || []).map((item) => toEntry(`/series/${item.slug}`));
 
     return [...postUrls, ...categoryUrls, ...tagUrls, ...seriesUrls];
   } catch (error) {

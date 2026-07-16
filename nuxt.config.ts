@@ -94,6 +94,9 @@ export default defineNuxtConfig({
     '/': { swr: 180 },
     '/posts': { swr: 180 },
     '/posts/**': { swr: 180 },
+    '/categories/**': { swr: 180 },
+    '/tags/**': { swr: 180 },
+    '/series/**': { swr: 180 },
     '/search': { swr: 180 },
   },
 
