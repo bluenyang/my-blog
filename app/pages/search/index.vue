@@ -76,6 +76,8 @@
     if (!post.categories || post.categories.length === 0) return 'Uncategorized';
     return post.categories[0]?.name || 'Uncategorized';
   }
+
+  const { onNavigate, isPending } = useNavFeedback();
 </script>
 
 <template>
@@ -148,7 +150,15 @@
         v-for="post in posts"
         :key="post.id"
         :to="`/posts/${post.postIdx}-${post.slug}`"
-        class="group hover:bg-card relative flex flex-col sm:flex-row sm:justify-between"
+        prefetch-on="interaction"
+        :aria-busy="isPending(`post-${post.id}`)"
+        :class="
+          cn(
+            'group hover:bg-card relative flex flex-col transition-opacity sm:flex-row sm:justify-between',
+            isPending(`post-${post.id}`) && 'pointer-events-none opacity-60',
+          )
+        "
+        @click="onNavigate(`post-${post.id}`)"
       >
         <!-- 본문 정보 -->
         <div

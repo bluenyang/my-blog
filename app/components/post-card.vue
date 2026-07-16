@@ -3,6 +3,8 @@
 
   const props = defineProps<{ post: PostItem }>();
 
+  const { onNavigate, isPending } = useNavFeedback();
+
   const formattedDate = computed(() => {
     if (!props.post.publishedAt) return '';
     const date = new Date(props.post.publishedAt);
@@ -16,12 +18,22 @@
     if (!props.post.categories) return [];
     return props.post.categories.map((c) => c?.name).filter((name): name is string => !!name);
   });
+
+  const linkKey = computed(() => `post-${props.post.id}`);
 </script>
 
 <template>
   <NuxtLink
     :to="`/posts/${post.postIdx}-${post.slug}`"
-    class="group bg-card hover:bg-card-hover hover:border-border flex flex-col overflow-hidden rounded-2xl border border-transparent transition-all"
+    prefetch-on="interaction"
+    :aria-busy="isPending(linkKey)"
+    :class="
+      cn(
+        'group bg-card hover:bg-card-hover hover:border-border flex flex-col overflow-hidden rounded-2xl border border-transparent transition-all',
+        isPending(linkKey) && 'pointer-events-none opacity-60',
+      )
+    "
+    @click="onNavigate(linkKey)"
   >
     <div class="bg-muted h-2 w-full dark:bg-white/10"></div>
     <div class="p-5">

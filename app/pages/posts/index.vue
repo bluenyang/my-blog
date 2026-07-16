@@ -3,6 +3,7 @@
   import type { PostItem } from '~/types/post';
 
   const { posts, pending, error } = usePosts();
+  const { onNavigate, isPending } = useNavFeedback();
 
   function getFormattedDate(dateString: string | null) {
     if (!dateString) return '';
@@ -57,7 +58,15 @@
         v-for="post in posts"
         :key="post.id"
         :to="`/posts/${post.postIdx}-${post.slug}`"
-        class="group hover:bg-card relative flex flex-col sm:flex-row sm:justify-between"
+        prefetch-on="interaction"
+        :aria-busy="isPending(`post-${post.id}`)"
+        :class="
+          cn(
+            'group hover:bg-card relative flex flex-col transition-opacity sm:flex-row sm:justify-between',
+            isPending(`post-${post.id}`) && 'pointer-events-none opacity-60',
+          )
+        "
+        @click="onNavigate(`post-${post.id}`)"
       >
         <div
           class="flex-1 p-4 transition-all before:absolute before:inset-y-0 before:left-0 before:w-1 before:rounded-l-md before:bg-linear-to-b before:from-sky-500 before:to-indigo-500 before:opacity-0 before:transition-opacity before:duration-200 group-hover:before:opacity-100 sm:py-8"
