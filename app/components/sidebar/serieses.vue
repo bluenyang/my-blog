@@ -1,6 +1,12 @@
 <script setup lang="ts">
   const { series } = useSeries();
   const route = useRoute();
+
+  function isActiveSeries(slug: string) {
+    return (
+      route.name === 'series-slug' && decodeRouteSlug(String(route.params.slug || '')) === slug
+    );
+  }
 </script>
 
 <template>
@@ -16,8 +22,7 @@
           :class="
             cn(
               'bg-sidebar group relative flex w-full items-center gap-2 truncate transition-all duration-200 md:hover:translate-x-1',
-              route.path === `/series/${item.slug}` &&
-                'bg-sidebar-accent text-sidebar-accent-foreground',
+              isActiveSeries(item.slug) && 'bg-sidebar-accent text-sidebar-accent-foreground',
             )
           "
         >
@@ -31,7 +36,7 @@
               :class="
                 cn(
                   'truncate text-base font-medium transition-colors',
-                  route.path === `/series/${item.slug}`
+                  isActiveSeries(item.slug)
                     ? 'text-sidebar-primary font-bold'
                     : 'md:group-hover:text-purple-700 md:group-hover:dark:text-indigo-300',
                 )
@@ -43,8 +48,7 @@
               class="bg-sidebar-accent-hover rounded-full px-2 text-xs font-semibold"
               :class="
                 cn(
-                  route.path === `/series/${item.slug}` &&
-                    'text-sidebar-primary-foreground bg-sidebar-primary',
+                  isActiveSeries(item.slug) && 'text-sidebar-primary-foreground bg-sidebar-primary',
                 )
               "
             >

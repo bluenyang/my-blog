@@ -14,7 +14,7 @@
   const { onNavigate, isPending } = useNavFeedback();
 
   const searchOptions = computed<SearchPostsOptions>(() => {
-    const value = props.filterValue;
+    const value = decodeRouteSlug(props.filterValue);
     if (!value) return {};
     if (props.filterType === 'category') return { category: value };
     if (props.filterType === 'tag') return { tag: value };
@@ -24,19 +24,21 @@
 
   const { posts, pending, error } = useSearchPosts(searchOptions);
 
+  const resolvedSlug = computed(() => decodeRouteSlug(props.filterValue));
+
   const seriesSlug = computed(() =>
-    props.filterType === 'series' ? props.filterValue : undefined,
+    props.filterType === 'series' ? resolvedSlug.value : undefined,
   );
   const { series: seriesInfo } = useSeriesBySlug(seriesSlug);
 
   const categoryInfo = computed(() => {
-    if (props.filterType !== 'category' || !props.filterValue) return null;
-    return findCategoryBySlug(categories.value, props.filterValue);
+    if (props.filterType !== 'category' || !resolvedSlug.value) return null;
+    return findCategoryBySlug(categories.value, resolvedSlug.value);
   });
 
   const tagInfo = computed(() => {
-    if (props.filterType !== 'tag' || !props.filterValue) return null;
-    return tags.value.find((tag) => tag.slug === props.filterValue) ?? null;
+    if (props.filterType !== 'tag' || !resolvedSlug.value) return null;
+    return tags.value.find((tag) => tag.slug === resolvedSlug.value) ?? null;
   });
 
   const seriesThumbnailUrl = computed(() => {
@@ -65,15 +67,17 @@
   });
 
   const pageTitle = computed(() => {
-    if (props.filterType === 'series') return seriesInfo.value?.name ?? props.filterValue;
+    if (props.filterType === 'series') return seriesInfo.value?.name ?? resolvedSlug.value;
     if (props.filterType === 'category')
       return categoryInfo.value?.name
         ? `카테고리 · ${categoryInfo.value.name}`
-        : `카테고리 · ${props.filterValue}`;
+        : `카테고리 · ${resolvedSlug.value}`;
     if (props.filterType === 'tag')
-      return tagInfo.value?.name ? `태그 · #${tagInfo.value.name}` : `태그 · #${props.filterValue}`;
-    if (!props.filterValue) return '검색';
-    return `"${props.filterValue}" 검색 결과`;
+      return tagInfo.value?.name
+        ? `태그 · #${tagInfo.value.name}`
+        : `태그 · #${resolvedSlug.value}`;
+    if (!resolvedSlug.value) return '검색';
+    return `"${resolvedSlug.value}" 검색 결과`;
   });
 
   const pageDesc = computed(() => {
@@ -83,7 +87,7 @@
     }
     if (props.filterType === 'category') return `카테고리에 포함된 ${count}개의 글`;
     if (props.filterType === 'tag') return `태그가 붙은 ${count}개의 글`;
-    if (!props.filterValue) return '검색어를 입력해 주세요.';
+    if (!resolvedSlug.value) return '검색어를 입력해 주세요.';
     return `총 ${count}개의 글이 검색됐습니다.`;
   });
 
@@ -126,7 +130,7 @@
         <span class="tracking-widest uppercase">{{ eyebrow }}</span>
       </div>
       <h1 class="text-3xl font-extrabold tracking-tight sm:text-4xl">{{ pageTitle }}</h1>
-      <p v-if="!pending" class="text-muted-foreground mt-3 text-lg">{{ pageDesc }}</p>
+      <p class="text-muted-foreground mt-3 text-lg">{{ pageDesc }}</p>
     </div>
 
     <div v-if="pending" class="flex justify-center py-24">
