@@ -62,7 +62,8 @@
           <ul class="flex flex-col space-y-2">
             <li v-for="category in categories" :key="category.id">
               <NuxtLink
-                :to="{ path: '/search', query: { category: category.slug } }"
+                :to="`/categories/${category.slug}`"
+                prefetch-on="interaction"
                 class="text-muted-foreground hover:text-primary text-sm transition-colors"
               >
                 {{ category.name }}

@@ -118,7 +118,8 @@
                   {{ '·' }}
                 </span>
                 <NuxtLink
-                  :to="`/search?series=${post.series![0]?.slug}`"
+                  :to="`/series/${post.series![0]?.slug}`"
+                  prefetch-on="interaction"
                   class="text-muted-foreground hover:text-primary transition-colors"
                 >
                   <Icon name="lucide:layers" class="mr-1 mb-0.5 inline size-4" />
@@ -163,7 +164,8 @@
           <NuxtLink
             v-for="tag in post.tags"
             :key="tag.slug"
-            :to="{ path: '/search', query: { tag: tag.slug } }"
+            :to="`/tags/${tag.slug}`"
+            prefetch-on="interaction"
             class="bg-muted text-muted-foreground rounded-full px-3 py-1 text-xs font-medium"
           >
             {{ `# ${tag.name}` }}

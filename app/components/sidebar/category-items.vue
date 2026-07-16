@@ -9,10 +9,10 @@
   const hasChildren = computed(() => item.children && item.children.length > 0);
   const route = useRoute();
 
-  const isActive = computed(() => route.path === '/search' && route.query.category === item.slug);
+  const isActive = computed(() => route.path === `/categories/${item.slug}`);
 
   const checkActiveChild = (category: CategoryItem): boolean => {
-    if (route.path === '/search' && route.query.category === category.slug) return true;
+    if (route.path === `/categories/${category.slug}`) return true;
     if (category.children) {
       return category.children.some((child) => checkActiveChild(child));
     }
@@ -27,7 +27,7 @@
   const isChildOpen = ref<boolean>(hasActiveChild.value);
 
   watch(
-    () => route.query.category,
+    () => route.path,
     () => {
       if (hasActiveChild.value) {
         isChildOpen.value = true;
@@ -56,7 +56,8 @@
         "
       >
         <NuxtLink
-          :to="{ path: '/search', query: { category: item.slug } }"
+          :to="`/categories/${item.slug}`"
+          prefetch-on="interaction"
           class="flex min-w-0 flex-1 items-center gap-2 px-2 py-1"
         >
           <Icon v-if="item.icon" :name="item.icon" class="size-4 shrink-0 text-sky-600" />

@@ -9,16 +9,16 @@
     <ul class="flex flex-wrap gap-2 px-2">
       <li v-for="tag in tags" :key="tag.id">
         <NuxtLink
-          :to="{ path: '/search', query: { tag: tag.slug } }"
+          :to="`/tags/${tag.slug}`"
+          prefetch-on="interaction"
           :class="
             cn(
               'flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium transition-colors',
               {
                 'bg-sidebar-primary text-sidebar-primary-foreground':
-                  route.path === '/search' && route.query.tag === tag.slug,
-                'bg-sidebar-accent hover:bg-sidebar-accent-hover text-sidebar-foreground': !(
-                  route.path === '/search' && route.query.tag === tag.slug
-                ),
+                  route.path === `/tags/${tag.slug}`,
+                'bg-sidebar-accent hover:bg-sidebar-accent-hover text-sidebar-foreground':
+                  route.path !== `/tags/${tag.slug}`,
               },
             )
           "
@@ -28,9 +28,7 @@
             :class="
               cn(
                 'text-muted-foreground text-xs',
-                route.path === '/search' &&
-                  route.query.tag === tag.slug &&
-                  'text-sidebar-primary-foreground/80',
+                route.path === `/tags/${tag.slug}` && 'text-sidebar-primary-foreground/80',
               )
             "
             >{{ tag.postCount }}</span

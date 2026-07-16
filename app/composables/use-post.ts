@@ -209,14 +209,15 @@ export interface SearchPostsOptions {
   series?: string;
 }
 
-export function useSearchPosts(options: Ref<SearchPostsOptions>) {
+export function useSearchPosts(options: MaybeRefOrGetter<SearchPostsOptions>) {
   const config = useRuntimeConfig();
   const directus = useDirectus();
+  const optionsRef = computed(() => toValue(options));
 
   const { data, pending, error, refresh } = useAsyncData<{ posts: PostItem[] }>(
-    () => `search-posts-${JSON.stringify(options.value)}`,
+    () => `search-posts-${JSON.stringify(optionsRef.value)}`,
     async () => {
-      const { search, category, tag, series } = options.value;
+      const { search, category, tag, series } = optionsRef.value;
 
       const filter: Record<string, unknown> = {
         blog_id: { slug: { _eq: config.public.blogSlug } },
@@ -265,7 +266,7 @@ export function useSearchPosts(options: Ref<SearchPostsOptions>) {
       return { posts };
     },
     {
-      watch: [options],
+      watch: [optionsRef],
     },
   );
 
