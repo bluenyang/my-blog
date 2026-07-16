@@ -26,7 +26,7 @@
       </button>
     </div>
     <pre
-      class="[&>code]:font-cascadia-code scrollbar-thumb-sidebar-border min-w-0 scrollbar-thin scrollbar-track-transparent overflow-x-auto py-2 text-sm"
+      class="[&>code]:font-cascadia-code scrollbar-thumb-sidebar-border min-w-0 scrollbar-thin scrollbar-track-transparent overflow-x-auto pt-2 pb-4 text-sm"
     ><slot /></pre>
   </div>
 </template>
