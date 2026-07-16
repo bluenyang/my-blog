@@ -89,7 +89,7 @@
       <p class="text-destructive text-lg">{{ '게시글을 찾을 수 없습니다.' }}</p>
     </div>
 
-    <div v-else class="ms-auto max-w-6xl">
+    <div v-else class="mx-auto max-w-7xl">
       <button
         class="text-muted-foreground hover:text-primary mb-4 inline-flex items-center gap-1 transition-colors hover:underline"
         @click="goBack"
