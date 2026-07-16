@@ -83,6 +83,7 @@
             v-for="item in series"
             :key="item.id"
             :to="{ path: '/search', query: { series: item.slug } }"
+            prefetch-on="interaction"
             class="group bg-card hover:bg-card-hover hover:border-border flex flex-col overflow-hidden rounded-2xl border border-transparent transition-all"
           >
             <div class="bg-muted h-2 w-full dark:bg-white/10"></div>

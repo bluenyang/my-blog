@@ -8,6 +8,7 @@
   }
 
   const { seriesName, seriesPosts: posts, currentPostIdx } = defineProps<SeriesBoxProps>();
+  const { onNavigate, isPending } = useNavFeedback();
 </script>
 
 <template>
@@ -27,7 +28,15 @@
         <NuxtLink
           v-if="post.postIdx !== currentPostIdx"
           :to="`/posts/${post.postIdx}-${post.slug}`"
-          class="text-muted-foreground hover:text-primary underline-offset-4 transition-colors hover:underline"
+          prefetch-on="interaction"
+          :aria-busy="isPending(`post-${post.id}`)"
+          :class="
+            cn(
+              'text-muted-foreground hover:text-primary underline-offset-4 transition-all hover:underline',
+              isPending(`post-${post.id}`) && 'pointer-events-none opacity-60',
+            )
+          "
+          @click="onNavigate(`post-${post.id}`)"
         >
           {{ post.title }}
         </NuxtLink>
