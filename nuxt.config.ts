@@ -91,10 +91,10 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    '/': { swr: 60 },
-    '/posts': { swr: 60 },
-    '/posts/**': { swr: 60 },
-    '/search': { swr: 60 },
+    '/': { swr: 180 },
+    '/posts': { swr: 180 },
+    '/posts/**': { swr: 180 },
+    '/search': { swr: 180 },
   },
 
   compatibilityDate: '2026-06-15',
