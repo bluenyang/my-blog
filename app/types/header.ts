@@ -6,6 +6,7 @@ export interface NavigationItem {
   isCategory: boolean;
   parentId: string | null;
   children?: NavigationItem[];
+  slug: string;
 }
 
 export interface NavigationListResponse {
