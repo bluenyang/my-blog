@@ -19,7 +19,14 @@ export interface CategoryItem {
   children?: CategoryItem[];
 }
 
-export interface CategoryLabel {
+export interface RawCategoryItemInPost {
+  categories_id: {
+    name: string;
+    slug: string;
+  };
+}
+
+export interface CategoryItemInPost {
   name: string;
   slug: string;
 }

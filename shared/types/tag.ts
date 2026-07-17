@@ -12,7 +12,14 @@ export interface TagItem {
   postCount?: number;
 }
 
-export interface TagLabel {
+export interface RawTagItemInPost {
+  tags_id: {
+    name: string;
+    slug: string;
+  };
+}
+
+export interface TagItemInPost {
   name: string;
   slug: string;
 }

@@ -1,6 +1,7 @@
-import type { CategoryLabel } from './category';
+import type { CategoryItemInPost, RawCategoryItemInPost } from './category';
 import type { RawSeriesItemInPost, SeriesItemInPost } from './series';
-import type { TagLabel } from './tag';
+import type { SidebarContent } from './sidebar';
+import type { RawTagItemInPost, TagItemInPost } from './tag';
 
 export interface RawPostAuthor {
   first_name: string | null;
@@ -64,30 +65,22 @@ export interface PostItem {
 }
 
 export interface RawPostDetail {
-  author_id: RawPostAuthor;
-  post_idx: number;
-  title: string;
-  slug: string;
-  summary: string | null;
-  thumbnail: {
-    id: string;
-  } | null;
-  content: string;
-  published_at: string;
-  updated_at: string;
-  categories:
-    | {
-        name: string;
-        slug: string;
-      }[]
-    | null;
-  tags:
-    | {
-        name: string;
-        slug: string;
-      }[]
-    | null;
-  series: RawSeriesItemInPost[] | null;
+  posts: {
+    author_id: RawPostAuthor;
+    post_idx: number;
+    title: string;
+    slug: string;
+    summary: string | null;
+    thumbnail: {
+      id: string;
+    } | null;
+    content: string;
+    published_at: string;
+    updated_at: string;
+    categories: RawCategoryItemInPost[] | null;
+    tags: RawTagItemInPost[] | null;
+    series: RawSeriesItemInPost[] | null;
+  }[];
 }
 
 export interface PostDetail {
@@ -100,7 +93,8 @@ export interface PostDetail {
   content: string;
   publishedAt: string;
   updatedAt: string;
-  categories: CategoryLabel[] | null;
-  tags: TagLabel[] | null;
+  categories: CategoryItemInPost[] | null;
+  tags: TagItemInPost[] | null;
   series: SeriesItemInPost[] | null;
+  sidebar?: SidebarContent;
 }
