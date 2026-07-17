@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import type { PostItem } from '~/types/post';
+  import type { PostItem } from '~~/shared/types';
 
   const props = defineProps<{ post: PostItem }>();
 
@@ -16,10 +16,10 @@
 
   const categories = computed(() => {
     if (!props.post.categories) return [];
-    return props.post.categories.map((c) => c?.name).filter((name): name is string => !!name);
+    return props.post.categories;
   });
 
-  const linkKey = computed(() => `post-${props.post.id}`);
+  const linkKey = computed(() => `post-${props.post.slug}`);
 </script>
 
 <template>
