@@ -2,7 +2,13 @@ import { getDirectusImageUrl } from '../utils/directus';
 
 import { categoryInPostMapper, seriesInPostMapper, tagInPostMapper } from './mapper';
 
-import type { PostDetail, PostItem, RawPostDetail, RawPostItem } from '~~/shared/types/post';
+import type {
+  PostDetail,
+  PostItem,
+  RawPostDetail,
+  RawPostItem,
+  RawPosts,
+} from '~~/shared/types/post';
 
 export function postMapper(raw: RawPostItem[]): PostItem[] {
   return raw.map<PostItem>((item) => ({
@@ -23,6 +29,10 @@ export function postMapper(raw: RawPostItem[]): PostItem[] {
     tags: item.tags.map((tag) => tag.tags_id.name),
     series: item.series.map((series) => series.series_id.name),
   }));
+}
+
+export function postsMapper(raw: RawPosts): PostItem[] {
+  return postMapper(raw.posts);
 }
 
 export function postDetailMapper(raw: RawPostDetail): PostDetail {

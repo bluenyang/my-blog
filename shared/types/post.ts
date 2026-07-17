@@ -98,3 +98,12 @@ export interface PostDetail {
   series: SeriesItemInPost[] | null;
   sidebar?: SidebarContent;
 }
+
+export interface RawPosts {
+  posts: RawPostItem[];
+}
+
+export interface PostsResponse {
+  posts: PostItem[];
+  sidebar?: SidebarContent;
+}
