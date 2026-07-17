@@ -3,8 +3,8 @@ import { homeQuery, sidebarQuery } from '~~/server/features/query';
 export function useQuery() {
   const config = useRuntimeConfig();
 
-  function buildQuery(...queries: string[]) {
-    const query = queries.join('\n');
+  function buildQuery(...queries: (string | undefined)[]) {
+    const query = queries.filter(Boolean).join('\n');
     return `query {\n  ${query}\n}`;
   }
 
