@@ -48,13 +48,24 @@ export function postDetailQuery(blogSlug: string, postIdx: number) {
   }`;
 }
 
-export function postsQuery(blogSlug: string, limit: number, offset: number, search: string) {
+export function postsQuery(
+  blogSlug: string,
+  limit: number,
+  offset: number,
+  search?: string,
+  category?: string,
+  tag?: string,
+  series?: string,
+) {
   return `posts(
     sort: ["-published_at"]
     filter: {
       blog_id: { slug: { _eq: "${blogSlug}" } }
       status: { _eq: "published" }
       ${search ? `_or: [{ title: { _contains: "${search}" } }, { summary: { _contains: "${search}" } }, { content: { _contains: "${search}" } }]` : ''}
+      ${category ? `categories: { categories_id: { slug: { _eq: "${category}" } } }` : ''}
+      ${tag ? `tags: { tags_id: { slug: { _eq: "${tag}" } } }` : ''}
+      ${series ? `series: { series_id: { slug: { _eq: "${series}" } } }` : ''}
     }
     limit: ${limit}
     offset: ${offset}
