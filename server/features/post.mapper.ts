@@ -1,6 +1,6 @@
 import { getDirectusImageUrl } from '../utils/directus';
 
-import { seriesInPostMapper } from './mapper';
+import { categoryInPostMapper, seriesInPostMapper, tagInPostMapper } from './mapper';
 
 import type { PostDetail, PostItem, RawPostDetail, RawPostItem } from '~~/shared/types/post';
 
@@ -26,31 +26,29 @@ export function postMapper(raw: RawPostItem[]): PostItem[] {
 }
 
 export function postDetailMapper(raw: RawPostDetail): PostDetail {
+  if (raw.posts.length === 0) {
+    throw new Error('No posts found');
+  }
+
+  const post = raw.posts[0]!;
+
   return {
-    postIdx: raw.post_idx,
+    postIdx: post.post_idx,
     author: {
-      firstName: raw.author_id.first_name,
-      lastName: raw.author_id.last_name,
-      avatar: raw.author_id.avatar?.id ? getDirectusImageUrl(raw.author_id.avatar.id) : null,
-      nickname: raw.author_id.nickname,
+      firstName: post.author_id.first_name,
+      lastName: post.author_id.last_name,
+      avatar: post.author_id.avatar?.id ? getDirectusImageUrl(post.author_id.avatar.id) : null,
+      nickname: post.author_id.nickname,
     },
-    title: raw.title,
-    slug: raw.slug,
-    summary: raw.summary,
-    thumbnail: raw.thumbnail?.id ? getDirectusImageUrl(raw.thumbnail.id) : null,
-    content: raw.content,
-    publishedAt: raw.published_at,
-    updatedAt: raw.updated_at,
-    categories:
-      raw.categories?.map((category) => ({
-        name: category.name,
-        slug: category.slug,
-      })) || null,
-    tags:
-      raw.tags?.map((tag) => ({
-        name: tag.name,
-        slug: tag.slug,
-      })) || null,
-    series: raw.series ? seriesInPostMapper(raw.series) : null,
+    title: post.title,
+    slug: post.slug,
+    summary: post.summary,
+    thumbnail: post.thumbnail?.id ? getDirectusImageUrl(post.thumbnail.id) : null,
+    content: post.content,
+    publishedAt: post.published_at,
+    updatedAt: post.updated_at,
+    categories: post.categories ? categoryInPostMapper(post.categories) : null,
+    tags: post.tags ? tagInPostMapper(post.tags) : null,
+    series: post.series ? seriesInPostMapper(post.series) : null,
   };
 }

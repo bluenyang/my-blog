@@ -11,17 +11,19 @@ export interface RawSeriesItem {
 }
 
 export interface RawSeriesItemInPost {
-  name: string;
-  posts_func: {
-    count: {
-      id: number;
+  series_id: {
+    name: string;
+    posts_func: {
+      count: number;
     };
+    posts: {
+      posts_id: {
+        post_idx: number;
+        title: string;
+        slug: string;
+      };
+    }[];
   };
-  posts: {
-    post_idx: number;
-    title: string;
-    slug: string;
-  }[];
 }
 
 export interface SeriesItem {

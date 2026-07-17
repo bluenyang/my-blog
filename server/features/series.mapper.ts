@@ -19,12 +19,12 @@ export function seriesMapper(raw: RawSeriesItem[]): SeriesItem[] {
 
 export function seriesInPostMapper(raw: RawSeriesItemInPost[]): SeriesItemInPost[] {
   return raw.map<SeriesItemInPost>((item) => ({
-    name: item.name,
-    postCount: Number(item.posts_func.count),
-    posts: item.posts.map((post) => ({
-      postIdx: post.post_idx,
-      slug: post.slug,
-      title: post.title,
+    name: item.series_id.name,
+    postCount: Number(item.series_id.posts_func.count),
+    posts: item.series_id.posts.map((post) => ({
+      postIdx: post.posts_id.post_idx,
+      slug: post.posts_id.slug,
+      title: post.posts_id.title,
     })),
   }));
 }

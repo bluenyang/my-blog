@@ -1,4 +1,9 @@
-import type { CategoryItem, RawCategoryItem } from '~~/shared/types/category';
+import type {
+  CategoryItem,
+  CategoryItemInPost,
+  RawCategoryItem,
+  RawCategoryItemInPost,
+} from '~~/shared/types/category';
 import { buildTree } from '~~/shared/utils/build-tree';
 
 export function categoryMapper(raw: RawCategoryItem[]): CategoryItem[] {
@@ -10,4 +15,11 @@ export function categoryMapper(raw: RawCategoryItem[]): CategoryItem[] {
     postCount: Number(item.posts_func.count),
   }));
   return buildTree<CategoryItem>(items);
+}
+
+export function categoryInPostMapper(raw: RawCategoryItemInPost[]): CategoryItemInPost[] {
+  return raw.map((item) => ({
+    name: item.categories_id.name,
+    slug: item.categories_id.slug,
+  }));
 }

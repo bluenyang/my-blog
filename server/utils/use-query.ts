@@ -1,4 +1,4 @@
-import { homeQuery, sidebarQuery } from '~~/server/features/query';
+import { homeQuery, postDetailQuery, sidebarQuery } from '~~/server/features/query';
 
 export function useQuery() {
   const config = useRuntimeConfig();
@@ -12,5 +12,6 @@ export function useQuery() {
     buildQuery,
     sidebar: sidebarQuery(config.public.blogSlug),
     home: homeQuery(config.public.blogSlug),
+    postDetail: (postIdx: number) => postDetailQuery(config.public.blogSlug, postIdx),
   };
 }
