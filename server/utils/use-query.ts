@@ -13,6 +13,7 @@ export function useQuery() {
     sidebar: sidebarQuery(config.public.blogSlug),
     home: homeQuery(config.public.blogSlug),
     postDetail: (postIdx: number) => postDetailQuery(config.public.blogSlug, postIdx),
-    posts: (limit: number, offset: number) => postsQuery(config.public.blogSlug, limit, offset),
+    posts: (limit: number, offset: number, search: string) =>
+      postsQuery(config.public.blogSlug, limit, offset, search),
   };
 }
