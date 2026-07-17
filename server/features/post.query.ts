@@ -48,12 +48,13 @@ export function postDetailQuery(blogSlug: string, postIdx: number) {
   }`;
 }
 
-export function postsQuery(blogSlug: string, limit: number, offset: number) {
+export function postsQuery(blogSlug: string, limit: number, offset: number, search: string) {
   return `posts(
     sort: ["-published_at"]
     filter: {
       blog_id: { slug: { _eq: "${blogSlug}" } }
       status: { _eq: "published" }
+      ${search ? `_or: [{ title: { _contains: "${search}" } }, { summary: { _contains: "${search}" } }, { content: { _contains: "${search}" } }]` : ''}
     }
     limit: ${limit}
     offset: ${offset}

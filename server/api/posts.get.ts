@@ -7,6 +7,8 @@ export default defineEventHandler(async (event): Promise<PostsResponse> => {
   const limit = Number(getQuery(event).limit) || 10;
   const page = Number(getQuery(event).page) || 1;
   const offset = (page - 1) * limit;
+  const search = String(getQuery(event).search) || '';
+
   const needSidebar = getQuery(event).sidebar === 'true';
 
   const directus = useDirectus();
@@ -14,10 +16,8 @@ export default defineEventHandler(async (event): Promise<PostsResponse> => {
 
   try {
     const result = await directus.query<RawPosts & Partial<RawSidebarContent>>(
-      buildQuery(posts(limit, offset), needSidebar ? sidebar : undefined),
+      buildQuery(posts(limit, offset, search), needSidebar ? sidebar : undefined),
     );
-
-    // return result;
 
     const postsData = postsMapper(result);
     const sidebarDetail = needSidebar ? sidebarMapper(result) : undefined;
