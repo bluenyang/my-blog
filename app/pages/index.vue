@@ -1,10 +1,8 @@
 <script setup lang="ts">
   import BannerHero from '~/components/banner-hero.vue';
   import PostCard from '~/components/post-card.vue';
-  import { useRecentPosts } from '~/composables/use-post';
 
-  const { posts, pending, error } = useRecentPosts(6);
-  const { series } = useSeries();
+  const { recentPosts, popularSeries, pending, error } = useHome();
 </script>
 
 <template>
@@ -24,7 +22,8 @@
           to="/posts"
           class="text-primary hover:text-primary/80 hidden text-sm font-semibold transition-colors sm:flex sm:items-center"
         >
-          전체 보기 <Icon name="lucide:arrow-right" class="ml-1 size-4" />
+          <span>전체 보기</span>
+          <Icon name="lucide:arrow-right" class="ml-1 size-4" />
         </NuxtLink>
       </div>
 
@@ -42,7 +41,7 @@
 
       <!-- 빈 목록 상태 -->
       <div
-        v-else-if="posts.length === 0"
+        v-else-if="recentPosts.length === 0"
         class="flex flex-col items-center justify-center py-24 text-center"
       >
         <Icon name="lucide:file-text" class="text-muted-foreground mb-4 size-12" />
@@ -54,7 +53,7 @@
         v-else
         class="grid grid-cols-1 gap-x-6 gap-y-2 sm:grid-cols-2 sm:gap-y-10 lg:grid-cols-3 xl:gap-x-8"
       >
-        <PostCard v-for="post in posts" :key="post.id" :post="post" />
+        <PostCard v-for="post in recentPosts" :key="post.slug" :post="post" />
       </div>
 
       <!-- 모바일 전체 보기 버튼 -->
@@ -80,8 +79,8 @@
 
         <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
           <NuxtLink
-            v-for="item in series"
-            :key="item.id"
+            v-for="item in popularSeries"
+            :key="item.slug"
             :to="{ name: 'series-slug', params: { slug: item.slug } }"
             prefetch-on="interaction"
             class="group bg-card hover:bg-card-hover hover:border-border flex flex-col overflow-hidden rounded-2xl border border-transparent transition-all"
