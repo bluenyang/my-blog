@@ -32,6 +32,7 @@ export function useNavigationMenu() {
           isCategory: item.is_category,
           parentId: item.parent_id,
           children: item.children,
+          slug: item.label,
         };
       });
 

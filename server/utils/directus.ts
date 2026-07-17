@@ -11,3 +11,12 @@ export function useDirectus() {
 
   return createDirectusClient(url);
 }
+
+export function getDirectusImageUrl(id: string) {
+  const config = useRuntimeConfig();
+  const url = config.public.directusUrl;
+  if (!url) {
+    throw new Error('[directus] runtimeConfig.public.directusUrl is not set');
+  }
+  return `${url}/assets/${id}`;
+}
