@@ -1,6 +1,7 @@
 import { postMapper, seriesMapper } from './mapper';
 
-import type { HomePosts, RawHomePosts } from '~~/shared/types/home';
+import type { RawHomePosts } from '~~/server/types/raw-data/home';
+import type { HomePosts } from '~~/shared/types/home';
 
 export function homeMapper(raw: RawHomePosts): HomePosts {
   return {

@@ -1,19 +1,7 @@
-import type { CategoryItem, RawCategoryItem } from './category';
-import type { NavigationItem, RawNavigationItem } from './navigation';
-import type { RawSeriesItem, SeriesItem } from './series';
-import type { RawTagItem, TagItem } from './tag';
-
-export interface RawSidebarContent {
-  sidebarPostCount: {
-    count: {
-      id: number;
-    };
-  }[];
-  sidebarCategories: RawCategoryItem[];
-  sidebarSeries: RawSeriesItem[];
-  sidebarTags: RawTagItem[];
-  sidebarNavigations: RawNavigationItem[];
-}
+import type { CategoryItem } from './category';
+import type { NavigationItem } from './navigation';
+import type { SeriesItem } from './series';
+import type { TagItem } from './tag';
 
 export interface SidebarContent {
   profile: {

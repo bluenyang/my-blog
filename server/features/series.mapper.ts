@@ -1,11 +1,7 @@
 import { getDirectusImageUrl } from '../utils/directus';
 
-import type {
-  RawSeriesItem,
-  RawSeriesItemInPost,
-  SeriesItem,
-  SeriesItemInPost,
-} from '~~/shared/types/series';
+import type { RawSeriesItem, RawSeriesItemInPost } from '~~/server/types/raw-data/series';
+import type { SeriesItem, SeriesItemInPost } from '~~/shared/types/series';
 
 export function seriesMapper(raw: RawSeriesItem[]): SeriesItem[] {
   return raw.map<SeriesItem>((item) => ({

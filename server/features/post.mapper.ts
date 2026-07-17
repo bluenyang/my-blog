@@ -2,13 +2,8 @@ import { getDirectusImageUrl } from '../utils/directus';
 
 import { categoryInPostMapper, seriesInPostMapper, tagInPostMapper } from './mapper';
 
-import type {
-  PostDetail,
-  PostItem,
-  RawPostDetail,
-  RawPostItem,
-  RawPosts,
-} from '~~/shared/types/post';
+import type { RawPostDetail, RawPostItem, RawPosts } from '~~/server/types/raw-data/post';
+import type { PostDetail, PostItem } from '~~/shared/types/post';
 
 export function postMapper(raw: RawPostItem[]): PostItem[] {
   return raw.map<PostItem>((item) => ({

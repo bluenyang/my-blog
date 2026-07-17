@@ -1,8 +1,8 @@
 import { homeMapper, sidebarMapper } from '../features/mapper';
 
 import { useQuery } from '#server/utils/use-query';
-import type { HomePosts, RawHomePosts } from '#shared/types/home';
-import type { RawSidebarContent } from '~~/shared/types/sidebar';
+import type { RawHomePosts, RawSidebarContent } from '~~/server/types/raw-data';
+import type { HomePosts } from '~~/shared/types';
 
 export default defineEventHandler(async (event): Promise<HomePosts> => {
   const needSidebar = getQuery(event).sidebar === 'true';

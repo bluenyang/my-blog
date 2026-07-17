@@ -1,7 +1,7 @@
 import { useQuery } from '#server/utils/use-query';
 import { postsMapper, sidebarMapper } from '~~/server/features/mapper';
-import type { PostsResponse, RawPosts } from '~~/shared/types/post';
-import type { RawSidebarContent } from '~~/shared/types/sidebar';
+import type { RawPosts, RawSidebarContent } from '~~/server/types/raw-data';
+import type { PostsResponse } from '~~/shared/types';
 
 export default defineEventHandler(async (event): Promise<unknown> => {
   const query = getQuery(event);
