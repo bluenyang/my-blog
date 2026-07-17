@@ -1,4 +1,5 @@
-import type { NavigationItem, RawNavigationItem } from '~~/shared/types/navigation';
+import type { RawNavigationItem } from '~~/server/types/raw-data/navigation';
+import type { NavigationItem } from '~~/shared/types/navigation';
 import { buildTree } from '~~/shared/utils/build-tree';
 
 export function navigationMapper(raw: RawNavigationItem[]): NavigationItem[] {

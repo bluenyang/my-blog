@@ -1,9 +1,5 @@
-import type {
-  CategoryItem,
-  CategoryItemInPost,
-  RawCategoryItem,
-  RawCategoryItemInPost,
-} from '~~/shared/types/category';
+import type { RawCategoryItem, RawCategoryItemInPost } from '~~/server/types/raw-data/category';
+import type { CategoryItem, CategoryItemInPost } from '~~/shared/types/category';
 import { buildTree } from '~~/shared/utils/build-tree';
 
 export function categoryMapper(raw: RawCategoryItem[]): CategoryItem[] {

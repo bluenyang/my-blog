@@ -1,4 +1,5 @@
-import type { RawTagItem, RawTagItemInPost, TagItem, TagItemInPost } from '~~/shared/types/tag';
+import type { RawTagItem, RawTagItemInPost } from '~~/server/types/raw-data/tag';
+import type { TagItem, TagItemInPost } from '~~/shared/types/tag';
 
 export function tagMapper(raw: RawTagItem[]): TagItem[] {
   return raw.map((item) => ({
