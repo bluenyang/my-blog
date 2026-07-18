@@ -89,7 +89,25 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
+        <div v-if="pending" class="flex justify-center py-24">
+          <Icon name="lucide:loader-2" class="text-primary size-10 animate-spin" />
+        </div>
+
+        <div v-else-if="error" class="flex flex-col items-center justify-center py-24 text-center">
+          <Icon name="lucide:alert-circle" class="text-destructive mb-4 size-12" />
+          <p class="text-destructive text-lg">시리즈를 불러오는데 실패했습니다.</p>
+          <p class="text-muted-foreground text-sm">{{ error.message }}</p>
+        </div>
+
+        <div
+          v-else-if="popularSeries.length === 0"
+          class="flex flex-col items-center justify-center py-24 text-center"
+        >
+          <Icon name="lucide:layers" class="text-muted-foreground mb-4 size-12" />
+          <p class="text-muted-foreground text-lg">등록된 시리즈가 없습니다.</p>
+        </div>
+
+        <div v-else class="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
           <NuxtLink
             v-for="item in popularSeries"
             :key="item.slug"

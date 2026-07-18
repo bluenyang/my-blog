@@ -15,15 +15,7 @@
     return index >= 0 ? index + 1 : null;
   });
 
-  const formattedDate = computed(() => {
-    if (!post.value?.publishedAt) return '';
-    return new Intl.DateTimeFormat('en-GB', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      weekday: 'long',
-    }).format(new Date(post.value.publishedAt));
-  });
+  const formattedDate = computed(() => formatPostDateLong(post.value?.publishedAt));
 
   const categoryName = computed<string>(() => {
     if (!post.value?.categories?.length) {

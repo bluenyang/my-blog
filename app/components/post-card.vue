@@ -3,14 +3,7 @@
 
   const { onNavigate, isPending } = useNavFeedback();
 
-  const formattedDate = computed(() => {
-    if (!props.post.publishedAt) return '';
-    const date = new Date(props.post.publishedAt);
-    const yyyy = date.getFullYear();
-    const mm = String(date.getMonth() + 1).padStart(2, '0');
-    const dd = String(date.getDate()).padStart(2, '0');
-    return `${yyyy}-${mm}-${dd}`;
-  });
+  const formattedDate = computed(() => formatPostDateYmd(props.post.publishedAt));
 
   const categories = computed(() => {
     if (!props.post.categories) return [];
