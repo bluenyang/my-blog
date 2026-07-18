@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import type { CategoryItem } from '~/types/category';
+  import type { CategoryItem } from '~~/shared/types';
 
   interface MenuItemProps {
     item: CategoryItem;
@@ -118,7 +118,7 @@
     >
       <div class="overflow-hidden">
         <ul class="bg-sidebar ps-3">
-          <CategoryItems v-for="child in item.children" :key="child.id" :item="child" />
+          <CategoryItems v-for="child in item.children" :key="child.slug" :item="child" />
         </ul>
       </div>
     </div>

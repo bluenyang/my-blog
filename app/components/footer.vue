@@ -1,10 +1,10 @@
 <script setup lang="ts">
-  import { useCategory } from '~/composables/use-category';
   import { profileData } from '~/constants/sidebar-data';
 
-  const { categories } = useCategory();
+  const { sidebar } = useSidebar();
   const config = useRuntimeConfig();
 
+  const categories = computed(() => sidebar.value?.categories.items ?? []);
   const currentYear = new Date().getFullYear();
 </script>
 
@@ -60,7 +60,7 @@
             {{ '카테고리' }}
           </h3>
           <ul class="flex flex-col space-y-2">
-            <li v-for="category in categories" :key="category.id">
+            <li v-for="category in categories" :key="category.slug">
               <NuxtLink
                 :to="`/categories/${category.slug}`"
                 prefetch-on="interaction"
