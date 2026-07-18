@@ -1,8 +1,6 @@
 <script setup lang="ts">
   // import type { MDCParserResult } from '@nuxtjs/mdc';
   import type { ComarkTree } from 'comark';
-  import highlight from '@comark/nuxt/plugins/highlight';
-  import oneDarkPro from '@shikijs/themes/one-dark-pro';
 
   interface MarkdownContentProps {
     postContent: string;
@@ -13,22 +11,13 @@
 
   const { postContent, series, currentPostIdx } = defineProps<MarkdownContentProps>();
 
-  const content = ref<ComarkTree | null>(null);
-
-  const plugins = [
-    highlight({
-      themes: {
-        light: oneDarkPro,
-        dark: oneDarkPro,
-      },
-    }),
-  ];
+  const tree = ref<ComarkTree | null>(null);
 
   onMounted(async () => {
     if (!postContent) {
       return;
     }
-    content.value = await parseContent(postContent);
+    tree.value = await parseContent(postContent);
   });
 </script>
 
@@ -48,7 +37,7 @@
             <Icon name="lucide:chevron-down" class="size-5" />
           </summary>
           <div class="mt-4">
-            <TocLink v-if="content?.meta.toc" :links="content?.meta.toc.links" />
+            <TocLink v-if="tree?.meta.toc" :links="tree?.meta.toc.links" />
           </div>
         </details>
       </div>
@@ -62,13 +51,13 @@
 
       <!-- Markdown Content -->
       <!-- <MDCRenderer v-if="content" class="mdc-content" :body="content?.body" :data="content?.data" /> -->
-      <Comark v-if="content" :tree="content" :plugins="plugins" />
+      <ComarkRenderer v-if="tree" :tree="tree" />
     </main>
     <!-- Floating Nav (TOC) - Left Side -->
     <aside v-if="postContent" class="hidden w-52 shrink-0 rounded-md lg:sticky lg:top-36 lg:block">
       <div class="flex flex-col text-sm">
         <div class="text-foreground mb-2 text-base font-semibold">{{ '목차' }}</div>
-        <TocLink v-if="content?.meta.toc" :links="content?.meta.toc.links" class="space-y-4" />
+        <TocLink v-if="tree?.meta.toc" :links="tree?.meta.toc.links" class="space-y-4" />
       </div>
     </aside>
   </div>
