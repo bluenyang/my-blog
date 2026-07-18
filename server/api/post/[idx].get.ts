@@ -1,12 +1,11 @@
-import { postDetailMapper, sidebarMapper } from '~~/server/features/mapper';
-import type { RawPostDetail, RawSidebarContent } from '~~/server/types/raw-data';
+import { postDetailMapper } from '~~/server/features/mapper';
+import type { RawPostDetail } from '~~/server/types/raw-data';
 
 export default defineEventHandler(async (event): Promise<PostDetail> => {
   const postIdx = Number(getRouterParam(event, 'idx'));
-  const needSidebar = getQuery(event).sidebar === 'true';
 
   const directus = useDirectus();
-  const { buildQuery, sidebar, postDetail } = useQuery();
+  const { buildQuery, postDetail } = useQuery();
 
   if (isNaN(postIdx)) {
     throw createError({
@@ -16,21 +15,8 @@ export default defineEventHandler(async (event): Promise<PostDetail> => {
   }
 
   try {
-    const result = await directus.query<RawPostDetail & Partial<RawSidebarContent>>(
-      buildQuery(postDetail(postIdx), needSidebar ? sidebar : undefined),
-    );
-
-    // return result;
-
-    const postDetailData = postDetailMapper(result);
-    const sidebarDetail = needSidebar ? sidebarMapper(result) : undefined;
-
-    const payload = postDetailData;
-    if (needSidebar) {
-      payload.sidebar = sidebarDetail;
-    }
-
-    return payload;
+    const result = await directus.query<RawPostDetail>(buildQuery(postDetail(postIdx)));
+    return postDetailMapper(result);
   } catch (error) {
     console.error('Failed to fetch post detail:', error);
     throw createError({

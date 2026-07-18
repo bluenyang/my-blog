@@ -6,17 +6,7 @@ import { tagMapper } from './tag.mapper';
 import type { RawSidebarContent } from '~~/server/types/raw-data';
 import type { SidebarContent } from '~~/shared/types';
 
-export function sidebarMapper(raw: Partial<RawSidebarContent>): SidebarContent | undefined {
-  if (
-    !raw.sidebarPostCount ||
-    !raw.sidebarCategories ||
-    !raw.sidebarSeries ||
-    !raw.sidebarTags ||
-    !raw.sidebarNavigations
-  ) {
-    return undefined;
-  }
-
+export function sidebarMapper(raw: RawSidebarContent): SidebarContent {
   const [sidebarPostCount] = raw.sidebarPostCount;
 
   return {

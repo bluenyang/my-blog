@@ -2,8 +2,10 @@ import type { SidebarContent } from '~~/shared/types';
 
 export const useSidebar = () => {
   const isOpen = useState<boolean>('sidebar_is_open', () => false);
-  const sidebar = useState<SidebarContent | null>('sidebar', () => null);
-  const needSidebar = computed(() => sidebar.value === null);
+  const { data, pending, error } = useFetch<SidebarContent>('/api/sidebar', {
+    method: 'GET',
+    key: 'sidebar',
+  });
 
   function toggle(): void {
     isOpen.value = !isOpen.value;
@@ -14,18 +16,13 @@ export const useSidebar = () => {
   function open(): void {
     isOpen.value = true;
   }
-
-  function setSidebarData(data: SidebarContent): void {
-    sidebar.value = data;
-  }
-
   return {
     isOpen,
-    sidebar,
-    needSidebar,
+    sidebar: computed(() => data.value || undefined),
+    pending,
+    error,
     toggle,
     close,
     open,
-    setSidebarData,
   };
 };
