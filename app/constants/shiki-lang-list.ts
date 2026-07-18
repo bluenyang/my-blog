@@ -15,6 +15,7 @@ import json from '@shikijs/langs/json';
 import md from '@shikijs/langs/md';
 import mdc from '@shikijs/langs/mdc';
 import sql from '@shikijs/langs/sql';
+import plsql from '@shikijs/langs/plsql';
 import yaml from '@shikijs/langs/yaml';
 import yml from '@shikijs/langs/yml';
 import go from '@shikijs/langs/go';
@@ -42,6 +43,7 @@ export const shikiLangList = [
   md,
   mdc,
   sql,
+  plsql,
   yaml,
   yml,
   go,
