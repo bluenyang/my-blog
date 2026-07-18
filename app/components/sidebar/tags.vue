@@ -15,7 +15,10 @@
     <ul class="flex flex-wrap gap-2 px-2">
       <li v-for="tag in tags" :key="tag.slug">
         <NuxtLink
-          :to="`/tags/${tag.slug}`"
+          :to="{
+            name: 'tags-slug',
+            params: { slug: tag.slug },
+          }"
           prefetch-on="interaction"
           :class="
             cn(

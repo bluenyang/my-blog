@@ -65,7 +65,10 @@
         "
       >
         <NuxtLink
-          :to="`/categories/${item.slug}`"
+          :to="{
+            name: 'categories-slug',
+            params: { slug: item.slug },
+          }"
           prefetch-on="interaction"
           class="flex min-w-0 flex-1 items-center gap-2 px-2 py-1"
         >

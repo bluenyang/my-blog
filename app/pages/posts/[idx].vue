@@ -1,7 +1,4 @@
 <script setup lang="ts">
-  import { computed } from 'vue';
-  import { useRoute } from 'vue-router';
-
   import MarkdownContent from '~/components/markdown-content.vue';
   import { usePostDetail } from '~/composables/use-post';
 
