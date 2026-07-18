@@ -5,6 +5,6 @@
 
 <template>
   <div>
-    <FilteredPostsView filter-type="category" :filter-value="slug" />
+    <FilteredPostsView :category="slug" />
   </div>
 </template>
