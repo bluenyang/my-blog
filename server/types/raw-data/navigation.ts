@@ -1,4 +1,5 @@
 export interface RawNavigationItem {
+  id: string;
   label: string;
   url: string | null;
   icon: string | null;
