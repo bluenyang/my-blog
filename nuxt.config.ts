@@ -3,7 +3,6 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineNuxtConfig({
   modules: [
     '@nuxtjs/color-mode',
-    '@nuxt/eslint',
     '@nuxt/icon',
     '@nuxtjs/mdc',
     '@nuxtjs/robots',
@@ -117,15 +116,6 @@ export default defineNuxtConfig({
         'clsx',
         'tailwind-merge',
       ],
-    },
-  },
-
-  eslint: {
-    config: {
-      stylistic: {
-        commaDangle: 'never',
-        braceStyle: '1tbs',
-      },
     },
   },
 
