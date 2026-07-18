@@ -57,16 +57,18 @@ export function postsQuery(
   tag?: string,
   series?: string,
 ) {
+  const filter = `
+    blog_id: { slug: { _eq: "${blogSlug}" } }
+    status: { _eq: "published" }
+    ${search ? `_or: [{ title: { _contains: "${search}" } }, { summary: { _contains: "${search}" } }, { content: { _contains: "${search}" } }]` : ''}
+    ${category ? `categories: { categories_id: { slug: { _eq: "${category}" } } }` : ''}
+    ${tag ? `tags: { tags_id: { slug: { _eq: "${tag}" } } }` : ''}
+    ${series ? `series: { series_id: { slug: { _eq: "${series}" } } }` : ''}
+  `;
+
   return `posts(
     sort: ["-published_at"]
-    filter: {
-      blog_id: { slug: { _eq: "${blogSlug}" } }
-      status: { _eq: "published" }
-      ${search ? `_or: [{ title: { _contains: "${search}" } }, { summary: { _contains: "${search}" } }, { content: { _contains: "${search}" } }]` : ''}
-      ${category ? `categories: { categories_id: { slug: { _eq: "${category}" } } }` : ''}
-      ${tag ? `tags: { tags_id: { slug: { _eq: "${tag}" } } }` : ''}
-      ${series ? `series: { series_id: { slug: { _eq: "${series}" } } }` : ''}
-    }
+    filter: { ${filter} }
     limit: ${limit}
     offset: ${offset}
   ) {
@@ -101,5 +103,10 @@ export function postsQuery(
         slug
       }
     }
+  }
+  postsCount: posts_aggregated(
+    filter: { ${filter} }
+  ) {
+    count { id }
   }`;
 }

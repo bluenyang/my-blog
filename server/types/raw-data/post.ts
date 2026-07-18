@@ -61,6 +61,11 @@ export interface RawPostDetail {
 }
 export interface RawPosts {
   posts: RawPostItem[];
+  postsCount: {
+    count: {
+      id: number;
+    };
+  }[];
   series?: RawSeriesItem[];
   category?: RawCategoryItem[];
   tag?: RawTagItem[];

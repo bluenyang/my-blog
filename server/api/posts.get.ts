@@ -52,6 +52,7 @@ export default defineEventHandler(async (event): Promise<PostsResponse> => {
     );
 
     const postsData = postMapper(result.posts);
+    const totalCount = Number(result.postsCount?.[0]?.count?.id ?? 0);
     const metadata = (() => {
       if (searchType === 'category') {
         return postSearchMapper(result.category![0]!);
@@ -67,6 +68,7 @@ export default defineEventHandler(async (event): Promise<PostsResponse> => {
     const payload: PostsResponse = {
       searchType,
       metadata,
+      totalCount,
       posts: postsData,
       sidebar: needSidebar ? sidebarMapper(result) : undefined,
     };

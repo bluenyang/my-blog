@@ -8,7 +8,7 @@
     series?: string;
   }>();
 
-  const limit = 5;
+  const limit = 10;
   const currentPage = ref(1);
   const { onNavigate, isPending } = useNavFeedback();
 
@@ -28,7 +28,7 @@
     },
   );
 
-  const { posts, pending, error, metadata, searchType } = usePostList(
+  const { posts, pending, error, metadata, searchType, totalCount } = usePostList(
     limit,
     currentPage,
     () => options.value.search,
@@ -110,6 +110,10 @@
     }
     return post.categories[0] ?? 'Uncategorized';
   }
+
+  const currentPageText = computed(() => {
+    return `총 ${Math.ceil(totalCount.value / limit)}페이지 중 ${currentPage.value}페이지`;
+  });
 </script>
 
 <template>
@@ -125,7 +129,7 @@
       />
     </div>
 
-    <div class="mb-12">
+    <div class="border-border border-b-2 pb-2">
       <div class="text-muted-foreground mb-3 flex items-center gap-2 text-sm">
         <Icon :name="iconName" class="size-4" />
         <span class="tracking-widest uppercase">{{ eyebrow }}</span>
@@ -134,6 +138,7 @@
       <p class="text-muted-foreground mt-3 text-lg">
         {{ searchType === 'series' ? metadata?.description : pageDesc }}
       </p>
+      <p class="text-muted-foreground mt-3 text-end text-base">{{ currentPageText }}</p>
     </div>
 
     <div v-if="pending" class="flex justify-center py-24">
@@ -216,6 +221,10 @@
       </NuxtLink>
     </div>
 
-    <Pagination v-model:current="currentPage" :total="metadata?.totalCount" :limit="limit" />
+    <Pagination
+      v-model:current="currentPage"
+      :total="metadata?.totalCount ?? totalCount"
+      :limit="limit"
+    />
   </main>
 </template>
