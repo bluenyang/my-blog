@@ -6,6 +6,7 @@
   import { usePostDetail } from '~/composables/use-post';
 
   const route = useRoute();
+  const config = useRuntimeConfig();
 
   const idParam = route.params.id as string;
   const postIdx = parseInt(idParam, 10);
@@ -40,6 +41,16 @@
   function goBack() {
     window.history.back();
   }
+
+  useSeoMeta({
+    title: () => post.value?.title || 'Post',
+    titleTemplate: `%s · BlueNyang's Devlog`,
+    description: () => post.value?.summary || '',
+    ogTitle: () => post.value?.title || 'Post',
+    ogImage: () => post.value?.thumbnail || '',
+    ogDescription: () => post.value?.summary || '',
+    ogUrl: () => `${config.public.blogUrl}/posts/${post.value?.postIdx}-${post.value?.slug}`,
+  });
 </script>
 
 <template>

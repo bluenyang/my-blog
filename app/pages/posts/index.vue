@@ -1,6 +1,8 @@
 <script setup lang="ts">
   import type { PostItem } from '~~/shared/types';
 
+  const config = useRuntimeConfig();
+
   const limit = 10;
   const currentPage = ref(1);
   const { posts, pending, error, totalCount } = usePostList(limit, currentPage);
@@ -24,6 +26,16 @@
 
   const currentPageText = computed(() => {
     return `총 ${Math.ceil(totalCount.value / limit)}페이지 중 ${currentPage.value}페이지`;
+  });
+
+  useSeoMeta({
+    title: `All Posts`,
+    titleTemplate: `%s · BlueNyang's Devlog`,
+    description: 'BlueNyang의 개발 log',
+    ogTitle: `All Posts`,
+    ogImage: `${config.public.blogUrl}/favicon.ico`,
+    ogDescription: 'BlueNyang의 개발 log',
+    ogUrl: config.public.blogUrl,
   });
 </script>
 

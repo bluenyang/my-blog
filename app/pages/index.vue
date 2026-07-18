@@ -1,5 +1,20 @@
 <script setup lang="ts">
   const { recentPosts, popularSeries, pending, error } = useHome();
+
+  const config = useRuntimeConfig();
+
+  useSeoMeta({
+    title: `Home`,
+    titleTemplate: `%s · BlueNyang's Devlog`,
+    description: 'BlueNyang의 개발 log',
+    ogTitle: `BlueNyang's Devlog`,
+    ogImage: `${config.public.blogUrl}/favicon.ico`,
+    ogDescription: 'BlueNyang의 개발 log',
+    ogUrl: config.public.blogUrl,
+    ogType: 'website',
+    ogLocale: 'ko_KR',
+    ogSiteName: `BlueNyang's Devlog`,
+  });
 </script>
 
 <template>
