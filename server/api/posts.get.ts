@@ -54,9 +54,9 @@ export default defineEventHandler(async (event): Promise<PostsResponse> => {
     const totalCount = Number(result.postsCount?.[0]?.count?.id ?? 0);
     const metadata = (() => {
       if (searchType === 'category') {
-        return postSearchMapper(result.category![0]!);
+        return postSearchMapper(result.categories![0]!);
       } else if (searchType === 'tag') {
-        return postSearchMapper(result.tag![0]!);
+        return postSearchMapper(result.tags![0]!);
       } else if (searchType === 'series') {
         return postSearchMapper(result.series![0]!);
       } else {

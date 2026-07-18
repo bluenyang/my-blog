@@ -67,6 +67,6 @@ export interface RawPosts {
     };
   }[];
   series?: RawSeriesItem[];
-  category?: RawCategoryItem[];
-  tag?: RawTagItem[];
+  categories?: RawCategoryItem[];
+  tags?: RawTagItem[];
 }
