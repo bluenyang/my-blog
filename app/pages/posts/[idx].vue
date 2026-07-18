@@ -1,7 +1,4 @@
 <script setup lang="ts">
-  import MarkdownContent from '~/components/markdown-content.vue';
-  import { usePostDetail } from '~/composables/use-post';
-
   const route = useRoute();
   const config = useRuntimeConfig();
 
