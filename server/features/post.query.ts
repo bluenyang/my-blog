@@ -5,6 +5,7 @@ export function postDetailQuery(blogSlug: string, postIdx: number) {
       post_idx: { _eq: "${postIdx}" }
       status: { _eq: "published" }
     }
+    sort: ["published_at"]
   ) {
     author_id {
       first_name
@@ -35,9 +36,10 @@ export function postDetailQuery(blogSlug: string, postIdx: number) {
     series {
       series_id {
         name
+        slug
         posts_func { count }
         posts {
-          posts_id{
+          posts_id {
             post_idx
             title
             slug

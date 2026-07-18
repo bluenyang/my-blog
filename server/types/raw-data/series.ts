@@ -13,6 +13,7 @@ export interface RawSeriesItem {
 export interface RawSeriesItemInPost {
   series_id: {
     name: string;
+    slug: string;
     posts_func: {
       count: number;
     };

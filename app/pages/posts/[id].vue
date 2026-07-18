@@ -10,34 +10,13 @@
   const idParam = route.params.id as string;
   const postIdx = parseInt(idParam, 10);
 
-  const { post, seriesPosts, pending, error } = usePostDetail(postIdx);
-
-  const config = useRuntimeConfig();
-
-  const thumbnailUrl = computed(() => {
-    if (post.value?.thumbnail) {
-      return `${config.public.directusUrl}/assets/${post.value.thumbnail}?width=1200&height=630&fit=cover`;
-    }
-    return null;
-  });
-
-  const seriesName = computed(() => {
-    if (post.value?.series && post.value.series.length > 0) {
-      return post.value.series[0]?.name;
-    }
-    return undefined;
-  });
-
-  const seriesId = computed(() => {
-    if (post.value?.series && post.value.series.length > 0) {
-      return post.value.series[0]?.id;
-    }
-    return undefined;
-  });
+  const { post, pending, error } = usePostDetail(postIdx);
+  const series = computed(() => post.value?.series?.[0]);
+  const seriesName = computed(() => series.value?.name);
 
   const seriesOrder = computed(() => {
-    if (!seriesPosts.value.length || !post.value) return null;
-    const index = seriesPosts.value.findIndex((p) => p.postIdx === post.value?.postIdx);
+    if (!series.value || !post.value?.postIdx) return null;
+    const index = series.value.posts.findIndex((p) => p.postIdx === post.value?.postIdx);
     return index >= 0 ? index + 1 : null;
   });
 
@@ -51,23 +30,11 @@
     }).format(new Date(post.value.publishedAt));
   });
 
-  const categoryName = computed(() => {
-    if (post.value?.categories && post.value.categories.length > 0) {
-      return post.value.categories[0]?.name || 'Uncategorized';
+  const categoryName = computed<string>(() => {
+    if (!post.value?.categories?.length) {
+      return 'Uncategorized';
     }
-    return 'Uncategorized';
-  });
-
-  const authorInfo = computed(() => {
-    const author = post.value?.author;
-    if (!author) return { name: 'Unknown', avatar: null };
-    const name =
-      author.nickname || `${author.lastName || ''}${author.firstName || ''}`.trim() || 'Author';
-    let avatarUrl = null;
-    if (author.avatar) {
-      avatarUrl = `${config.public.directusUrl}/assets/${author.avatar}?width=100&height=100&fit=cover`;
-    }
-    return { name, avatarUrl };
+    return post.value.categories[0]?.name ?? 'Uncategorized';
   });
 
   function goBack() {
@@ -103,22 +70,22 @@
       <div class="mb-8 flex flex-col items-start text-center">
         <!-- Thumbnail -->
         <div
-          v-if="thumbnailUrl"
+          v-if="post.thumbnail"
           class="relative mb-8 w-full max-w-4xl overflow-hidden rounded-2xl bg-linear-to-br shadow-lg md:from-blue-200 md:to-purple-300 dark:md:from-blue-800 dark:md:to-purple-900"
         >
-          <img :src="thumbnailUrl" :alt="post.title" class="aspect-2/1 w-full object-cover" />
+          <img :src="post.thumbnail" :alt="post.title" class="aspect-2/1 w-full object-cover" />
         </div>
 
         <div class="flex flex-col">
           <div class="mb-4 flex flex-wrap items-center justify-start gap-2 text-sm">
             <span class="text-muted-foreground font-bold">{{ categoryName }}</span>
-            <template v-if="seriesName && seriesOrder">
+            <template v-if="series">
               <div class="flex items-center gap-1">
                 <span class="text-muted-foreground">
                   {{ '·' }}
                 </span>
                 <NuxtLink
-                  :to="{ name: 'series-slug', params: { slug: post.series![0]?.slug } }"
+                  :to="{ name: 'series-slug', params: { slug: series.slug } }"
                   prefetch-on="interaction"
                   class="text-muted-foreground hover:text-primary transition-colors"
                 >
@@ -136,8 +103,8 @@
           <div class="text-muted-foreground mb-6 flex items-center justify-start gap-2 text-sm">
             <div class="flex items-center gap-2">
               <img
-                v-if="authorInfo.avatarUrl"
-                :src="authorInfo.avatarUrl"
+                v-if="post.author.avatar"
+                :src="post.author.avatar"
                 alt="Author Avatar"
                 class="size-6 rounded-full"
               />
@@ -147,7 +114,7 @@
               >
                 <Icon name="lucide:user" class="size-4" />
               </div>
-              <span class="font-medium">{{ authorInfo.name }}</span>
+              <span class="font-medium">{{ post.author.nickname }}</span>
             </div>
             <span>{{ '·' }}</span>
             <div class="flex items-center gap-2">
@@ -174,12 +141,10 @@
       </div>
 
       <MarkdownContent
-        v-if="post.content"
+        v-if="post"
         :post-content="post.content"
         :post-idx="post.postIdx"
-        :series-id="seriesId"
-        :series-name="seriesName"
-        :series-posts="seriesPosts"
+        :series="series"
         :current-post-idx="post.postIdx"
       />
     </div>

@@ -8,6 +8,7 @@ export interface SeriesItem {
 
 export interface SeriesItemInPost {
   name: string;
+  slug: string;
   postCount?: number;
   posts: {
     postIdx: number;
