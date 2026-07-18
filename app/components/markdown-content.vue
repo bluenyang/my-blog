@@ -1,5 +1,4 @@
 <script setup lang="ts">
-  // import type { MDCParserResult } from '@nuxtjs/mdc';
   import type { ComarkTree } from 'comark';
 
   interface MarkdownContentProps {
@@ -50,7 +49,6 @@
       />
 
       <!-- Markdown Content -->
-      <!-- <MDCRenderer v-if="content" class="mdc-content" :body="content?.body" :data="content?.data" /> -->
       <ComarkRenderer v-if="tree" :tree="tree" />
     </main>
     <!-- Floating Nav (TOC) - Left Side -->
