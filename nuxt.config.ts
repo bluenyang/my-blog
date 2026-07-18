@@ -83,6 +83,7 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
+      homepageUrl: process.env.HOMEPAGE_URL,
       blogUrl: process.env.BLOG_URL,
       blogSlug: process.env.BLOG_SLUG,
       directusUrl: process.env.DIRECTUS_URL,

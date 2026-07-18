@@ -3,8 +3,10 @@ import {
   homeQuery,
   postDetailQuery,
   postsQuery,
+  rssQuery,
   seriesQuery,
   sidebarQuery,
+  sitemapQuery,
   tagQuery,
 } from '~~/server/features/query';
 
@@ -30,6 +32,8 @@ export function useQuery() {
       series?: string,
     ) => postsQuery(config.public.blogSlug, limit, offset, search, category, tag, series),
     series: (seriesSlug: string) => seriesQuery(config.public.blogSlug, seriesSlug),
+    sitemap: sitemapQuery(config.public.blogSlug),
+    rss: rssQuery(config.public.blogSlug),
     category: (categorySlug: string) => categoryQuery(config.public.blogSlug, categorySlug),
     tag: (tagSlug: string) => tagQuery(config.public.blogSlug, tagSlug),
   };

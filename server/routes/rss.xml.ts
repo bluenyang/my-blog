@@ -1,34 +1,26 @@
-import { readItems } from '@directus/sdk';
 import { Feed } from 'feed';
 
-import type { DirectusPost } from '~~/server/types/rss';
+import { rssMapper } from '~~/server/features/mapper';
+import type { RawRssPosts } from '~~/server/types/rss';
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
   const directus = useDirectus();
 
+  const { buildQuery, rss } = useQuery();
+
+  const homepageUrl = config.public.homepageUrl || '';
   const blogUrl = config.public.blogUrl || '';
-  const blogSlug = config.public.blogSlug || '';
   const emailAddress = config.public.emailAddress || '';
 
-  const posts =
-    (await directus.request<DirectusPost[]>(
-      readItems('posts', {
-        filter: {
-          status: { _eq: 'published' },
-          blog_id: { slug: { _eq: blogSlug } },
-        },
-        fields: ['id', 'title', 'slug', 'post_idx', 'summary', 'content', 'published_at'],
-        sort: ['-published_at'],
-        limit: 50,
-      }),
-    )) || [];
+  const resp = await directus.query<RawRssPosts>(buildQuery(rss));
+  const posts = rssMapper(resp);
 
   const feed = new Feed({
     title: "BlueNyang's Devlog",
     description: 'BlueNyang의 개발 log',
     id: blogUrl,
-    link: blogUrl,
+    link: homepageUrl || blogUrl,
     language: 'ko-KR',
     image: `${blogUrl}/favicon.ico`,
     copyright: `All rights reserved ${new Date().getFullYear()}, BlueNyang`,
@@ -41,16 +33,16 @@ export default defineEventHandler(async (event) => {
   posts.forEach((post) => {
     feed.addItem({
       title: post.title,
-      id: `${blogUrl}/posts/${post.post_idx}-${post.slug}`,
-      link: `${blogUrl}/posts/${post.post_idx}-${post.slug}`,
-      description: post.summary,
-      content: post.content,
-      date: new Date(post.published_at || Date.now()),
+      id: post.id,
+      link: `${blogUrl}/posts/${post.postIdx}-${post.slug}`,
+      description: post.summary || '',
+      content: post.content || '',
+      date: post.publishedAt,
       author: [
         {
-          name: 'BlueNyang',
+          name: post.author,
           email: emailAddress,
-          link: blogUrl,
+          link: homepageUrl || blogUrl,
         },
       ],
     });
