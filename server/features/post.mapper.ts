@@ -2,8 +2,14 @@ import { getDirectusImageUrl } from '../utils/directus';
 
 import { categoryInPostMapper, seriesInPostMapper, tagInPostMapper } from './mapper';
 
-import type { RawPostDetail, RawPostItem, RawPosts } from '~~/server/types/raw-data/post';
-import type { PostDetail, PostItem } from '~~/shared/types/post';
+import type {
+  RawCategoryItem,
+  RawPostDetail,
+  RawPostItem,
+  RawSeriesItem,
+  RawTagItem,
+} from '~~/server/types/raw-data';
+import type { PostDetail, PostItem, PostSearch } from '~~/shared/types/post';
 
 export function postMapper(raw: RawPostItem[]): PostItem[] {
   return raw.map<PostItem>((item) => ({
@@ -24,10 +30,6 @@ export function postMapper(raw: RawPostItem[]): PostItem[] {
     tags: item.tags.map((tag) => tag.tags_id.name),
     series: item.series.map((series) => series.series_id.name),
   }));
-}
-
-export function postsMapper(raw: RawPosts): PostItem[] {
-  return postMapper(raw.posts);
 }
 
 export function postDetailMapper(raw: RawPostDetail): PostDetail {
@@ -55,5 +57,22 @@ export function postDetailMapper(raw: RawPostDetail): PostDetail {
     categories: post.categories ? categoryInPostMapper(post.categories) : null,
     tags: post.tags ? tagInPostMapper(post.tags) : null,
     series: post.series ? seriesInPostMapper(post.series) : null,
+  };
+}
+
+export function postSearchMapper(raw: RawCategoryItem | RawSeriesItem | RawTagItem): PostSearch {
+  if ('description' in raw) {
+    return {
+      name: raw.name,
+      slug: raw.slug,
+      totalCount: raw.posts_func.count,
+      description: raw.description ? raw.description : undefined,
+      thumbnail: raw.thumbnail ? getDirectusImageUrl(raw.thumbnail.id) : undefined,
+    };
+  }
+  return {
+    name: raw.name,
+    slug: raw.slug,
+    totalCount: raw.posts_func.count,
   };
 }
