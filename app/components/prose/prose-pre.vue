@@ -1,9 +1,9 @@
 <script setup lang="ts">
   defineProps<{
-    code: string;
+    code?: string;
     language?: string;
-    highlights?: number[];
     meta?: string;
+    class?: string;
   }>();
 
   const copied = ref(false);
@@ -20,12 +20,17 @@
   >
     <div class="flex items-center justify-between px-2 py-4">
       <span class="font-jua text-emerald-300!">{{ language || 'text' }}</span>
-      <button class="size-4 cursor-pointer" @click="copyCode(code)">
+      <button class="size-4 cursor-pointer" @click="copyCode(code || '')">
         <Icon :name="copied ? 'lucide:copy-check' : 'lucide:copy'" class="size-4 text-white" />
       </button>
     </div>
     <pre
-      class="[&>code]:font-cascadia-code scrollbar-thumb-sidebar-border min-w-0 scrollbar-thin scrollbar-track-transparent overflow-x-auto pt-2 pb-4 text-sm"
+      :class="
+        cn(
+          '[&>code]:font-cascadia-code scrollbar-thumb-sidebar-border min-w-0 scrollbar-thin scrollbar-track-transparent overflow-x-auto pt-2 pb-4 text-sm',
+          $props.class,
+        )
+      "
     ><slot /></pre>
   </div>
 </template>

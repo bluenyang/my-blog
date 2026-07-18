@@ -4,23 +4,36 @@
   }>();
 
   const config = {
-    note: { icon: 'i-lucide-info', borderColor: 'border-blue-500', iconColor: 'text-blue-500' },
+    note: {
+      icon: 'i-lucide-info',
+      label: 'Note',
+      borderColor: 'border-blue-500',
+      textColor: 'text-blue-500',
+    },
     tip: {
       icon: 'i-lucide-lightbulb',
+      label: 'Tip',
       borderColor: 'border-green-500',
-      iconColor: 'text-green-500',
+      textColor: 'text-green-500',
     },
     important: {
       icon: 'i-lucide-message-square-warning',
+      label: 'Important',
       borderColor: 'border-purple-500',
-      iconColor: 'text-purple-500',
+      textColor: 'text-purple-500',
     },
     warning: {
       icon: 'i-lucide-triangle-alert',
-      borderColor: 'border-yellow-500',
-      iconColor: 'text-yellow-500',
+      label: 'Warning',
+      borderColor: 'border-amber-600',
+      textColor: 'text-amber-600',
     },
-    caution: { icon: 'i-lucide-flame', borderColor: 'border-red-500', iconColor: 'text-red-500' },
+    caution: {
+      icon: 'i-lucide-flame',
+      label: 'Caution',
+      borderColor: 'border-red-500',
+      textColor: 'text-red-500',
+    },
   };
 </script>
 
@@ -33,11 +46,15 @@
       )
     "
   >
-    <Icon
-      v-if="as"
-      :name="config[as].icon"
-      :class="cn('text-blockquote-accent', as && config[as].iconColor)"
-    />
+    <div v-if="as" class="flex items-center gap-2">
+      <Icon
+        :name="config[as].icon"
+        :class="cn('text-blockquote-accent', as && config[as].textColor)"
+      />
+      <span :class="cn('text-blockquote-accent font-jua text-lg', as && config[as].textColor)">
+        {{ config[as].label }}
+      </span>
+    </div>
     <slot />
   </div>
 </template>
