@@ -9,6 +9,7 @@ export default defineNuxtConfig({
     '@nuxtjs/sitemap',
     '@vueuse/motion',
     '@vueuse/nuxt',
+    '@comark/nuxt',
   ],
 
   ssr: true,
@@ -114,6 +115,8 @@ export default defineNuxtConfig({
         '@vue/devtools-core',
         '@vue/devtools-kit',
         'clsx',
+        'comark',
+        'comark/plugins/highlight',
         'tailwind-merge',
       ],
     },
