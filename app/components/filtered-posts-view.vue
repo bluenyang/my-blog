@@ -6,6 +6,8 @@
     series?: string;
   }>();
 
+  const config = useRuntimeConfig();
+
   const limit = 10;
   const currentPage = ref(1);
   const { onNavigate, isPending } = useNavFeedback();
@@ -88,9 +90,35 @@
     }
   });
 
+  const pageSearchUrl = computed(() => {
+    if (searchType.value === 'search') {
+      return `${config.public.blogUrl}/search?search=${options.value.search || ''}`;
+    }
+    if (searchType.value === 'category') {
+      return `${config.public.blogUrl}/categories/${props.category}`;
+    }
+    if (searchType.value === 'tag') {
+      return `${config.public.blogUrl}/tags/${props.tag}`;
+    }
+    if (searchType.value === 'series') {
+      return `${config.public.blogUrl}/series/${props.series}`;
+    }
+    return `${config.public.blogUrl}`;
+  });
+
   useSeoMeta({
     title: pageTitle,
     description: pageDesc,
+    ogTitle: pageTitle,
+    ogDescription: pageDesc,
+    ogUrl: pageSearchUrl,
+    ogImage: () =>
+      searchType.value === 'series'
+        ? metadata.value?.thumbnail
+        : `${config.public.blogUrl}/favicon.ico`,
+    ogType: 'website',
+    ogLocale: 'ko_KR',
+    ogSiteName: `BlueNyang's Devlog`,
   });
 
   function getFormattedDate(dateString: string | null) {
