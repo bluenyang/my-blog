@@ -28,7 +28,7 @@
     },
   );
 
-  const { posts, pending, error, metadata, searchType, totalCount } = usePostList(
+  const { posts, pending, error, metadata, totalCount } = usePostList(
     limit,
     currentPage,
     () => options.value.search,
@@ -37,70 +37,95 @@
     () => options.value.series,
   );
 
+  // API searchType보다 props로 타입을 정해 SSR/클라이언트 헤더가 어긋나지 않게 함
+  const resolvedType = computed(() => {
+    if (options.value.search) {
+      return 'search';
+    } else if (options.value.category && !options.value.series && !options.value.tag) {
+      return 'category';
+    } else if (options.value.tag && !options.value.series && !options.value.category) {
+      return 'tag';
+    } else if (options.value.series && !options.value.category && !options.value.tag) {
+      return 'series';
+    } else if (
+      !options.value.search &&
+      !options.value.category &&
+      !options.value.tag &&
+      !options.value.series
+    ) {
+      return null;
+    } else {
+      return 'search';
+    }
+  });
+
   const eyebrow = computed(() => {
-    if (searchType.value === 'series') {
+    if (resolvedType.value === 'series') {
       return 'Series';
     }
-    if (searchType.value === 'category') {
+    if (resolvedType.value === 'category') {
       return 'Category';
     }
-    if (searchType.value === 'tag') {
+    if (resolvedType.value === 'tag') {
       return 'Tag';
     }
     return 'Search';
   });
 
   const iconName = computed(() => {
-    if (searchType.value === 'series') {
+    if (resolvedType.value === 'series') {
       return 'lucide:layers';
     }
-    if (searchType.value === 'category') {
+    if (resolvedType.value === 'category') {
       return 'lucide:folder';
     }
-    if (searchType.value === 'tag') {
+    if (resolvedType.value === 'tag') {
       return 'lucide:tag';
     }
     return 'lucide:search';
   });
 
   const pageTitle = computed(() => {
-    if (searchType.value === 'series') {
-      return `${metadata.value?.name} 시리즈`;
+    if (resolvedType.value === 'series') {
+      return metadata.value?.name ? `${metadata.value.name} 시리즈` : '시리즈';
     }
-    if (searchType.value === 'category') {
-      return `카테고리 · ${metadata.value?.name}`;
+    if (resolvedType.value === 'category') {
+      return metadata.value?.name ? `카테고리 · ${metadata.value.name}` : '카테고리';
     }
-    if (searchType.value === 'tag') {
-      return `태그 · #${metadata.value?.name}`;
+    if (resolvedType.value === 'tag') {
+      return metadata.value?.name ? `태그 · #${metadata.value.name}` : '태그';
     }
-    return `"${options.value.search}" 검색 결과`;
+    return options.value.search ? `"${options.value.search}" 검색 결과` : '검색 결과';
   });
 
   const pageDesc = computed(() => {
-    if (searchType.value === 'series') {
-      return `시리즈에 포함된 ${metadata.value?.totalCount}개의 글`;
-    } else if (searchType.value === 'category') {
-      return `카테고리에 포함된 ${metadata.value?.totalCount}개의 글`;
-    } else if (searchType.value === 'tag') {
-      return `태그가 붙은 ${metadata.value?.totalCount}개의 글`;
-    } else if (!options.value.search) {
-      return '검색어를 입력해 주세요.';
-    } else {
-      return `총 ${metadata.value?.totalCount}개의 글이 검색됐습니다.`;
+    const count = metadata.value?.totalCount;
+    if (resolvedType.value === 'series') {
+      return count != null ? `시리즈에 포함된 ${count}개의 글` : '';
     }
+    if (resolvedType.value === 'category') {
+      return count != null ? `카테고리에 포함된 ${count}개의 글` : '';
+    }
+    if (resolvedType.value === 'tag') {
+      return count != null ? `태그가 붙은 ${count}개의 글` : '';
+    }
+    if (!options.value.search) {
+      return '검색어를 입력해 주세요.';
+    }
+    return count != null ? `총 ${count}개의 글이 검색됐습니다.` : '';
   });
 
   const pageSearchUrl = computed(() => {
-    if (searchType.value === 'search') {
+    if (resolvedType.value === 'search') {
       return `${config.public.blogUrl}/search?search=${options.value.search || ''}`;
     }
-    if (searchType.value === 'category') {
+    if (resolvedType.value === 'category') {
       return `${config.public.blogUrl}/categories/${props.category}`;
     }
-    if (searchType.value === 'tag') {
+    if (resolvedType.value === 'tag') {
       return `${config.public.blogUrl}/tags/${props.tag}`;
     }
-    if (searchType.value === 'series') {
+    if (resolvedType.value === 'series') {
       return `${config.public.blogUrl}/series/${props.series}`;
     }
     return `${config.public.blogUrl}`;
@@ -113,7 +138,7 @@
     ogDescription: pageDesc,
     ogUrl: pageSearchUrl,
     ogImage: () =>
-      searchType.value === 'series'
+      resolvedType.value === 'series'
         ? metadata.value?.thumbnail
         : `${config.public.blogUrl}/favicon.ico`,
     ogType: 'website',
@@ -122,12 +147,7 @@
   });
 
   function getFormattedDate(dateString: string | null) {
-    if (!dateString) return '';
-    const date = new Date(dateString);
-    const yyyy = date.getFullYear();
-    const mm = String(date.getMonth() + 1).padStart(2, '0');
-    const dd = String(date.getDate()).padStart(2, '0');
-    return `${yyyy}-${mm}-${dd}`;
+    return formatPostDateYmd(dateString);
   }
 
   function getCategory(post: PostItem) {
@@ -145,7 +165,7 @@
 <template>
   <main class="container mx-auto px-4 py-16 sm:px-6 lg:px-8">
     <div
-      v-if="searchType === 'series' && metadata?.thumbnail"
+      v-if="resolvedType === 'series' && metadata?.thumbnail"
       class="mb-8 w-full overflow-hidden rounded-2xl shadow-md"
     >
       <img
@@ -162,7 +182,7 @@
       </div>
       <h1 class="text-3xl font-extrabold tracking-tight sm:text-4xl">{{ pageTitle }}</h1>
       <p class="text-muted-foreground mt-3 text-lg">
-        {{ searchType === 'series' ? metadata?.description : pageDesc }}
+        {{ resolvedType === 'series' ? metadata?.description : pageDesc }}
       </p>
       <p class="text-muted-foreground mt-3 text-end text-base">{{ currentPageText }}</p>
     </div>
@@ -183,74 +203,76 @@
     >
       <Icon name="lucide:search-x" class="text-muted-foreground mb-4 size-12" />
       <p class="text-muted-foreground text-lg">
-        {{ searchType === 'search' ? '검색 결과가 없습니다.' : '등록된 게시글이 없습니다.' }}
+        {{ resolvedType === 'search' ? '검색 결과가 없습니다.' : '등록된 게시글이 없습니다.' }}
       </p>
     </div>
 
-    <div v-else class="divide-border flex flex-col divide-y">
-      <NuxtLink
-        v-for="post in posts"
-        :key="post.postIdx"
-        :to="`/posts/${post.postIdx}-${post.slug}`"
-        prefetch-on="interaction"
-        :aria-busy="isPending(`post-${post.postIdx}`)"
-        :class="
-          cn(
-            'group hover:bg-card relative flex flex-col transition-opacity sm:flex-row sm:justify-between',
-            isPending(`post-${post.postIdx}`) && 'pointer-events-none opacity-60',
-          )
-        "
-        @click="onNavigate(`post-${post.postIdx}`)"
-      >
-        <div
-          class="flex-1 p-4 transition-all before:absolute before:inset-y-0 before:left-0 before:w-1 before:rounded-l-md before:bg-linear-to-b before:from-sky-500 before:to-indigo-500 before:opacity-0 before:transition-opacity before:duration-200 group-hover:before:opacity-100 sm:py-8"
+    <template v-else>
+      <div class="divide-border flex flex-col divide-y">
+        <NuxtLink
+          v-for="post in posts"
+          :key="post.postIdx"
+          :to="`/posts/${post.postIdx}-${post.slug}`"
+          prefetch-on="interaction"
+          :aria-busy="isPending(`post-${post.postIdx}`)"
+          :class="
+            cn(
+              'group hover:bg-card relative flex flex-col transition-opacity sm:flex-row sm:justify-between',
+              isPending(`post-${post.postIdx}`) && 'pointer-events-none opacity-60',
+            )
+          "
+          @click="onNavigate(`post-${post.postIdx}`)"
         >
           <div
-            class="text-muted-foreground mb-2 flex flex-col-reverse items-start text-sm sm:flex-row sm:items-center"
+            class="flex-1 p-4 transition-all before:absolute before:inset-y-0 before:left-0 before:w-1 before:rounded-l-md before:bg-linear-to-b before:from-sky-500 before:to-indigo-500 before:opacity-0 before:transition-opacity before:duration-200 group-hover:before:opacity-100 sm:py-8"
           >
-            <span class="text-primary font-semibold">{{ getCategory(post) }}</span>
-            <span class="ms-2 hidden sm:inline">·</span>
-            <span class="ms-2 text-xs">{{ `No. ${post.postIdx}` }}</span>
-            <template v-if="searchType !== 'series' && post.series && post.series.length > 0">
-              <span class="ms-2 hidden sm:inline">·</span>
-              <span class="text-muted-foreground ms-2 flex items-center gap-1 text-xs">
-                <Icon name="lucide:layers" class="size-3" />
-                {{ metadata?.name }}
-              </span>
-            </template>
-          </div>
-          <h3
-            class="text-foreground group-hover:text-muted-foreground mb-2 text-xl font-bold tracking-tight transition-colors"
-          >
-            {{ post.title }}
-          </h3>
-          <p class="text-muted-foreground line-clamp-1 text-sm md:line-clamp-2">
-            {{ post.summary || '' }}
-          </p>
-          <div v-if="post.tags && post.tags.length > 0" class="mt-3 flex flex-wrap gap-1">
-            <span
-              v-for="tagName in post.tags"
-              :key="tagName"
-              class="bg-muted text-muted-foreground rounded-full px-2 py-0.5 text-xs"
+            <div
+              class="text-muted-foreground mb-2 flex flex-col-reverse items-start text-sm sm:flex-row sm:items-center"
             >
-              {{ `#${tagName}` }}
-            </span>
+              <span class="text-primary font-semibold">{{ getCategory(post) }}</span>
+              <span class="ms-2 hidden sm:inline">·</span>
+              <span class="ms-2 text-xs">{{ `No. ${post.postIdx}` }}</span>
+              <template v-if="resolvedType !== 'series' && post.series && post.series.length > 0">
+                <span class="ms-2 hidden sm:inline">·</span>
+                <span class="text-muted-foreground ms-2 flex items-center gap-1 text-xs">
+                  <Icon name="lucide:layers" class="size-3" />
+                  {{ post.series[0] }}
+                </span>
+              </template>
+            </div>
+            <h3
+              class="text-foreground group-hover:text-muted-foreground mb-2 text-xl font-bold tracking-tight transition-colors"
+            >
+              {{ post.title }}
+            </h3>
+            <p class="text-muted-foreground line-clamp-1 text-sm md:line-clamp-2">
+              {{ post.summary || '' }}
+            </p>
+            <div v-if="post.tags && post.tags.length > 0" class="mt-3 flex flex-wrap gap-1">
+              <span
+                v-for="tagName in post.tags"
+                :key="tagName"
+                class="bg-muted text-muted-foreground rounded-full px-2 py-0.5 text-xs"
+              >
+                {{ `#${tagName}` }}
+              </span>
+            </div>
           </div>
-        </div>
 
-        <div class="text-muted-foreground flex items-center gap-1 p-4 sm:shrink-0">
-          <Icon name="lucide:clock" class="text-muted-foreground mb-0.5 size-4" />
-          <time :datetime="post.publishedAt || ''" class="text-sm">
-            {{ getFormattedDate(post.publishedAt) }}
-          </time>
-        </div>
-      </NuxtLink>
-    </div>
+          <div class="text-muted-foreground flex items-center gap-1 p-4 sm:shrink-0">
+            <Icon name="lucide:clock" class="text-muted-foreground mb-0.5 size-4" />
+            <time :datetime="post.publishedAt || ''" class="text-sm">
+              {{ getFormattedDate(post.publishedAt) }}
+            </time>
+          </div>
+        </NuxtLink>
+      </div>
 
-    <Pagination
-      v-model:current="currentPage"
-      :total="metadata?.totalCount ?? totalCount"
-      :limit="limit"
-    />
+      <Pagination
+        v-model:current="currentPage"
+        :total="metadata?.totalCount ?? totalCount"
+        :limit="limit"
+      />
+    </template>
   </main>
 </template>
