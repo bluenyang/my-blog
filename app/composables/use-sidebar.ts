@@ -5,6 +5,11 @@ export const useSidebar = () => {
   const { data, pending, error } = useFetch<SidebarContent>('/api/sidebar', {
     method: 'GET',
     key: 'sidebar',
+    getCachedData(key, nuxtApp) {
+      if (nuxtApp.isHydrating) {
+        return nuxtApp.payload.data[key] ?? nuxtApp.static.data[key];
+      }
+    },
   });
 
   function toggle(): void {
