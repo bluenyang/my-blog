@@ -8,8 +8,8 @@
   const route = useRoute();
   const config = useRuntimeConfig();
 
-  const idParam = route.params.id as string;
-  const postIdx = parseInt(idParam, 10);
+  const idxParam = route.params.idx as string;
+  const postIdx = parseInt(idxParam, 10);
 
   const { post, pending, error } = usePostDetail(postIdx);
   const series = computed(() => post.value?.series?.[0]);
