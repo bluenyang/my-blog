@@ -2,19 +2,24 @@
   import type { MDCParserResult } from '@nuxtjs/mdc';
 
   import SeriesBox from '~/components/series-box.vue';
-  import type { PostItem } from '~/types/post';
 
   interface MarkdownContentProps {
-    postContent: MDCParserResult;
+    postContent: string;
     postIdx: number;
-    seriesId?: string;
-    seriesName?: string;
-    seriesPosts?: PostItem[];
-    currentPostIdx?: number;
+    series?: SeriesItemInPost;
+    currentPostIdx: number;
   }
 
-  const { postContent, seriesId, seriesName, seriesPosts, currentPostIdx } =
-    defineProps<MarkdownContentProps>();
+  const { postContent, series, currentPostIdx } = defineProps<MarkdownContentProps>();
+
+  const content = ref<MDCParserResult | null>(null);
+
+  onMounted(async () => {
+    if (!postContent) {
+      return;
+    }
+    content.value = await parseContent(postContent);
+  });
 </script>
 
 <template>
@@ -33,33 +38,26 @@
             <Icon name="lucide:chevron-down" class="size-5" />
           </summary>
           <div class="mt-4">
-            <TocLink v-if="postContent.toc" :links="postContent.toc.links" />
+            <TocLink v-if="content?.toc" :links="content?.toc.links" />
           </div>
         </details>
       </div>
 
       <!-- Series Box -->
       <SeriesBox
-        v-if="seriesId && seriesName && currentPostIdx"
-        :series-id="seriesId"
-        :series-name="seriesName"
+        v-if="series && currentPostIdx"
+        :series="series"
         :current-post-idx="currentPostIdx"
-        :series-posts="seriesPosts!"
       />
 
       <!-- Markdown Content -->
-      <MDCRenderer
-        v-if="postContent"
-        class="mdc-content"
-        :body="postContent.body"
-        :data="postContent.data"
-      />
+      <MDCRenderer v-if="content" class="mdc-content" :body="content?.body" :data="content?.data" />
     </main>
     <!-- Floating Nav (TOC) - Left Side -->
     <aside v-if="postContent" class="hidden w-52 shrink-0 rounded-md lg:sticky lg:top-36 lg:block">
       <div class="flex flex-col text-sm">
         <div class="text-foreground mb-2 text-base font-semibold">{{ '목차' }}</div>
-        <TocLink v-if="postContent.toc" :links="postContent.toc.links" class="space-y-4" />
+        <TocLink v-if="content?.toc" :links="content?.toc.links" class="space-y-4" />
       </div>
     </aside>
   </div>
