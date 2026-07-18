@@ -2,7 +2,6 @@
   defineProps<{
     code: string;
     language?: string;
-    filename?: string;
     highlights?: number[];
     meta?: string;
   }>();
