@@ -29,7 +29,10 @@
           "
         >
           <NuxtLink
-            :to="`/series/${item.slug}`"
+            :to="{
+              name: 'series-slug',
+              params: { slug: item.slug },
+            }"
             prefetch-on="interaction"
             class="flex min-w-0 flex-1 items-center gap-2 px-2 py-1"
           >

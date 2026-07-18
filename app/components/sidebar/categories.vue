@@ -23,7 +23,10 @@
             )
           "
         >
-          <NuxtLink :to="`/posts`" class="flex min-w-0 flex-1 items-center gap-2 px-2 py-1">
+          <NuxtLink
+            :to="{ name: 'posts' }"
+            class="flex min-w-0 flex-1 items-center gap-2 px-2 py-1"
+          >
             <Icon
               v-if="!route.path.startsWith('/posts')"
               name="lucide:archive"
