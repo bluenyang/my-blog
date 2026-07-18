@@ -41,6 +41,16 @@ export interface PostDetail {
 }
 
 export interface PostsResponse {
+  searchType: 'search' | 'series' | 'category' | 'tag' | null;
+  metadata?: PostSearch;
   posts: PostItem[];
   sidebar?: SidebarContent;
+}
+
+export interface PostSearch {
+  name: string;
+  slug: string;
+  totalCount: number;
+  description?: string;
+  thumbnail?: string;
 }

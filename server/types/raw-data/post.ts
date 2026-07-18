@@ -1,6 +1,6 @@
-import type { RawCategoryItemInPost } from './category';
-import type { RawSeriesItemInPost } from './series';
-import type { RawTagItemInPost } from './tag';
+import type { RawCategoryItem, RawCategoryItemInPost } from './category';
+import type { RawSeriesItem, RawSeriesItemInPost } from './series';
+import type { RawTagItem, RawTagItemInPost } from './tag';
 
 export interface RawPostAuthor {
   first_name: string | null;
@@ -61,4 +61,7 @@ export interface RawPostDetail {
 }
 export interface RawPosts {
   posts: RawPostItem[];
+  series?: RawSeriesItem[];
+  category?: RawCategoryItem[];
+  tag?: RawTagItem[];
 }

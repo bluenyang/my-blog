@@ -1,4 +1,12 @@
-import { homeQuery, postDetailQuery, postsQuery, sidebarQuery } from '~~/server/features/query';
+import {
+  categoryQuery,
+  homeQuery,
+  postDetailQuery,
+  postsQuery,
+  seriesQuery,
+  sidebarQuery,
+  tagQuery,
+} from '~~/server/features/query';
 
 export function useQuery() {
   const config = useRuntimeConfig();
@@ -21,5 +29,8 @@ export function useQuery() {
       tag?: string,
       series?: string,
     ) => postsQuery(config.public.blogSlug, limit, offset, search, category, tag, series),
+    series: (seriesSlug: string) => seriesQuery(config.public.blogSlug, seriesSlug),
+    category: (categorySlug: string) => categoryQuery(config.public.blogSlug, categorySlug),
+    tag: (tagSlug: string) => tagQuery(config.public.blogSlug, tagSlug),
   };
 }
