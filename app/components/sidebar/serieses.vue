@@ -1,6 +1,8 @@
 <script setup lang="ts">
-  const { series } = useSeries();
+  const { sidebar } = useSidebar();
   const route = useRoute();
+
+  const series = computed(() => sidebar.value?.series.items ?? []);
 
   function isActiveSeries(slug: string) {
     return (
@@ -15,7 +17,7 @@
     <ul class="flex flex-col">
       <li
         v-for="item in series"
-        :key="item.id"
+        :key="item.slug"
         class="w-full md:bg-linear-to-b md:from-blue-300 md:to-purple-400 dark:md:from-blue-400 dark:md:to-purple-500"
       >
         <div

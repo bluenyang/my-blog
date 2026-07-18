@@ -1,6 +1,8 @@
 <script setup lang="ts">
-  const { tags } = useTag();
+  const { sidebar } = useSidebar();
   const route = useRoute();
+
+  const tags = computed(() => sidebar.value?.tags.items ?? []);
 
   function isActiveTag(slug: string) {
     return route.name === 'tags-slug' && decodeRouteSlug(String(route.params.slug || '')) === slug;
@@ -11,7 +13,7 @@
   <div v-if="tags.length > 0" class="px-2 py-4">
     <div class="mb-3 px-2 text-sm font-bold">{{ '태그' }}</div>
     <ul class="flex flex-wrap gap-2 px-2">
-      <li v-for="tag in tags" :key="tag.id">
+      <li v-for="tag in tags" :key="tag.slug">
         <NuxtLink
           :to="`/tags/${tag.slug}`"
           prefetch-on="interaction"

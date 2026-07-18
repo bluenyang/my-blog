@@ -1,7 +1,8 @@
 <script setup lang="ts">
   import { profileData } from '~/constants/sidebar-data';
 
-  const { total } = useCategory();
+  const { sidebar } = useSidebar();
+  const totalPosts = computed(() => sidebar.value?.profile.totalPosts ?? 0);
 </script>
 
 <template>
@@ -21,13 +22,9 @@
     </div>
     <div class="flex items-center justify-start gap-6">
       <div class="flex items-center gap-1">
-        <span class="font-jua text-base font-bold">{{ total }}</span>
+        <span class="font-jua text-base font-bold">{{ totalPosts }}</span>
         <span class="flex text-sm text-gray-600 dark:text-gray-400">{{ '포스트' }}</span>
       </div>
-      <!-- <div class="flex items-center gap-1">
-        <span class="font-jua text-base font-bold">{{ total }}</span>
-        <span class="text-sm text-gray-600 dark:text-gray-400">{{ '포스트' }}</span>
-      </div> -->
     </div>
     <div class="flex justify-start gap-3">
       <a

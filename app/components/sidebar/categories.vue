@@ -1,8 +1,11 @@
 <script setup lang="ts">
   import CategoryItems from './category-items.vue';
 
-  const { categories, total } = useCategory();
+  const { sidebar } = useSidebar();
   const route = useRoute();
+
+  const categories = computed(() => sidebar.value?.categories.items ?? []);
+  const totalPosts = computed(() => sidebar.value?.profile.totalPosts ?? 0);
 </script>
 
 <template>
@@ -47,12 +50,12 @@
                 )
               "
             >
-              {{ total || 0 }}
+              {{ totalPosts }}
             </span>
           </NuxtLink>
         </div>
       </li>
-      <CategoryItems v-for="item in categories" :key="item.id" :item="item" />
+      <CategoryItems v-for="item in categories" :key="item.slug" :item="item" />
     </ul>
   </div>
 </template>
