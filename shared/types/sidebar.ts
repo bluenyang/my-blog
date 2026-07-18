@@ -8,7 +8,6 @@ export interface SidebarContent {
     totalPosts: number;
   };
   categories: {
-    total: number;
     items: CategoryItem[];
   };
   series: {

@@ -24,7 +24,6 @@ export function sidebarMapper(raw: Partial<RawSidebarContent>): SidebarContent |
       totalPosts: Number(sidebarPostCount!.count.id),
     },
     categories: {
-      total: raw.sidebarCategories.length,
       items: categoryMapper(raw.sidebarCategories),
     },
     series: {
