@@ -19,7 +19,6 @@
             name: 'tags-slug',
             params: { slug: tag.slug },
           }"
-          prefetch-on="interaction"
           :class="
             cn(
               'flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium transition-colors',

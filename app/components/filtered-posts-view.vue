@@ -213,7 +213,6 @@
           v-for="post in posts"
           :key="post.postIdx"
           :to="`/posts/${post.postIdx}-${post.slug}`"
-          prefetch-on="interaction"
           :aria-busy="isPending(`post-${post.postIdx}`)"
           :class="
             cn(

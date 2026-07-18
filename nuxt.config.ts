@@ -13,6 +13,15 @@ export default defineNuxtConfig({
 
   ssr: true,
 
+  // 링크 hover/viewport prefetch가 페이지 payload + Directus API를 연쇄로 때림
+  experimental: {
+    defaults: {
+      nuxtLink: {
+        prefetch: false,
+      },
+    },
+  },
+
   devtools: {
     enabled: true,
   },
