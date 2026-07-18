@@ -1,7 +1,5 @@
-import { useQuery } from '#server/utils/use-query';
 import { postDetailMapper, sidebarMapper } from '~~/server/features/mapper';
 import type { RawPostDetail, RawSidebarContent } from '~~/server/types/raw-data';
-import type { PostDetail } from '~~/shared/types/post';
 
 export default defineEventHandler(async (event): Promise<PostDetail> => {
   const postIdx = Number(getRouterParam(event, 'idx'));

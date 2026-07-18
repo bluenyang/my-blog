@@ -1,6 +1,5 @@
 <script setup lang="ts">
   import image from '@/assets/images/image.png';
-  import { useSnippet } from '@/composables/use-snippet';
 
   const { displayText } = useSnippet();
 </script>

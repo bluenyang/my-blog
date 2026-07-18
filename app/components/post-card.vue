@@ -1,6 +1,4 @@
 <script setup lang="ts">
-  import type { PostItem } from '~~/shared/types';
-
   const props = defineProps<{ post: PostItem }>();
 
   const { onNavigate, isPending } = useNavFeedback();

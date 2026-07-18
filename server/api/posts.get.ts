@@ -1,4 +1,3 @@
-import { useQuery } from '#server/utils/use-query';
 import { postMapper, postSearchMapper, sidebarMapper } from '~~/server/features/mapper';
 import type { RawPosts, RawSidebarContent } from '~~/server/types/raw-data';
 import type { PostsResponse } from '~~/shared/types';

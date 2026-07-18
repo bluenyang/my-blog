@@ -1,6 +1,4 @@
 <script setup lang="ts">
-  import { useSidebar } from '~/composables/use-sidebar';
-
   const { isOpen: isSidebarOpen, close: closeSidebar } = useSidebar();
 
   const isLocked = useScrollLock(import.meta.client ? document.body : null);

@@ -1,7 +1,4 @@
 <script setup lang="ts">
-  import BannerHero from '~/components/banner-hero.vue';
-  import PostCard from '~/components/post-card.vue';
-
   const { recentPosts, popularSeries, pending, error } = useHome();
 </script>
 
