@@ -1,6 +1,5 @@
 import type { CategoryItemInPost } from './category';
 import type { SeriesItemInPost } from './series';
-import type { SidebarContent } from './sidebar';
 import type { TagItemInPost } from './tag';
 
 export interface PostAuthor {
@@ -37,7 +36,6 @@ export interface PostDetail {
   categories: CategoryItemInPost[] | null;
   tags: TagItemInPost[] | null;
   series: SeriesItemInPost[] | null;
-  sidebar?: SidebarContent;
 }
 
 export interface PostsResponse {
@@ -45,7 +43,6 @@ export interface PostsResponse {
   metadata?: PostSearch;
   totalCount: number;
   posts: PostItem[];
-  sidebar?: SidebarContent;
 }
 
 export interface PostSearch {

@@ -6,12 +6,9 @@ export function usePostList(
   tag?: MaybeRefOrGetter<string | undefined>,
   series?: MaybeRefOrGetter<string | undefined>,
 ) {
-  const { needSidebar, setSidebarData } = useSidebar();
-
   const { data, pending, error } = useFetch<PostsResponse>('/api/posts', {
     method: 'GET',
     query: computed(() => ({
-      sidebar: needSidebar.value,
       limit: toValue(limit),
       page: toValue(page),
       search: toValue(search) || undefined,
@@ -19,12 +16,6 @@ export function usePostList(
       tag: toValue(tag) || undefined,
       series: toValue(series) || undefined,
     })),
-  });
-
-  watchEffect(() => {
-    if (data.value?.sidebar) {
-      setSidebarData(data.value.sidebar);
-    }
   });
 
   return {

@@ -1,5 +1,5 @@
-import { postMapper, postSearchMapper, sidebarMapper } from '~~/server/features/mapper';
-import type { RawPosts, RawSidebarContent } from '~~/server/types/raw-data';
+import { postMapper, postSearchMapper } from '~~/server/features/mapper';
+import type { RawPosts } from '~~/server/types/raw-data';
 import type { PostsResponse } from '~~/shared/types';
 import { decodeRouteSlug } from '~~/shared/utils/decode-route-slug';
 
@@ -33,20 +33,16 @@ export default defineEventHandler(async (event): Promise<PostsResponse> => {
     }
   })();
 
-  // sidebar
-  const needSidebar = query.sidebar === 'true';
-
   const directus = useDirectus();
-  const { buildQuery, sidebar, posts, series, category, tag } = useQuery();
+  const { buildQuery, posts, series, category, tag } = useQuery();
 
   try {
-    const result = await directus.query<RawPosts & Partial<RawSidebarContent>>(
+    const result = await directus.query<RawPosts>(
       buildQuery(
         posts(limit, offset, search, categorySlug, tagSlug, seriesSlug),
         seriesSlug ? series(seriesSlug) : undefined,
         categorySlug ? category(categorySlug) : undefined,
         tagSlug ? tag(tagSlug) : undefined,
-        needSidebar ? sidebar : undefined,
       ),
     );
 
@@ -64,15 +60,12 @@ export default defineEventHandler(async (event): Promise<PostsResponse> => {
       }
     })();
 
-    const payload: PostsResponse = {
+    return {
       searchType,
       metadata,
       totalCount,
       posts: postsData,
-      sidebar: needSidebar ? sidebarMapper(result) : undefined,
     };
-
-    return payload;
   } catch (error) {
     console.error('Failed to fetch posts:', error);
     throw createError({
