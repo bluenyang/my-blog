@@ -30,6 +30,7 @@ export function usePostList(
   return {
     posts: computed(() => data.value?.posts || []),
     metadata: computed(() => data.value?.metadata || undefined),
+    totalCount: computed(() => data.value?.totalCount ?? 0),
     searchType: computed(() => data.value?.searchType || null),
     pending,
     error,
