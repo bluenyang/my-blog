@@ -1,7 +1,7 @@
 import { readItems } from '@directus/sdk';
 
-import { createDirectusClient } from '../../shared/directus';
-import type { SitemapPost } from '../types/sitemap';
+import type { SitemapPost } from '~~/server/types/sitemap';
+import { createDirectusClient } from '~~/server/utils/directus';
 
 /** 앱·sitemap에서 쓰는 글 상세 경로 */
 export function toPostPath(postIdx: number, slug: string): string {

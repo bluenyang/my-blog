@@ -3,8 +3,8 @@ import { navigationMapper } from './navigation.mapper';
 import { seriesMapper } from './series.mapper';
 import { tagMapper } from './tag.mapper';
 
-import type { RawSidebarContent } from '~~/server/types/raw-data/sidebar';
-import type { SidebarContent } from '~~/shared/types/sidebar';
+import type { RawSidebarContent } from '~~/server/types/raw-data';
+import type { SidebarContent } from '~~/shared/types';
 
 export function sidebarMapper(raw: Partial<RawSidebarContent>): SidebarContent | undefined {
   if (

@@ -1,6 +1,4 @@
-import { homeMapper, sidebarMapper } from '../features/mapper';
-
-import { useQuery } from '#server/utils/use-query';
+import { homeMapper, sidebarMapper } from '~~/server/features/mapper';
 import type { RawHomePosts, RawSidebarContent } from '~~/server/types/raw-data';
 import type { HomePosts } from '~~/shared/types';
 

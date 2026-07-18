@@ -1,8 +1,6 @@
 <script setup lang="ts">
   import type { MDCParserResult } from '@nuxtjs/mdc';
 
-  import SeriesBox from '~/components/series-box.vue';
-
   interface MarkdownContentProps {
     postContent: string;
     postIdx: number;

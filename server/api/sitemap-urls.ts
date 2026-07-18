@@ -1,7 +1,7 @@
 import { readItems } from '@directus/sdk';
 
-import type { SitemapSlugItem, SitemapUrlEntry } from '../types/sitemap';
-import { fetchPublishedPostPaths } from '../utils/content-routes';
+import type { SitemapSlugItem, SitemapUrlEntry } from '~~/server/types/sitemap';
+import { fetchPublishedPostPaths } from '~~/server/utils/content-routes';
 
 function toEntry(path: string): SitemapUrlEntry {
   const normalized = path.startsWith('/') ? path.slice(1) : path;

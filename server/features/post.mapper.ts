@@ -9,7 +9,7 @@ import type {
   RawSeriesItem,
   RawTagItem,
 } from '~~/server/types/raw-data';
-import type { PostDetail, PostItem, PostSearch } from '~~/shared/types/post';
+import type { PostDetail, PostItem, PostSearch } from '~~/shared/types';
 
 export function postMapper(raw: RawPostItem[]): PostItem[] {
   return raw.map<PostItem>((item) => ({

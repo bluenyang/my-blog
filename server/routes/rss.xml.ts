@@ -1,7 +1,7 @@
 import { readItems } from '@directus/sdk';
 import { Feed } from 'feed';
 
-import type { DirectusPost } from '../types/rss';
+import type { DirectusPost } from '~~/server/types/rss';
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();

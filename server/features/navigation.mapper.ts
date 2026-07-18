@@ -1,4 +1,4 @@
-import type { RawNavigationItem } from '~~/server/types/raw-data/navigation';
+import type { RawNavigationItem } from '~~/server/types/raw-data';
 import type { NavigationItem } from '~~/shared/types/navigation';
 import { buildTree } from '~~/shared/utils/build-tree';
 
