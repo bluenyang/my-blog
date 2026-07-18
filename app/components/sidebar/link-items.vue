@@ -52,7 +52,7 @@
     >
       <div class="overflow-hidden">
         <ul class="ps-3">
-          <LinkItems v-for="child in item.children" :key="child.slug" :item="child" />
+          <LinkItems v-for="child in item.children" :key="child.id" :item="child" />
         </ul>
       </div>
     </ul>

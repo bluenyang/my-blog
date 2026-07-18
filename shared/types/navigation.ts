@@ -1,6 +1,6 @@
 export interface NavigationItem {
+  id: string;
   label: string;
-  slug: string;
   url: string | null;
   icon: string | null;
   isCategory: boolean;

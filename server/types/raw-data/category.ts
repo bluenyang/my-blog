@@ -1,4 +1,5 @@
 export interface RawCategoryItem {
+  id: string;
   parent_id: {
     id: string;
   } | null;

@@ -17,6 +17,6 @@
 
 <template>
   <ul class="px-2 py-4">
-    <LinkItems v-for="item in linkItems" :key="item.slug" :item="item" />
+    <LinkItems v-for="item in linkItems" :key="item.id" :item="item" />
   </ul>
 </template>
