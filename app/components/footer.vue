@@ -63,7 +63,6 @@
             <li v-for="category in categories" :key="category.slug">
               <NuxtLink
                 :to="`/categories/${category.slug}`"
-                prefetch-on="interaction"
                 class="text-muted-foreground hover:text-primary text-sm transition-colors"
               >
                 {{ category.name }}

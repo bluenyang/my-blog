@@ -16,7 +16,6 @@
 <template>
   <NuxtLink
     :to="`/posts/${post.postIdx}-${post.slug}`"
-    prefetch-on="interaction"
     :aria-busy="isPending(linkKey)"
     :class="
       cn(

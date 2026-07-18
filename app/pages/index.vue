@@ -112,7 +112,6 @@
             v-for="item in popularSeries"
             :key="item.slug"
             :to="{ name: 'series-slug', params: { slug: item.slug } }"
-            prefetch-on="interaction"
             class="group bg-card hover:bg-card-hover hover:border-border flex flex-col overflow-hidden rounded-2xl border border-transparent transition-all"
           >
             <div class="bg-muted h-2 w-full dark:bg-white/10"></div>

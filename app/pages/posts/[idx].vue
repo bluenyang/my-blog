@@ -83,7 +83,6 @@
                 </span>
                 <NuxtLink
                   :to="{ name: 'series-slug', params: { slug: series.slug } }"
-                  prefetch-on="interaction"
                   class="text-muted-foreground hover:text-primary transition-colors"
                 >
                   <Icon name="lucide:layers" class="mr-1 mb-0.5 inline size-4" />
@@ -129,7 +128,6 @@
             v-for="tag in post.tags"
             :key="tag.slug"
             :to="{ name: 'tags-slug', params: { slug: tag.slug } }"
-            prefetch-on="interaction"
             class="bg-muted text-muted-foreground rounded-full px-3 py-1 text-xs font-medium"
           >
             {{ `# ${tag.name}` }}
