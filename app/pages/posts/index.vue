@@ -1,8 +1,7 @@
 <script setup lang="ts">
-  import { usePosts } from '~/composables/use-post';
-  import type { PostItem } from '~/types/post';
+  import type { PostItem } from '~~/shared/types';
 
-  const { posts, pending, error } = usePosts();
+  const { posts, pending, error } = usePostList(10, 1, '', '', '', '');
   const { onNavigate, isPending } = useNavFeedback();
 
   function getFormattedDate(dateString: string | null) {
@@ -18,7 +17,7 @@
     if (!post.categories || post.categories.length === 0) {
       return 'Uncategorized';
     }
-    return post.categories[0]?.name || 'Uncategorized';
+    return post.categories[0] || 'Uncategorized';
   }
 </script>
 
@@ -56,17 +55,17 @@
     <div v-else class="divide-border flex flex-col divide-y">
       <NuxtLink
         v-for="post in posts"
-        :key="post.id"
+        :key="post.slug"
         :to="`/posts/${post.postIdx}-${post.slug}`"
         prefetch-on="interaction"
-        :aria-busy="isPending(`post-${post.id}`)"
+        :aria-busy="isPending(`post-${post.slug}`)"
         :class="
           cn(
             'group hover:bg-card relative flex flex-col transition-opacity sm:flex-row sm:justify-between',
-            isPending(`post-${post.id}`) && 'pointer-events-none opacity-60',
+            isPending(`post-${post.slug}`) && 'pointer-events-none opacity-60',
           )
         "
-        @click="onNavigate(`post-${post.id}`)"
+        @click="onNavigate(`post-${post.slug}`)"
       >
         <div
           class="flex-1 p-4 transition-all before:absolute before:inset-y-0 before:left-0 before:w-1 before:rounded-l-md before:bg-linear-to-b before:from-sky-500 before:to-indigo-500 before:opacity-0 before:transition-opacity before:duration-200 group-hover:before:opacity-100 sm:py-8"

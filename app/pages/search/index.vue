@@ -34,6 +34,6 @@
 
 <template>
   <div>
-    <FilteredPostsView filter-type="search" :filter-value="searchValue" />
+    <FilteredPostsView :search="searchValue" />
   </div>
 </template>

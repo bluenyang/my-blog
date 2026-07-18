@@ -1,94 +1,93 @@
 <script setup lang="ts">
-  import { useSearchPosts, type SearchPostsOptions } from '~/composables/use-post';
-  import { useSeriesBySlug } from '~/composables/use-series';
-  import type { PostItem } from '~/types/post';
+  import type { PostItem } from '~~/shared/types';
 
   const props = defineProps<{
-    filterType: 'category' | 'tag' | 'series' | 'search';
-    filterValue: string;
+    search?: string;
+    category?: string;
+    tag?: string;
+    series?: string;
   }>();
 
-  const config = useRuntimeConfig();
-  const { categories } = useCategory();
-  const { tags } = useTag();
+  const limit = 5;
+  const currentPage = ref(1);
   const { onNavigate, isPending } = useNavFeedback();
 
-  const searchOptions = computed<SearchPostsOptions>(() => {
-    const value = decodeRouteSlug(props.filterValue);
-    if (!value) return {};
-    if (props.filterType === 'category') return { category: value };
-    if (props.filterType === 'tag') return { tag: value };
-    if (props.filterType === 'series') return { series: value };
-    return { search: value };
+  const options = computed(() => {
+    return {
+      search: props.search,
+      category: props.category,
+      tag: props.tag,
+      series: props.series,
+    };
   });
 
-  const { posts, pending, error } = useSearchPosts(searchOptions);
-
-  const resolvedSlug = computed(() => decodeRouteSlug(props.filterValue));
-
-  const seriesSlug = computed(() =>
-    props.filterType === 'series' ? resolvedSlug.value : undefined,
+  watch(
+    () => [props.search, props.category, props.tag, props.series],
+    () => {
+      currentPage.value = 1;
+    },
   );
-  const { series: seriesInfo } = useSeriesBySlug(seriesSlug);
 
-  const categoryInfo = computed(() => {
-    if (props.filterType !== 'category' || !resolvedSlug.value) return null;
-    return findCategoryBySlug(categories.value, resolvedSlug.value);
-  });
-
-  const tagInfo = computed(() => {
-    if (props.filterType !== 'tag' || !resolvedSlug.value) return null;
-    return tags.value.find((tag) => tag.slug === resolvedSlug.value) ?? null;
-  });
-
-  const seriesThumbnailUrl = computed(() => {
-    if (!seriesInfo.value?.thumbnail) return null;
-    return `${config.public.directusUrl}/assets/${seriesInfo.value.thumbnail}?width=1200&height=400&fit=cover`;
-  });
+  const { posts, pending, error, metadata, searchType } = usePostList(
+    limit,
+    currentPage,
+    () => options.value.search,
+    () => options.value.category,
+    () => options.value.tag,
+    () => options.value.series,
+  );
 
   const eyebrow = computed(() => {
-    const labels = {
-      series: 'Series',
-      category: 'Category',
-      tag: 'Tag',
-      search: 'Search',
-    } as const;
-    return labels[props.filterType];
+    if (searchType.value === 'series') {
+      return 'Series';
+    }
+    if (searchType.value === 'category') {
+      return 'Category';
+    }
+    if (searchType.value === 'tag') {
+      return 'Tag';
+    }
+    return 'Search';
   });
 
   const iconName = computed(() => {
-    const icons = {
-      series: 'lucide:layers',
-      category: 'lucide:folder',
-      tag: 'lucide:tag',
-      search: 'lucide:search',
-    } as const;
-    return icons[props.filterType];
+    if (searchType.value === 'series') {
+      return 'lucide:layers';
+    }
+    if (searchType.value === 'category') {
+      return 'lucide:folder';
+    }
+    if (searchType.value === 'tag') {
+      return 'lucide:tag';
+    }
+    return 'lucide:search';
   });
 
   const pageTitle = computed(() => {
-    if (props.filterType === 'series') return seriesInfo.value?.name ?? resolvedSlug.value;
-    if (props.filterType === 'category')
-      return categoryInfo.value?.name
-        ? `카테고리 · ${categoryInfo.value.name}`
-        : `카테고리 · ${resolvedSlug.value}`;
-    if (props.filterType === 'tag')
-      return tagInfo.value?.name
-        ? `태그 · #${tagInfo.value.name}`
-        : `태그 · #${resolvedSlug.value}`;
-    if (!resolvedSlug.value) return '검색';
-    return `"${resolvedSlug.value}" 검색 결과`;
+    if (searchType.value === 'series') {
+      return `${metadata.value?.name} 시리즈`;
+    }
+    if (searchType.value === 'category') {
+      return `카테고리 · ${metadata.value?.name}`;
+    }
+    if (searchType.value === 'tag') {
+      return `태그 · #${metadata.value?.name}`;
+    }
+    return `"${options.value.search}" 검색 결과`;
   });
 
   const pageDesc = computed(() => {
-    const count = posts.value.length;
-    if (props.filterType === 'series') {
-      return seriesInfo.value?.description || `시리즈에 포함된 ${count}개의 글`;
+    if (searchType.value === 'series') {
+      return `시리즈에 포함된 ${metadata.value?.totalCount}개의 글`;
+    } else if (searchType.value === 'category') {
+      return `카테고리에 포함된 ${metadata.value?.totalCount}개의 글`;
+    } else if (searchType.value === 'tag') {
+      return `태그가 붙은 ${metadata.value?.totalCount}개의 글`;
+    } else if (!options.value.search) {
+      return '검색어를 입력해 주세요.';
+    } else {
+      return `총 ${metadata.value?.totalCount}개의 글이 검색됐습니다.`;
     }
-    if (props.filterType === 'category') return `카테고리에 포함된 ${count}개의 글`;
-    if (props.filterType === 'tag') return `태그가 붙은 ${count}개의 글`;
-    if (!resolvedSlug.value) return '검색어를 입력해 주세요.';
-    return `총 ${count}개의 글이 검색됐습니다.`;
   });
 
   useSeoMeta({
@@ -106,20 +105,22 @@
   }
 
   function getCategory(post: PostItem) {
-    if (!post.categories || post.categories.length === 0) return 'Uncategorized';
-    return post.categories[0]?.name || 'Uncategorized';
+    if (!post.categories || post.categories.length === 0) {
+      return 'Uncategorized';
+    }
+    return post.categories[0] ?? 'Uncategorized';
   }
 </script>
 
 <template>
   <main class="container mx-auto px-4 py-16 sm:px-6 lg:px-8">
     <div
-      v-if="filterType === 'series' && seriesThumbnailUrl"
+      v-if="searchType === 'series' && metadata?.thumbnail"
       class="mb-8 w-full overflow-hidden rounded-2xl shadow-md"
     >
       <img
-        :src="seriesThumbnailUrl"
-        :alt="seriesInfo?.name ?? ''"
+        :src="metadata?.thumbnail"
+        :alt="metadata?.name ?? ''"
         class="aspect-3/1 w-full object-cover"
       />
     </div>
@@ -130,7 +131,9 @@
         <span class="tracking-widest uppercase">{{ eyebrow }}</span>
       </div>
       <h1 class="text-3xl font-extrabold tracking-tight sm:text-4xl">{{ pageTitle }}</h1>
-      <p class="text-muted-foreground mt-3 text-lg">{{ pageDesc }}</p>
+      <p class="text-muted-foreground mt-3 text-lg">
+        {{ searchType === 'series' ? metadata?.description : pageDesc }}
+      </p>
     </div>
 
     <div v-if="pending" class="flex justify-center py-24">
@@ -149,24 +152,24 @@
     >
       <Icon name="lucide:search-x" class="text-muted-foreground mb-4 size-12" />
       <p class="text-muted-foreground text-lg">
-        {{ filterType === 'search' ? '검색 결과가 없습니다.' : '등록된 게시글이 없습니다.' }}
+        {{ searchType === 'search' ? '검색 결과가 없습니다.' : '등록된 게시글이 없습니다.' }}
       </p>
     </div>
 
     <div v-else class="divide-border flex flex-col divide-y">
       <NuxtLink
         v-for="post in posts"
-        :key="post.id"
+        :key="post.postIdx"
         :to="`/posts/${post.postIdx}-${post.slug}`"
         prefetch-on="interaction"
-        :aria-busy="isPending(`post-${post.id}`)"
+        :aria-busy="isPending(`post-${post.postIdx}`)"
         :class="
           cn(
             'group hover:bg-card relative flex flex-col transition-opacity sm:flex-row sm:justify-between',
-            isPending(`post-${post.id}`) && 'pointer-events-none opacity-60',
+            isPending(`post-${post.postIdx}`) && 'pointer-events-none opacity-60',
           )
         "
-        @click="onNavigate(`post-${post.id}`)"
+        @click="onNavigate(`post-${post.postIdx}`)"
       >
         <div
           class="flex-1 p-4 transition-all before:absolute before:inset-y-0 before:left-0 before:w-1 before:rounded-l-md before:bg-linear-to-b before:from-sky-500 before:to-indigo-500 before:opacity-0 before:transition-opacity before:duration-200 group-hover:before:opacity-100 sm:py-8"
@@ -177,11 +180,11 @@
             <span class="text-primary font-semibold">{{ getCategory(post) }}</span>
             <span class="ms-2 hidden sm:inline">·</span>
             <span class="ms-2 text-xs">{{ `No. ${post.postIdx}` }}</span>
-            <template v-if="filterType !== 'series' && post.series && post.series.length > 0">
+            <template v-if="searchType !== 'series' && post.series && post.series.length > 0">
               <span class="ms-2 hidden sm:inline">·</span>
               <span class="text-muted-foreground ms-2 flex items-center gap-1 text-xs">
                 <Icon name="lucide:layers" class="size-3" />
-                {{ post.series[0]?.name }}
+                {{ metadata?.name }}
               </span>
             </template>
           </div>
@@ -195,11 +198,11 @@
           </p>
           <div v-if="post.tags && post.tags.length > 0" class="mt-3 flex flex-wrap gap-1">
             <span
-              v-for="t in post.tags"
-              :key="t.slug"
+              v-for="tagName in post.tags"
+              :key="tagName"
               class="bg-muted text-muted-foreground rounded-full px-2 py-0.5 text-xs"
             >
-              #{{ t.name }}
+              {{ `#${tagName}` }}
             </span>
           </div>
         </div>
@@ -212,5 +215,7 @@
         </div>
       </NuxtLink>
     </div>
+
+    <Pagination v-model:current="currentPage" :total="metadata?.totalCount" :limit="limit" />
   </main>
 </template>

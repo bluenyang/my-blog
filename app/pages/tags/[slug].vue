@@ -5,6 +5,6 @@
 
 <template>
   <div>
-    <FilteredPostsView filter-type="tag" :filter-value="slug" />
+    <FilteredPostsView :tag="slug" />
   </div>
 </template>
