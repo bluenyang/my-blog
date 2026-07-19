@@ -2,6 +2,7 @@ import type { CategoryItem } from './category';
 import type { NavigationItem } from './navigation';
 import type { SeriesItem } from './series';
 import type { TagItem } from './tag';
+import type { BlogSetting } from './setting';
 
 export interface SidebarContent {
   profile: {
@@ -19,4 +20,5 @@ export interface SidebarContent {
   navigations: {
     items: NavigationItem[];
   };
+  blogSettings?: BlogSetting;
 }
