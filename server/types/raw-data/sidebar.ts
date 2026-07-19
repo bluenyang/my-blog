@@ -17,5 +17,6 @@ export interface RawSidebarContent {
     allow_ccl: boolean;
     allow_commercial?: boolean;
     change_content?: 'allow' | 'share_alike' | 'no_derivative';
+    license_note?: string;
   }[];
 }

@@ -25,34 +25,7 @@
     return post.value.categories[0]?.name ?? 'Uncategorized';
   });
 
-  const cclLicenseCode = computed(() => {
-    if (!settings.value?.allowCCL) return '';
-    const parts = ['CC', 'BY'];
-    if (!settings.value.allowCommercial) parts.push('NC');
-    if (settings.value.changeContent === 'share_alike') parts.push('SA');
-    if (settings.value.changeContent === 'no_derivative') parts.push('ND');
-    return parts.join(' ');
-  });
-
-  const cclSummary = computed(() => {
-    if (!settings.value?.allowCCL) return '';
-
-    const commercial = settings.value.allowCommercial ? '상업적 이용 허용' : '상업적 이용 불가';
-
-    const change = (() => {
-      switch (settings.value?.changeContent) {
-        case 'share_alike':
-          return '변경 허용(동일 라이선스)';
-        case 'no_derivative':
-          return '변경 금지';
-        case 'allow':
-        default:
-          return '변경 허용';
-      }
-    })();
-
-    return `${cclLicenseCode.value} · ${commercial} · ${change}`;
-  });
+  const cclLicenseCode = computed(() => getCclLicenseCode(settings.value));
 
   function goBack() {
     window.history.back();
@@ -149,7 +122,9 @@
             </div>
             <template v-if="settings?.allowCCL">
               <span>{{ '·' }}</span>
-              <CclBadge />
+              <NuxtLink to="/license" class="hover:text-foreground transition-colors">
+                <CclBadge />
+              </NuxtLink>
             </template>
           </div>
         </div>
@@ -206,10 +181,14 @@
             <span class="text-muted-foreground text-xs tracking-wide uppercase">
               {{ '라이선스' }}
             </span>
-            <div class="flex flex-wrap items-center gap-2 sm:justify-end">
+            <NuxtLink
+              to="/license"
+              class="text-muted-foreground hover:text-primary inline-flex flex-wrap items-center gap-2 transition-colors sm:justify-end"
+            >
               <CclBadge />
-              <span class="text-muted-foreground text-sm">{{ cclSummary }}</span>
-            </div>
+              <span class="text-sm">{{ cclLicenseCode }}</span>
+              <Icon name="lucide:arrow-up-right" class="size-3.5" />
+            </NuxtLink>
           </div>
         </div>
       </footer>

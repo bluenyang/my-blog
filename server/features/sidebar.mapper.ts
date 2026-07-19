@@ -32,6 +32,7 @@ export function sidebarMapper(raw: RawSidebarContent): SidebarContent {
           allowCCL: blogSettings.allow_ccl,
           allowCommercial: blogSettings.allow_commercial,
           changeContent: blogSettings.change_content,
+          licenseNote: blogSettings.license_note,
         }
       : undefined,
   };

@@ -71,6 +71,7 @@ export default defineNuxtConfig({
     '/tags/**': { swr: 180 },
     '/series/**': { swr: 180 },
     '/search': { swr: 180 },
+    '/license': { swr: 86400 },
   },
 
   compatibilityDate: '2026-06-15',
