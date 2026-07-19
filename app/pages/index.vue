@@ -114,7 +114,7 @@
             :to="{ name: 'series-slug', params: { slug: item.slug } }"
             class="group bg-card hover:bg-card-hover hover:border-border flex flex-col overflow-hidden rounded-2xl border border-transparent transition-all"
           >
-            <div class="bg-muted h-2 w-full dark:bg-white/10"></div>
+            <div class="bg-muted h-2 w-full"></div>
             <div class="flex flex-1 flex-col p-5">
               <h3
                 class="text-foreground group-hover:text-muted-foreground mb-3 line-clamp-2 text-xl font-bold tracking-tight transition-colors"
