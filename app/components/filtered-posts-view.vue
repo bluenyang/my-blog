@@ -115,9 +115,10 @@
     return count != null ? `총 ${count}개의 글이 검색됐습니다.` : '';
   });
 
-  const pageSearchUrl = computed(() => {
+  const pageCanonicalUrl = computed(() => {
     if (resolvedType.value === 'search') {
-      return `${config.public.blogUrl}/search?search=${options.value.search || ''}`;
+      const q = options.value.search ? `?search=${encodeURIComponent(options.value.search)}` : '';
+      return `${config.public.blogUrl}/search${q}`;
     }
     if (resolvedType.value === 'category') {
       return `${config.public.blogUrl}/categories/${props.category}`;
@@ -131,12 +132,19 @@
     return `${config.public.blogUrl}`;
   });
 
+  useHead({
+    link: () =>
+      resolvedType.value !== 'search' && pageCanonicalUrl.value
+        ? [{ rel: 'canonical', href: pageCanonicalUrl.value }]
+        : [],
+  });
+
   useSeoMeta({
     title: pageTitle,
     description: pageDesc,
     ogTitle: pageTitle,
     ogDescription: pageDesc,
-    ogUrl: pageSearchUrl,
+    ogUrl: pageCanonicalUrl,
     ogImage: () =>
       resolvedType.value === 'series'
         ? metadata.value?.thumbnail
@@ -144,6 +152,8 @@
     ogType: 'website',
     ogLocale: 'ko_KR',
     ogSiteName: `BlueNyang's Devlog`,
+    // 검색 결과 페이지는 색인하지 않아 thin/duplicate를 피함
+    robots: () => (resolvedType.value === 'search' ? 'noindex, follow' : undefined),
   });
 
   function getFormattedDate(dateString: string | null) {

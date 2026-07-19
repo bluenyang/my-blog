@@ -133,6 +133,10 @@ export default defineNuxtConfig({
 
   sitemap: {
     sources: ['/api/sitemap-urls'],
-    exclude: ['/api/**', '/rss.xml'],
+    exclude: ['/api/**', '/rss.xml', '/search'],
+  },
+
+  robots: {
+    disallow: ['/search', '/api'],
   },
 });

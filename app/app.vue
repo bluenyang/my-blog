@@ -1,5 +1,6 @@
 <script setup lang="ts">
   useHead({
+    titleTemplate: `%s · BlueNyang's Devlog`,
     link: [
       {
         rel: 'alternate',
