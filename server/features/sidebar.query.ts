@@ -46,6 +46,7 @@ export function sidebarQuery(blogSlug: string) {
     filter: {
       blog_id: { slug: { _eq: "${blogSlug}" } }
     }
+    sort: ["sort_order", "label"]
   ) {
     id
     label

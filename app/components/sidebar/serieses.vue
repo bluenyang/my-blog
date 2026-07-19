@@ -35,7 +35,7 @@
             }"
             class="flex min-w-0 flex-1 items-center gap-2 px-2 py-1"
           >
-            <Icon name="mdi:bookmark" class="size-4 shrink-0 text-sky-600" />
+            <Icon name="mdi:bookmark" class="size-5 shrink-0 text-sky-600" />
             <span
               :class="
                 cn(

@@ -31,7 +31,7 @@
       "
     >
       <div class="flex min-w-0 items-center gap-2 px-2 py-1.5">
-        <Icon :name="item.icon || 'lucide:link'" class="size-4 shrink-0" />
+        <Icon :name="item.icon || 'lucide:link'" class="size-5 shrink-0" />
         <span class="truncate">{{ item.label }}</span>
       </div>
       <button

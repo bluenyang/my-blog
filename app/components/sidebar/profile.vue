@@ -15,7 +15,7 @@
       />
       <div class="space-y-1">
         <h3 class="text-start text-xl font-bold">{{ profileData.nickname }}</h3>
-        <p class="font-jua text-start text-sm text-gray-600 dark:text-gray-400">
+        <p class="font-jua text-muted-foreground text-start text-sm">
           {{ profileData.desc }}
         </p>
       </div>
@@ -23,7 +23,7 @@
     <div class="flex items-center justify-start gap-6">
       <div class="flex items-center gap-1">
         <span class="font-jua text-base font-bold">{{ totalPosts }}</span>
-        <span class="flex text-sm text-gray-600 dark:text-gray-400">{{ '포스트' }}</span>
+        <span class="text-muted-foreground flex text-sm">{{ '포스트' }}</span>
       </div>
     </div>
     <div class="flex justify-start gap-3">
