@@ -5,6 +5,7 @@
   const idxParam = route.params.idx as string;
   const postIdx = parseInt(idxParam, 10);
 
+  const { settings } = useSetting();
   const { post, pending, error } = usePostDetail(postIdx);
   const series = computed(() => post.value?.series?.[0]);
   const seriesName = computed(() => series.value?.name);
@@ -22,6 +23,35 @@
       return 'Uncategorized';
     }
     return post.value.categories[0]?.name ?? 'Uncategorized';
+  });
+
+  const cclLicenseCode = computed(() => {
+    if (!settings.value?.allowCCL) return '';
+    const parts = ['CC', 'BY'];
+    if (!settings.value.allowCommercial) parts.push('NC');
+    if (settings.value.changeContent === 'share_alike') parts.push('SA');
+    if (settings.value.changeContent === 'no_derivative') parts.push('ND');
+    return parts.join(' ');
+  });
+
+  const cclSummary = computed(() => {
+    if (!settings.value?.allowCCL) return '';
+
+    const commercial = settings.value.allowCommercial ? '상업적 이용 허용' : '상업적 이용 불가';
+
+    const change = (() => {
+      switch (settings.value?.changeContent) {
+        case 'share_alike':
+          return '변경 허용(동일 라이선스)';
+        case 'no_derivative':
+          return '변경 금지';
+        case 'allow':
+        default:
+          return '변경 허용';
+      }
+    })();
+
+    return `${cclLicenseCode.value} · ${commercial} · ${change}`;
   });
 
   function goBack() {
@@ -117,6 +147,10 @@
               <Icon name="lucide:calendar-days" class="size-4" />
               <time :datetime="post.publishedAt || ''">{{ formattedDate }}</time>
             </div>
+            <template v-if="settings?.allowCCL">
+              <span>{{ '·' }}</span>
+              <CclBadge />
+            </template>
           </div>
         </div>
 
@@ -142,6 +176,43 @@
         :series="series"
         :current-post-idx="post.postIdx"
       />
+
+      <footer class="border-border mt-12 max-w-7xl border-t pt-8">
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <div class="flex items-center gap-3">
+            <img
+              v-if="post.author.avatar"
+              :src="post.author.avatar"
+              alt="Author Avatar"
+              class="size-12 rounded-full"
+            />
+            <div
+              v-else
+              class="bg-block-bg text-foreground flex size-12 items-center justify-center rounded-full"
+            >
+              <Icon name="lucide:user" class="size-6" />
+            </div>
+            <div class="flex flex-col gap-0.5">
+              <span class="text-muted-foreground text-xs tracking-wide uppercase">
+                {{ '작성자' }}
+              </span>
+              <span class="text-foreground text-base font-semibold">
+                {{ post.author.nickname }}
+              </span>
+            </div>
+          </div>
+
+          <div v-if="settings?.allowCCL" class="flex flex-col gap-2 sm:items-end">
+            <span class="text-muted-foreground text-xs tracking-wide uppercase">
+              {{ '라이선스' }}
+            </span>
+            <div class="flex flex-wrap items-center gap-2 sm:justify-end">
+              <CclBadge />
+              <span class="text-muted-foreground text-sm">{{ cclSummary }}</span>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   </div>
 </template>
