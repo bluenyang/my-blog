@@ -27,18 +27,44 @@
 
   const cclLicenseCode = computed(() => getCclLicenseCode(settings.value));
 
+  const canonicalPath = computed(() =>
+    post.value ? `/posts/${post.value.postIdx}-${post.value.slug}` : null,
+  );
+  const canonicalUrl = computed(() =>
+    canonicalPath.value ? `${config.public.blogUrl}${canonicalPath.value}` : undefined,
+  );
+
+  // /posts/12 와 /posts/12-wrong-slug 를 정규 URL로 합쳐 중복 콘텐츠를 막음
+  watch(
+    canonicalPath,
+    (path) => {
+      if (!path || route.path === path) return;
+      navigateTo(path, { redirectCode: 301, replace: true });
+    },
+    { immediate: true },
+  );
+
   function goBack() {
     window.history.back();
   }
 
+  useHead({
+    link: () => (canonicalUrl.value ? [{ rel: 'canonical', href: canonicalUrl.value }] : []),
+  });
+
   useSeoMeta({
     title: () => post.value?.title || 'Post',
-    titleTemplate: `%s · BlueNyang's Devlog`,
-    description: () => post.value?.summary || '',
+    description: () => post.value?.summary || undefined,
     ogTitle: () => post.value?.title || 'Post',
-    ogImage: () => post.value?.thumbnail || '',
-    ogDescription: () => post.value?.summary || '',
-    ogUrl: () => `${config.public.blogUrl}/posts/${post.value?.postIdx}-${post.value?.slug}`,
+    ogImage: () => post.value?.thumbnail || undefined,
+    ogDescription: () => post.value?.summary || undefined,
+    ogUrl: canonicalUrl,
+    ogType: 'article',
+    ogLocale: 'ko_KR',
+    ogSiteName: `BlueNyang's Devlog`,
+    twitterCard: 'summary_large_image',
+    articlePublishedTime: () => post.value?.publishedAt,
+    articleModifiedTime: () => post.value?.updatedAt,
   });
 </script>
 

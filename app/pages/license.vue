@@ -8,10 +8,22 @@
   const changeLabel = computed(() => getCclChangeLabel(settings.value));
   const ccUrl = computed(() => getCclCreativeCommonsUrl(settings.value));
 
+  const config = useRuntimeConfig();
+  const canonicalUrl = `${config.public.blogUrl}/license`;
+
+  useHead({
+    link: [{ rel: 'canonical', href: canonicalUrl }],
+  });
+
   useSeoMeta({
     title: 'License',
-    titleTemplate: `%s · BlueNyang's Devlog`,
     description: 'BlueNyang Devlog 콘텐츠 및 소스코드 라이선스 안내',
+    ogTitle: 'License',
+    ogDescription: 'BlueNyang Devlog 콘텐츠 및 소스코드 라이선스 안내',
+    ogUrl: canonicalUrl,
+    ogType: 'website',
+    ogLocale: 'ko_KR',
+    ogSiteName: `BlueNyang's Devlog`,
   });
 </script>
 

@@ -3,14 +3,19 @@
 
   const config = useRuntimeConfig();
 
+  const canonicalUrl = config.public.blogUrl as string;
+
+  useHead({
+    link: [{ rel: 'canonical', href: canonicalUrl }],
+  });
+
   useSeoMeta({
-    title: `Home`,
-    titleTemplate: `%s · BlueNyang's Devlog`,
+    title: 'Home',
     description: 'BlueNyang의 개발 log',
     ogTitle: `BlueNyang's Devlog`,
-    ogImage: `${config.public.blogUrl}/favicon.ico`,
+    ogImage: `${canonicalUrl}/favicon.ico`,
     ogDescription: 'BlueNyang의 개발 log',
-    ogUrl: config.public.blogUrl,
+    ogUrl: canonicalUrl,
     ogType: 'website',
     ogLocale: 'ko_KR',
     ogSiteName: `BlueNyang's Devlog`,
