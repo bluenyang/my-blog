@@ -2,9 +2,11 @@
   import { profileData } from '~/constants/sidebar-data';
 
   const { sidebar } = useSidebar();
+  const { settings } = useSetting();
   const config = useRuntimeConfig();
 
   const categories = computed(() => sidebar.value?.categories.items ?? []);
+  const licenseCode = computed(() => getCclLicenseCode(settings.value));
   const currentYear = new Date().getFullYear();
 </script>
 
@@ -105,6 +107,15 @@
                 {{ 'Docs' }}
               </a>
             </li>
+            <li v-if="settings?.allowCCL">
+              <NuxtLink
+                to="/license"
+                class="text-muted-foreground hover:text-primary inline-flex items-center gap-1.5 text-sm transition-colors"
+              >
+                <Icon name="lucide:creative-commons" class="size-3.5" />
+                <span>{{ licenseCode || 'License' }}</span>
+              </NuxtLink>
+            </li>
           </ul>
         </div>
       </div>
@@ -115,9 +126,20 @@
         <p class="text-muted-foreground text-sm">
           {{ `&copy; ${currentYear} ${profileData.nickname}. All rights reserved.` }}
         </p>
-        <p class="text-muted-foreground text-sm">
-          {{ 'Made with Nuxt.js and Directus' }}
-        </p>
+        <div
+          class="text-muted-foreground mt-3 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-sm sm:mt-0 sm:justify-end"
+        >
+          <NuxtLink
+            v-if="settings?.allowCCL"
+            to="/license"
+            class="hover:text-primary inline-flex items-center gap-1.5 transition-colors"
+          >
+            <CclBadge />
+            <span>{{ licenseCode }}</span>
+          </NuxtLink>
+          <span v-if="settings?.allowCCL" class="hidden sm:inline">{{ '·' }}</span>
+          <span>{{ 'Made with Nuxt.js and Directus' }}</span>
+        </div>
       </div>
     </div>
   </footer>

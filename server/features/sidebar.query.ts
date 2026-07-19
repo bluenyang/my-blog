@@ -63,5 +63,6 @@ export function sidebarQuery(blogSlug: string) {
     allow_ccl
     allow_commercial
     change_content
+    license_note
   }`;
 }

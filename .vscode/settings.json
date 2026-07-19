@@ -10,5 +10,6 @@
   "js/ts.tsdk.path": "node_modules/typescript/lib",
   "material-icon-theme.activeIconPack": "vue",
 
-  "css.customData": [".vscode/tailwind.css-data.json"]
+  "css.customData": [".vscode/tailwind.css-data.json"],
+  "tailwindCSS.lint.cssConflict": "ignore"
 }
