@@ -13,4 +13,9 @@ export interface RawSidebarContent {
   sidebarSeries: RawSeriesItem[];
   sidebarTags: RawTagItem[];
   sidebarNavigations: RawNavigationItem[];
+  blogSettings?: {
+    allow_ccl: boolean;
+    allow_commercial?: boolean;
+    change_content?: 'allow' | 'share_alike' | 'no_derivative';
+  }[];
 }

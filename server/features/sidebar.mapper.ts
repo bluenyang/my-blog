@@ -9,6 +9,8 @@ import type { SidebarContent } from '~~/shared/types';
 export function sidebarMapper(raw: RawSidebarContent): SidebarContent {
   const [sidebarPostCount] = raw.sidebarPostCount;
 
+  const blogSettings = raw.blogSettings?.[0];
+
   return {
     profile: {
       totalPosts: Number(sidebarPostCount!.count.id),
@@ -25,5 +27,12 @@ export function sidebarMapper(raw: RawSidebarContent): SidebarContent {
     navigations: {
       items: navigationMapper(raw.sidebarNavigations),
     },
+    blogSettings: blogSettings
+      ? {
+          allowCCL: blogSettings.allow_ccl,
+          allowCommercial: blogSettings.allow_commercial,
+          changeContent: blogSettings.change_content,
+        }
+      : undefined,
   };
 }

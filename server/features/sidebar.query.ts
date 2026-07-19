@@ -54,5 +54,14 @@ export function sidebarQuery(blogSlug: string) {
     icon
     is_category
     parent_id { id }
+  }
+  blogSettings: blog_settings(
+    filter: {
+      blog_id: { slug: { _eq: "${blogSlug}" } }
+    }
+  ) {
+    allow_ccl
+    allow_commercial
+    change_content
   }`;
 }
