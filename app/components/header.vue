@@ -57,6 +57,8 @@
         <div class="container flex flex-1 items-center gap-x-4">
           <button
             type="button"
+            aria-label="메뉴 열기"
+            :aria-expanded="isOpen"
             class="group inline-flex size-10 cursor-pointer items-center justify-center rounded-full p-2 transition-colors duration-300 hover:bg-white/80 dark:hover:bg-white/20"
             @click="toggle()"
           >

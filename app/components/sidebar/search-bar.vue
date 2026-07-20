@@ -19,6 +19,8 @@
       class="bg-input-background focus-within:bg-input-background-focus flex h-10 items-center rounded-full ps-2 transition-colors duration-200"
     >
       <button
+        type="button"
+        aria-label="검색"
         class="hover:bg-input-background-focus flex size-7 items-center justify-center rounded-full p-1"
         @click="handleSearch"
       >

@@ -36,6 +36,9 @@
       </div>
       <button
         v-if="hasChild"
+        type="button"
+        aria-label="하위 링크 펼치기"
+        :aria-expanded="childOpen"
         class="md:hover:bg-sidebar-accent me-1 flex size-6 shrink-0 cursor-pointer items-center justify-center rounded-full"
         @click="toggleChild"
       >
