@@ -36,6 +36,8 @@ export function sidebarQuery(blogSlug: string) {
     filter: {
       blog_id: { slug: { _eq: "${blogSlug}" } }
     }
+    limit: 20
+    sort: ["created_at", "slug"]
   ) {
     id
     name
