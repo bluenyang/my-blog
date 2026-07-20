@@ -12,7 +12,6 @@ export function useHome() {
   return {
     recentPosts: computed(() => data.value?.recentPosts || []),
     popularSeries: computed(() => data.value?.popularSeries || []),
-    heroImage: computed(() => data.value?.heroImage ?? null),
     pending,
     error,
   };

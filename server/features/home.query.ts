@@ -49,13 +49,5 @@ export function homeQuery(blogSlug: string) {
     description
     slug
     posts_func { count }
-  }
-  homeSettings: blog_settings(
-    filter: {
-      blog_id: { slug: { _eq: "${blogSlug}" } }
-    }
-    limit: 1
-  ) {
-    hero_image { id }
   }`;
 }
