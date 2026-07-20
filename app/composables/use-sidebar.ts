@@ -1,8 +1,6 @@
 import type { SidebarContent } from '~~/shared/types';
 
 export const useSidebar = () => {
-  const { setSettings } = useSetting();
-
   const isOpen = useState<boolean>('sidebar_is_open', () => false);
   const { data, pending, error } = useFetch<SidebarContent>('/api/sidebar', {
     method: 'GET',
@@ -13,16 +11,6 @@ export const useSidebar = () => {
       }
     },
   });
-
-  watch(
-    data,
-    (newData) => {
-      if (newData) {
-        setSettings(newData.blogSettings ?? undefined);
-      }
-    },
-    { immediate: true },
-  );
 
   function toggle(): void {
     isOpen.value = !isOpen.value;
