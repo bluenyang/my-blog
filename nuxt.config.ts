@@ -25,7 +25,7 @@ export default defineNuxtConfig({
   },
 
   devtools: {
-    enabled: true,
+    enabled: process.env.NODE_ENV === 'development',
   },
 
   app: {
@@ -80,9 +80,9 @@ export default defineNuxtConfig({
 
   compatibilityDate: '2026-06-15',
 
-  // nitro: {
-  //   preset: 'netlify',
-  // },
+  nitro: {
+    preset: 'netlify',
+  },
 
   image: {
     format: ['webp'],
