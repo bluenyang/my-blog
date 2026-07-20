@@ -2,6 +2,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineNuxtConfig({
   modules: [
+    '@nuxt/image',
     '@nuxtjs/color-mode',
     '@nuxt/icon',
     '@nuxtjs/robots',
@@ -79,6 +80,11 @@ export default defineNuxtConfig({
 
   nitro: {
     preset: 'netlify',
+  },
+
+  image: {
+    format: ['webp'],
+    quality: 80,
   },
 
   vite: {
