@@ -1,3 +1,4 @@
+import type { ImageQuery } from '../types/image';
 import { getDirectusImageUrl } from '../utils/directus';
 
 import { categoryInPostMapper, seriesInPostMapper, tagInPostMapper } from './mapper';
@@ -17,7 +18,9 @@ export function postMapper(raw: RawPostItem[]): PostItem[] {
     author: {
       firstName: item.author_id.first_name,
       lastName: item.author_id.last_name,
-      avatar: item.author_id.avatar?.id ? getDirectusImageUrl(item.author_id.avatar.id) : null,
+      avatar: item.author_id.avatar?.id
+        ? getDirectusImageUrl(item.author_id.avatar.id, avatarImageQuery)
+        : null,
       nickname: item.author_id.nickname,
     },
     title: item.title,
@@ -44,7 +47,9 @@ export function postDetailMapper(raw: RawPostDetail): PostDetail {
     author: {
       firstName: post.author_id.first_name,
       lastName: post.author_id.last_name,
-      avatar: post.author_id.avatar?.id ? getDirectusImageUrl(post.author_id.avatar.id) : null,
+      avatar: post.author_id.avatar?.id
+        ? getDirectusImageUrl(post.author_id.avatar.id, avatarImageQuery)
+        : null,
       nickname: post.author_id.nickname,
     },
     title: post.title,
@@ -76,3 +81,12 @@ export function postSearchMapper(raw: RawCategoryItem | RawSeriesItem | RawTagIt
     totalCount: raw.posts_func.count,
   };
 }
+
+/** size-12(48px) @2x 기준 — Directus 아바타 transform */
+const avatarImageQuery: ImageQuery = {
+  width: 96,
+  height: 96,
+  format: 'webp',
+  quality: 80,
+  fit: 'cover',
+};

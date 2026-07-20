@@ -3,7 +3,7 @@ export const profileData = {
   desc: 'BlueNyang의 개발 log',
   nickname: 'BlueNyang',
   slug: 'bluenyang',
-  githubProfileImage: 'https://avatars.githubusercontent.com/u/67052707?v=4',
+  githubProfileImage: 'https://avatars.githubusercontent.com/u/67052707?s=64',
   link: [
     {
       name: 'github',

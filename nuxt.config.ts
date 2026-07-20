@@ -1,21 +1,9 @@
 import tailwindcss from '@tailwindcss/vite';
 
-function getDirectusHostname(): string | undefined {
-  const url = process.env.DIRECTUS_URL;
-  if (!url) return undefined;
-  try {
-    return new URL(url).hostname;
-  } catch {
-    return undefined;
-  }
-}
-
-const directusHostname = getDirectusHostname();
-
 export default defineNuxtConfig({
   modules: [
-    '@nuxt/fonts',
     '@nuxt/image',
+    '@nuxt/fonts',
     '@nuxtjs/color-mode',
     '@nuxt/icon',
     '@nuxtjs/robots',
@@ -99,7 +87,6 @@ export default defineNuxtConfig({
   image: {
     format: ['webp'],
     quality: 80,
-    ...(directusHostname ? { domains: [directusHostname] } : {}),
   },
 
   vite: {
