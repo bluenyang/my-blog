@@ -1,5 +1,17 @@
 import tailwindcss from '@tailwindcss/vite';
 
+function getDirectusHostname(): string | undefined {
+  const url = process.env.DIRECTUS_URL;
+  if (!url) return undefined;
+  try {
+    return new URL(url).hostname;
+  } catch {
+    return undefined;
+  }
+}
+
+const directusHostname = getDirectusHostname();
+
 export default defineNuxtConfig({
   modules: [
     '@nuxt/fonts',
@@ -80,13 +92,14 @@ export default defineNuxtConfig({
 
   compatibilityDate: '2026-06-15',
 
-  nitro: {
-    preset: 'netlify',
-  },
+  // nitro: {
+  //   preset: 'netlify',
+  // },
 
   image: {
     format: ['webp'],
     quality: 80,
+    ...(directusHostname ? { domains: [directusHostname] } : {}),
   },
 
   vite: {

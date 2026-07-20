@@ -4,4 +4,5 @@ import type { SeriesItem } from './series';
 export interface HomePosts {
   recentPosts: PostItem[];
   popularSeries: SeriesItem[];
+  heroImage: string | null;
 }

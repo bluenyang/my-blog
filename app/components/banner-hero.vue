@@ -1,5 +1,6 @@
 <script setup lang="ts">
   const { displayText } = useSnippet();
+  const { heroImage } = useHome();
 </script>
 
 <template>
@@ -19,7 +20,8 @@
       class="absolute z-20 h-full w-full bg-gray-500/50 transition-colors duration-500 dark:bg-black/50"
     ></div>
     <NuxtImg
-      src="/images/image.png"
+      v-if="heroImage"
+      :src="heroImage"
       alt="Blog hero image"
       class="animate-slow-zoom absolute z-10 h-full w-full object-cover"
       sizes="100vw"
