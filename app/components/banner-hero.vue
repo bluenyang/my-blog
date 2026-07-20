@@ -22,7 +22,6 @@
       src="/images/image.png"
       alt="Blog hero image"
       class="animate-slow-zoom absolute z-10 h-full w-full object-cover"
-      width="1920"
       format="webp"
       quality="80"
       fetchpriority="high"
