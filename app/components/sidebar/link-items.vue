@@ -10,7 +10,18 @@
 
   const childOpen = ref<boolean>(false);
 
-  const toggleChild = (event: MouseEvent) => {
+  const linkContentClass = 'flex min-w-0 flex-1 items-center gap-2 px-2 py-1.5';
+
+  const rowClass = computed(() =>
+    cn(
+      'flex items-center justify-between rounded-lg',
+      !hasChild.value &&
+        item.url &&
+        'md:hover:bg-accent md:hover:text-accent-foreground cursor-pointer',
+    ),
+  );
+
+  const toggleChild = (event: Event) => {
     event.preventDefault();
     event.stopPropagation();
     childOpen.value = !childOpen.value;
@@ -19,21 +30,21 @@
 
 <template>
   <li>
-    <NuxtLink
-      :to="item.url ?? ''"
-      :target="item.url ? '_blank' : undefined"
-      rel="noopener noreferrer"
-      :class="
-        cn(
-          'flex items-center justify-between rounded-lg',
-          !hasChild && 'md:hover:bg-accent md:hover:text-accent-foreground cursor-pointer',
-        )
-      "
-    >
-      <div class="flex min-w-0 items-center gap-2 px-2 py-1.5">
+    <div :class="rowClass">
+      <a
+        v-if="item.url"
+        :href="item.url"
+        target="_blank"
+        rel="noopener noreferrer"
+        :class="linkContentClass"
+      >
         <Icon :name="item.icon || 'lucide:link'" class="size-5 shrink-0" />
         <span class="truncate">{{ item.label }}</span>
-      </div>
+      </a>
+      <span v-else :class="linkContentClass">
+        <Icon :name="item.icon || 'lucide:link'" class="size-5 shrink-0" />
+        <span class="truncate">{{ item.label }}</span>
+      </span>
       <button
         v-if="hasChild"
         type="button"
@@ -47,17 +58,21 @@
           :class="cn('size-6 transition-transform duration-200', childOpen && 'rotate-180')"
         />
       </button>
-    </NuxtLink>
-    <ul
+    </div>
+    <div
       v-if="hasChild"
-      class="grid grid-rows-[0fr] overflow-hidden transition-[grid-template-rows] duration-200 ease-in-out"
-      :class="cn(childOpen && 'grid-rows-[1fr]')"
+      :class="
+        cn(
+          'grid grid-rows-[0fr] overflow-hidden transition-[grid-template-rows] duration-200 ease-in-out',
+          childOpen && 'grid-rows-[1fr]',
+        )
+      "
     >
       <div class="overflow-hidden">
         <ul class="ps-3">
           <LinkItems v-for="child in item.children" :key="child.id" :item="child" />
         </ul>
       </div>
-    </ul>
+    </div>
   </li>
 </template>
