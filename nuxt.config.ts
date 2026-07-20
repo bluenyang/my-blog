@@ -2,6 +2,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineNuxtConfig({
   modules: [
+    '@nuxt/fonts',
     '@nuxt/image',
     '@nuxtjs/color-mode',
     '@nuxt/icon',
@@ -30,16 +31,16 @@ export default defineNuxtConfig({
   app: {
     head: {
       htmlAttrs: { lang: 'ko' },
-      link: [
-        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
-        // Google Fonts
-        {
-          rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Cascadia+Code:ital,wght@0,200..700;1,200..700&family=Jua&family=Pacifico&family=Tektur:wght@400..900&display=swap',
-        },
-      ],
     },
+  },
+
+  fonts: {
+    families: [
+      { name: 'Tektur', provider: 'google', weights: [400, 500, 600, 700, 800, 900] },
+      { name: 'Pacifico', provider: 'google' },
+      { name: 'Jua', provider: 'google' },
+      { name: 'Cascadia Code', provider: 'google', weights: [400, 700] },
+    ],
   },
 
   css: ['~/assets/css/main.css'],
