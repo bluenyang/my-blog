@@ -80,6 +80,34 @@
           <ThemeButton />
         </div>
       </div>
+      <template #fallback>
+        <div
+          class="bg-header-bg pointer-events-auto absolute flex h-full w-full flex-row items-center justify-center px-4 backdrop-blur-xl"
+        >
+          <div class="container flex flex-1 items-center gap-x-4">
+            <button
+              type="button"
+              aria-label="메뉴 열기"
+              aria-expanded="false"
+              class="inline-flex size-10 items-center justify-center rounded-full p-2"
+            >
+              <Icon name="lucide:menu" class="size-6" />
+            </button>
+            <div class="flex py-5 lg:flex-1">
+              <NuxtLink class="group focus:outline-none" to="/">
+                <span
+                  class="font-pacifico bg-linear-to-r from-blue-600 to-purple-700 bg-clip-text text-2xl font-bold dark:from-blue-300 dark:to-purple-400"
+                >
+                  {{ profileData.nickname }}
+                </span>
+              </NuxtLink>
+            </div>
+          </div>
+          <div class="container flex flex-1 items-center justify-end">
+            <ThemeButton />
+          </div>
+        </div>
+      </template>
     </ClientOnly>
   </header>
 </template>
