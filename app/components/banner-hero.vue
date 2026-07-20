@@ -1,6 +1,4 @@
 <script setup lang="ts">
-  import image from '@/assets/images/image.png';
-
   const { displayText } = useSnippet();
 </script>
 
@@ -21,7 +19,7 @@
       class="absolute z-20 h-full w-full bg-gray-500/50 transition-colors duration-500 dark:bg-black/50"
     ></div>
     <NuxtImg
-      :src="image"
+      src="/images/image.png"
       alt="Blog hero image"
       class="animate-slow-zoom absolute z-10 h-full w-full object-cover"
       sizes="100vw"
