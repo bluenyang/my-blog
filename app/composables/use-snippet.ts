@@ -6,7 +6,7 @@ import {
 } from '~/constants/main-snippet';
 
 export function useSnippet() {
-  const displayText = ref<string>('');
+  const displayText = ref<string>(originalSnippets[0] ?? '');
 
   // 현재 display되는 snippet의 idx, status, speed
   let typingSpeed: number = initTypingSpeed;
@@ -66,6 +66,9 @@ export function useSnippet() {
   }
 
   onMounted(() => {
+    displayText.value = '';
+    currentIdx = 0;
+    randomizedSnippets = shuffleSquence(originalSnippets);
     animate();
   });
 

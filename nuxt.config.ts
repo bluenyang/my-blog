@@ -54,6 +54,7 @@ export default defineNuxtConfig({
     preference: 'dark',
     fallback: 'dark',
     classSuffix: '',
+    storage: 'cookie',
   },
 
   runtimeConfig: {
