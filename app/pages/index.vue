@@ -39,7 +39,7 @@
           to="/posts"
           class="text-primary hover:text-primary/80 hidden text-sm font-semibold transition-colors sm:flex sm:items-center"
         >
-          <span>전체 보기</span>
+          <span>최신 글 전체 보기</span>
           <Icon name="lucide:arrow-right" class="ml-1 size-4" />
         </NuxtLink>
       </div>
@@ -79,7 +79,7 @@
           to="/posts"
           class="bg-secondary text-secondary-foreground hover:bg-secondary/80 flex w-full items-center justify-center rounded-lg px-4 py-3 text-sm font-semibold transition-colors"
         >
-          전체 보기
+          최신 글 전체 보기
         </NuxtLink>
       </div>
     </section>
