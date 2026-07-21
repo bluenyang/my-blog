@@ -1,5 +1,5 @@
 import { postMapper, postSearchMapper } from '~~/server/features/mapper';
-import type { RawPosts } from '~~/server/types/raw-data';
+import type { RawCategoryTree, RawPosts } from '~~/server/types/raw-data';
 import type { PostsResponse } from '~~/shared/types';
 import { decodeRouteSlug } from '~~/shared/utils/decode-route-slug';
 
@@ -34,12 +34,19 @@ export default defineEventHandler(async (event): Promise<PostsResponse> => {
   })();
 
   const directus = useDirectus();
-  const { buildQuery, posts, series, category, tag } = useQuery();
+  const { buildQuery, posts, series, category, categoryTree, tag } = useQuery();
 
   try {
+    const categorySlugs = categorySlug
+      ? collectCategorySlugs(
+          (await directus.query<RawCategoryTree>(buildQuery(categoryTree))).categories ?? [],
+          categorySlug,
+        )
+      : undefined;
+
     const result = await directus.query<RawPosts>(
       buildQuery(
-        posts(limit, offset, search, categorySlug, tagSlug, seriesSlug),
+        posts(limit, offset, search, categorySlugs, tagSlug, seriesSlug),
         seriesSlug ? series(seriesSlug) : undefined,
         categorySlug ? category(categorySlug) : undefined,
         tagSlug ? tag(tagSlug) : undefined,
@@ -48,17 +55,33 @@ export default defineEventHandler(async (event): Promise<PostsResponse> => {
 
     const postsData = postMapper(result.posts);
     const totalCount = Number(result.postsCount?.[0]?.count?.id ?? 0);
-    const metadata = (() => {
-      if (searchType === 'category') {
-        return postSearchMapper(result.categories![0]!);
-      } else if (searchType === 'tag') {
-        return postSearchMapper(result.tags![0]!);
-      } else if (searchType === 'series') {
-        return postSearchMapper(result.series![0]!);
-      } else {
-        return undefined;
-      }
-    })();
+
+    const metadataSource =
+      searchType === 'category'
+        ? result.categories?.[0]
+        : searchType === 'tag'
+          ? result.tags?.[0]
+          : searchType === 'series'
+            ? result.series?.[0]
+            : undefined;
+
+    if (
+      (searchType === 'category' || searchType === 'tag' || searchType === 'series') &&
+      !metadataSource
+    ) {
+      throw createError({
+        statusCode: 404,
+        statusMessage: `${searchType} not found`,
+      });
+    }
+
+    const metadata = metadataSource
+      ? {
+          ...postSearchMapper(metadataSource),
+          // 상위 카테고리는 posts_func가 직접 연결만 세므로, 자손 포함 집계값으로 덮어씀
+          ...(searchType === 'category' ? { totalCount } : {}),
+        }
+      : undefined;
 
     return {
       searchType,
@@ -67,6 +90,9 @@ export default defineEventHandler(async (event): Promise<PostsResponse> => {
       posts: postsData,
     };
   } catch (error) {
+    if (isError(error)) {
+      throw error;
+    }
     console.error('Failed to fetch posts:', error);
     throw createError({
       statusCode: 500,
@@ -74,3 +100,36 @@ export default defineEventHandler(async (event): Promise<PostsResponse> => {
     });
   }
 });
+
+function collectCategorySlugs(
+  categories: RawCategoryTree['categories'],
+  rootSlug: string,
+): string[] {
+  const childrenByParent = new Map<string, string[]>();
+
+  for (const category of categories) {
+    const parentSlug = category.parent_id?.slug;
+    if (!parentSlug) {
+      continue;
+    }
+
+    const children = childrenByParent.get(parentSlug) ?? [];
+    children.push(category.slug);
+    childrenByParent.set(parentSlug, children);
+  }
+
+  const slugs = new Set<string>();
+  const pending = [rootSlug];
+
+  while (pending.length > 0) {
+    const slug = pending.pop()!;
+    if (slugs.has(slug)) {
+      continue;
+    }
+
+    slugs.add(slug);
+    pending.push(...(childrenByParent.get(slug) ?? []));
+  }
+
+  return [...slugs];
+}
