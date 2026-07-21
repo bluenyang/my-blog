@@ -17,3 +17,12 @@ export interface RawCategoryItemInPost {
     slug: string;
   };
 }
+
+export interface RawCategoryTree {
+  categories: {
+    slug: string;
+    parent_id: {
+      slug: string;
+    } | null;
+  }[];
+}

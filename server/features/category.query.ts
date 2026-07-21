@@ -10,3 +10,14 @@ export function categoryQuery(blogSlug: string, categorySlug: string) {
     posts_func { count }
   }`;
 }
+
+export function categoryTreeQuery(blogSlug: string) {
+  return `categories(
+    filter: {
+      blog_id: { slug: { _eq: "${blogSlug}" } }
+    }
+  ) {
+    slug
+    parent_id { slug }
+  }`;
+}

@@ -55,7 +55,7 @@ export function postsQuery(
   limit: number,
   offset: number,
   search?: string,
-  category?: string,
+  categories?: string[],
   tag?: string,
   series?: string,
 ) {
@@ -63,7 +63,7 @@ export function postsQuery(
     blog_id: { slug: { _eq: "${blogSlug}" } }
     status: { _eq: "published" }
     ${search ? `_or: [{ title: { _contains: "${search}" } }, { summary: { _contains: "${search}" } }, { content: { _contains: "${search}" } }]` : ''}
-    ${category ? `categories: { categories_id: { slug: { _eq: "${category}" } } }` : ''}
+    ${categories?.length ? `categories: { categories_id: { slug: { _in: ${JSON.stringify(categories)} } } }` : ''}
     ${tag ? `tags: { tags_id: { slug: { _eq: "${tag}" } } }` : ''}
     ${series ? `series: { series_id: { slug: { _eq: "${series}" } } }` : ''}
   `;

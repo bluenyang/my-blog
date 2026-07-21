@@ -14,7 +14,7 @@
 
 <template>
   <div>
-    <NuxtLoadingIndicator color="oklch(58.8% 0.158 241.966)" :height="8" :throttle="100" />
+    <NuxtLoadingIndicator color="oklch(58.8% 0.158 241.966)" :height="4" :throttle="100" />
     <NuxtRouteAnnouncer />
     <NuxtLayout>
       <NuxtPage :transition="{ name: 'fade', mode: 'out-in' }" />

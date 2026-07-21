@@ -1,5 +1,6 @@
 import {
   categoryQuery,
+  categoryTreeQuery,
   homeQuery,
   postDetailQuery,
   postsQuery,
@@ -27,14 +28,15 @@ export function useQuery() {
       limit: number,
       offset: number,
       search?: string,
-      category?: string,
+      categories?: string[],
       tag?: string,
       series?: string,
-    ) => postsQuery(config.public.blogSlug, limit, offset, search, category, tag, series),
+    ) => postsQuery(config.public.blogSlug, limit, offset, search, categories, tag, series),
     series: (seriesSlug: string) => seriesQuery(config.public.blogSlug, seriesSlug),
     sitemap: sitemapQuery(config.public.blogSlug),
     rss: rssQuery(config.public.blogSlug),
     category: (categorySlug: string) => categoryQuery(config.public.blogSlug, categorySlug),
+    categoryTree: categoryTreeQuery(config.public.blogSlug),
     tag: (tagSlug: string) => tagQuery(config.public.blogSlug, tagSlug),
   };
 }
