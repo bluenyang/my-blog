@@ -33,7 +33,7 @@
 </script>
 
 <template>
-  <div v-if="visible" class="group relative inline-flex items-center">
+  <div v-if="visible" class="group relative inline-flex items-center contain-layout">
     <span
       class="text-muted-foreground inline-flex items-center gap-1"
       :aria-label="`라이선스 ${licenseCode}`"
