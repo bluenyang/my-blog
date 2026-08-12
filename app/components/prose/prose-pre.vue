@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { langIcon } from '~/constants/language-icons';
+  import { cn } from '~/utils/cn';
 
   const props = defineProps<{
     code?: string;

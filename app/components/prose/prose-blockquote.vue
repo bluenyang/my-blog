@@ -1,4 +1,6 @@
 <script setup lang="ts">
+  import { cn } from '~/utils/cn';
+
   defineProps<{
     as?: 'note' | 'tip' | 'important' | 'warning' | 'caution';
   }>();

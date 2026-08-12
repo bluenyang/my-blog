@@ -1,4 +1,6 @@
 <script setup lang="ts">
+  import { cn } from '~/utils/cn';
+
   const { isOpen: isSidebarOpen, close: closeSidebar } = useSidebar();
 
   const isLocked = useScrollLock(import.meta.client ? document.body : null);

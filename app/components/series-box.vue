@@ -1,4 +1,6 @@
 <script setup lang="ts">
+  import { cn } from '~/utils/cn';
+
   interface SeriesBoxProps {
     series: SeriesItemInPost;
     currentPostIdx: number;

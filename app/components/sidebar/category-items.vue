@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import type { CategoryItem } from '~~/shared/types';
+  import { cn } from '~/utils/cn';
 
   interface MenuItemProps {
     item: CategoryItem;

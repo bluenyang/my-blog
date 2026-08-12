@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import CategoryItems from './category-items.vue';
+  import { cn } from '~/utils/cn';
 
   const { sidebar } = useSidebar();
   const route = useRoute();

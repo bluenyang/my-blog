@@ -1,4 +1,6 @@
 <script setup lang="ts">
+  import { cn } from '~/utils/cn';
+
   const route = useRoute();
 </script>
 

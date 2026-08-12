@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import type { NavigationItem } from '~~/shared/types';
+  import { cn } from '~/utils/cn';
 
   interface LinkItemProps {
     item: NavigationItem;

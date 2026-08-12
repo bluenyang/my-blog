@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import type { PostItem } from '~~/shared/types';
+  import { cn } from '~/utils/cn';
 
   const config = useRuntimeConfig();
 

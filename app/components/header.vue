@@ -2,6 +2,7 @@
   import { TransitionPresets } from '@vueuse/core';
 
   import { profileData } from '~/constants/sidebar-data';
+  import { cn } from '~/utils/cn';
 
   const { y } = useWindowScroll();
   const rawProgress = computed(() => {
