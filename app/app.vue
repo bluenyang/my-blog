@@ -9,6 +9,12 @@
         href: '/rss.xml',
       },
     ],
+    meta: [
+      {
+        name: 'naver-site-verification',
+        content: '133e30ab5b462674060b7764da34e7307173f594',
+      },
+    ],
   });
 </script>
 
