@@ -81,7 +81,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2026-06-15',
 
   nitro: {
-    preset: 'netlify',
+    preset: 'netlify-edge',
   },
 
   image: {
