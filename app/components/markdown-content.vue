@@ -12,12 +12,9 @@
 
   const tree = ref<MarkdownDocument | null>(null);
 
-  onMounted(async () => {
-    if (!postContent) {
-      return;
-    }
+  if (postContent) {
     tree.value = await parseContent(postContent);
-  });
+  }
 </script>
 
 <template>
