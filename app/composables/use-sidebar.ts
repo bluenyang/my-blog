@@ -2,12 +2,15 @@ import type { SidebarContent } from '~~/shared/types';
 
 export const useSidebar = () => {
   const isOpen = useState<boolean>('sidebar_is_open', () => false);
+  const requestFetch = useRequestFetch();
+
   const { data, pending, error } = useFetch<SidebarContent>('/api/sidebar', {
     method: 'GET',
     key: 'sidebar',
-    getCachedData(key, nuxtApp) {
+    $fetch: requestFetch as typeof $fetch,
+    getCachedData(cacheKey, nuxtApp) {
       if (nuxtApp.isHydrating) {
-        return nuxtApp.payload.data[key] ?? nuxtApp.static.data[key];
+        return nuxtApp.payload.data[cacheKey] ?? nuxtApp.static.data[cacheKey];
       }
     },
   });
@@ -23,7 +26,7 @@ export const useSidebar = () => {
   }
   return {
     isOpen,
-    sidebar: computed(() => data.value || undefined),
+    sidebar: computed(() => data.value ?? undefined),
     pending,
     error,
     toggle,

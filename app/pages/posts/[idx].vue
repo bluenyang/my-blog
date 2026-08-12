@@ -38,7 +38,7 @@
   watch(
     canonicalPath,
     (path) => {
-      if (!path || route.path === path) return;
+      if (!path || normalizeRoutePath(route.path) === normalizeRoutePath(path)) return;
       navigateTo(path, { redirectCode: 301, replace: true });
     },
     { immediate: true },

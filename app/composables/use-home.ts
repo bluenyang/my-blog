@@ -1,10 +1,13 @@
 export function useHome() {
+  const requestFetch = useRequestFetch();
+
   const { data, pending, error } = useFetch<HomePosts>('/api/home', {
     method: 'GET',
     key: 'home',
-    getCachedData(key, nuxtApp) {
+    $fetch: requestFetch as typeof $fetch,
+    getCachedData(cacheKey, nuxtApp) {
       if (nuxtApp.isHydrating) {
-        return nuxtApp.payload.data[key] ?? nuxtApp.static.data[key];
+        return nuxtApp.payload.data[cacheKey] ?? nuxtApp.static.data[cacheKey];
       }
     },
   });

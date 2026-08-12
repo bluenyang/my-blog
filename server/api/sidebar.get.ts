@@ -11,10 +11,10 @@ export default defineEventHandler(async (): Promise<SidebarContent> => {
 
     return sidebarMapper(result);
   } catch (error) {
-    console.error('Failed to fetch post detail:', error);
+    console.error('Failed to fetch sidebar:', error);
     throw createError({
       statusCode: 500,
-      statusMessage: 'Failed to fetch post detail',
+      statusMessage: 'Failed to fetch sidebar',
     });
   }
 });

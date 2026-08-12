@@ -1,16 +1,20 @@
 export function usePostDetail(postIdx: number | string) {
+  const requestFetch = useRequestFetch();
+  const key = `post-${postIdx}`;
+
   const { data, pending, error } = useFetch<PostDetail>(`/api/post/${postIdx}`, {
     method: 'GET',
-    key: `post-${postIdx}`,
-    getCachedData(key, nuxtApp) {
+    key,
+    $fetch: requestFetch as typeof $fetch,
+    getCachedData(cacheKey, nuxtApp) {
       if (nuxtApp.isHydrating) {
-        return nuxtApp.payload.data[key] ?? nuxtApp.static.data[key];
+        return nuxtApp.payload.data[cacheKey] ?? nuxtApp.static.data[cacheKey];
       }
     },
   });
 
   return {
-    post: computed(() => data.value || undefined),
+    post: computed(() => data.value ?? undefined),
     pending,
     error,
   };

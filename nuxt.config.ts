@@ -1,5 +1,7 @@
 import tailwindcss from '@tailwindcss/vite';
 
+import { normalizeSiteUrl } from './shared/utils/normalize-site-url';
+
 export default defineNuxtConfig({
   modules: [
     '@nuxt/image',
@@ -59,8 +61,8 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      homepageUrl: process.env.HOMEPAGE_URL,
-      blogUrl: process.env.BLOG_URL,
+      homepageUrl: normalizeSiteUrl(process.env.HOMEPAGE_URL),
+      blogUrl: normalizeSiteUrl(process.env.BLOG_URL),
       blogSlug: process.env.BLOG_SLUG,
       directusUrl: process.env.DIRECTUS_URL,
       emailAddress: process.env.EMAIL_ADDRESS,

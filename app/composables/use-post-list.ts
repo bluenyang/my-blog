@@ -31,10 +31,13 @@ export function usePostList(
       .join('|');
   });
 
+  const requestFetch = useRequestFetch();
+
   const { data, pending, error } = useFetch<PostsResponse>('/api/posts', {
     method: 'GET',
     key,
     query,
+    $fetch: requestFetch as typeof $fetch,
     getCachedData(cacheKey, nuxtApp) {
       if (nuxtApp.isHydrating) {
         return nuxtApp.payload.data[cacheKey] ?? nuxtApp.static.data[cacheKey];
