@@ -125,7 +125,9 @@
             {{ post.title }}
           </h1>
 
-          <div class="text-muted-foreground mb-6 flex items-center justify-start gap-2 text-sm">
+          <div
+            class="text-muted-foreground mb-6 flex flex-wrap items-center justify-start gap-2 text-sm"
+          >
             <div class="flex items-center gap-2">
               <img
                 v-if="post.author.avatar"
