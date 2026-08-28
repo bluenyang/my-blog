@@ -12,7 +12,7 @@
     return props.post.categories;
   });
 
-  const linkKey = computed(() => `post-${props.post.slug}`);
+  const linkKey = computed(() => `post-${props.post.postIdx}`);
 </script>
 
 <template>
