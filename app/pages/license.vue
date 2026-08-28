@@ -42,9 +42,7 @@
       </p>
     </div>
 
-    <div v-if="!settings" class="flex justify-center py-24">
-      <Icon name="lucide:loader-2" class="text-primary size-10 animate-spin" />
-    </div>
+    <LoadingState v-if="!settings" />
 
     <div v-else-if="!settings.allowCCL" class="text-muted-foreground py-12 text-center">
       <p>{{ '현재 공개된 Creative Commons 라이선스 설정이 없습니다.' }}</p>

@@ -59,22 +59,17 @@
       <p class="text-muted-foreground mt-3 text-lg">{{ pageDesc }}</p>
     </div>
 
-    <div v-if="pending && !tags.length" class="flex justify-center py-24">
-      <Icon name="lucide:loader-2" class="text-primary size-10 animate-spin" />
-    </div>
+    <LoadingState v-if="pending && !tags.length" />
 
-    <div v-else-if="error" class="flex flex-col items-center justify-center py-24 text-center">
-      <Icon name="lucide:alert-circle" class="text-destructive mb-4 size-12" />
-      <p class="text-destructive text-lg">{{ '태그를 불러오지 못했습니다.' }}</p>
-    </div>
+    <EmptyState
+      v-else-if="error"
+      icon="lucide:alert-circle"
+      tone="error"
+      title="태그를 불러오지 못했습니다."
+      :description="error.message"
+    />
 
-    <div
-      v-else-if="!tags.length"
-      class="text-muted-foreground flex flex-col items-center justify-center py-24 text-center"
-    >
-      <Icon name="lucide:tag" class="mb-4 size-12 opacity-50" />
-      <p class="text-lg">{{ '등록된 태그가 없습니다.' }}</p>
-    </div>
+    <EmptyState v-else-if="!tags.length" icon="lucide:tag" title="등록된 태그가 없습니다." />
 
     <ul v-else class="mt-10 flex flex-wrap items-center gap-3">
       <li v-for="tag in tags" :key="tag.slug">
