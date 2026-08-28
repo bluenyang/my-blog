@@ -54,22 +54,17 @@
       <p class="text-muted-foreground mt-3 text-lg">{{ pageDesc }}</p>
     </div>
 
-    <div v-if="pending && !series.length" class="flex justify-center py-24">
-      <Icon name="lucide:loader-2" class="text-primary size-10 animate-spin" />
-    </div>
+    <LoadingState v-if="pending && !series.length" />
 
-    <div v-else-if="error" class="flex flex-col items-center justify-center py-24 text-center">
-      <Icon name="lucide:alert-circle" class="text-destructive mb-4 size-12" />
-      <p class="text-destructive text-lg">{{ '시리즈를 불러오지 못했습니다.' }}</p>
-    </div>
+    <EmptyState
+      v-else-if="error"
+      icon="lucide:alert-circle"
+      tone="error"
+      title="시리즈를 불러오지 못했습니다."
+      :description="error.message"
+    />
 
-    <div
-      v-else-if="!series.length"
-      class="text-muted-foreground flex flex-col items-center justify-center py-24 text-center"
-    >
-      <Icon name="lucide:layers" class="mb-4 size-12 opacity-50" />
-      <p class="text-lg">{{ '등록된 시리즈가 없습니다.' }}</p>
-    </div>
+    <EmptyState v-else-if="!series.length" icon="lucide:layers" title="등록된 시리즈가 없습니다." />
 
     <ul v-else class="mt-10 grid gap-6 sm:grid-cols-2">
       <li v-for="item in series" :key="item.slug">

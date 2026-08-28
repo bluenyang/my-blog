@@ -159,14 +159,14 @@
 
 <template>
   <div class="w-full px-4 py-32 sm:px-6 lg:px-8">
-    <div v-if="pending" class="flex justify-center py-24">
-      <Icon name="lucide:loader-2" class="text-primary size-10 animate-spin" />
-    </div>
+    <LoadingState v-if="pending" />
 
-    <div v-else-if="!post" class="flex flex-col items-center justify-center py-24 text-center">
-      <Icon name="lucide:alert-circle" class="text-destructive mb-4 size-12" />
-      <p class="text-destructive text-lg">{{ '게시글을 찾을 수 없습니다.' }}</p>
-    </div>
+    <EmptyState
+      v-else-if="!post"
+      icon="lucide:alert-circle"
+      tone="error"
+      title="게시글을 찾을 수 없습니다."
+    />
 
     <div v-else class="mx-auto max-w-7xl">
       <button

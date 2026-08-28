@@ -259,25 +259,21 @@
       <p class="text-muted-foreground mt-3 text-end text-base">{{ currentPageText }}</p>
     </div>
 
-    <div v-if="pending" class="flex justify-center py-24">
-      <Icon name="lucide:loader-2" class="text-primary size-10 animate-spin" />
-    </div>
+    <LoadingState v-if="pending" />
 
-    <div v-else-if="error" class="flex flex-col items-center justify-center py-24 text-center">
-      <Icon name="lucide:alert-circle" class="text-destructive mb-4 size-12" />
-      <p class="text-destructive text-lg">게시글을 불러오는데 실패했습니다.</p>
-      <p class="text-muted-foreground text-sm">{{ error.message }}</p>
-    </div>
+    <EmptyState
+      v-else-if="error"
+      icon="lucide:alert-circle"
+      tone="error"
+      title="게시글을 불러오는데 실패했습니다."
+      :description="error.message"
+    />
 
-    <div
+    <EmptyState
       v-else-if="posts.length === 0"
-      class="flex flex-col items-center justify-center py-24 text-center"
-    >
-      <Icon name="lucide:search-x" class="text-muted-foreground mb-4 size-12" />
-      <p class="text-muted-foreground text-lg">
-        {{ resolvedType === 'search' ? '검색 결과가 없습니다.' : '등록된 게시글이 없습니다.' }}
-      </p>
-    </div>
+      icon="lucide:search-x"
+      :title="resolvedType === 'search' ? '검색 결과가 없습니다.' : '등록된 게시글이 없습니다.'"
+    />
 
     <template v-else>
       <div class="divide-border flex flex-col divide-y">
