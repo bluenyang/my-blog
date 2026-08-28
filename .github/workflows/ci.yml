@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Enable corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Typecheck
+        run: yarn typecheck
+
+      - name: Lint
+        # yarn lint는 --fix가 붙어 있어 CI에서는 바이너리를 직접 부른다
+        run: yarn exec oxlint . --deny-warnings
+
+      - name: Format check
+        # oxfmt는 .css를 파싱하려다 실패하므로 lint-staged와 같은 범위만 검사한다
+        run: yarn exec oxfmt --check "**/*.{ts,tsx,js,mjs,cjs,json,yaml,yml,md,vue,html}"
+
+      - name: Unit tests
+        run: yarn test
+
+      # runtimeConfig.public은 빌드 시점에 구워지므로 빌드에도 값이 필요하다.
+      # 실제 값이 아니어도 되지만 비어 있으면 useDirectus가 던진다.
+      - name: Build
+        run: yarn build
+        env:
+          HOMEPAGE_URL: https://example.com
+          BLOG_URL: https://blog.example.com
+          BLOG_SLUG: ci
+          DIRECTUS_URL: https://cms.example.com
+          EMAIL_ADDRESS: ci@example.com
