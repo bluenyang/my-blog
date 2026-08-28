@@ -19,6 +19,20 @@ export default defineNuxtConfig({
 
   // 링크 hover/viewport prefetch가 페이지 payload + Directus API를 연쇄로 때림
   experimental: {
+    /*
+     * routeRules에 swr이 있으면 Nuxt가 payloadExtraction을 **자동으로** 켜고,
+     * asyncData를 인라인 payload에서 빼 별도 _payload.json으로 보낸다.
+     * 그런데 최초 SSR 로드에서는 그 파일을 가져오지 않아 데이터가 그냥 유실되고,
+     * 하이드레이션 직후 모든 /api/*를 다시 호출한다.
+     *
+     * 측정 (글 상세, node-server 빌드):
+     *   기본값          인라인 payload 1,735B, data 키 없음, /api/sidebar·/api/post 재요청
+     *   payloadExtraction:false  인라인 payload 77,230B, 재요청 없음
+     *
+     * routeRules의 CDN 캐시(s-maxage)는 그대로 유지된다.
+     */
+    payloadExtraction: false,
+
     defaults: {
       nuxtLink: {
         prefetch: false,
