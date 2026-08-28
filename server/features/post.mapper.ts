@@ -8,10 +8,11 @@ import type {
   RawPostDetail,
   RawPostItem,
   RawPostLink,
+  RawSearchPosts,
   RawSeriesItem,
   RawTagItem,
 } from '~~/server/types/raw-data';
-import type { PostDetail, PostItem, PostLink, PostSearch } from '~~/shared/types';
+import type { PostDetail, PostItem, PostLink, PostSearch, SearchPostHit } from '~~/shared/types';
 
 export function postMapper(raw: RawPostItem[]): PostItem[] {
   return raw.map<PostItem>((item) => ({
@@ -128,3 +129,26 @@ const avatarImageQuery: ImageQuery = {
   quality: 80,
   fit: 'cover',
 };
+
+/** 팔레트 행의 썸네일 — 68px @2x */
+const searchThumbnailQuery: ImageQuery = {
+  width: 136,
+  height: 136,
+  format: 'webp',
+  quality: 70,
+  fit: 'cover',
+};
+
+export function searchMapper(raw: RawSearchPosts): SearchPostHit[] {
+  return (raw.searchPosts ?? []).map((item) => ({
+    postIdx: item.post_idx,
+    title: item.title,
+    slug: item.slug,
+    summary: item.summary,
+    thumbnail: item.thumbnail?.id
+      ? getDirectusImageUrl(item.thumbnail.id, searchThumbnailQuery)
+      : null,
+    publishedAt: item.published_at,
+    category: item.categories?.[0]?.categories_id.name ?? null,
+  }));
+}

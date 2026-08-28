@@ -3,16 +3,12 @@
 
   const { isOpen: isSidebarOpen, close: closeSidebar } = useSidebar();
 
-  const isLocked = useScrollLock(import.meta.client ? document.body : null);
+  // 팔레트와 같은 body 락을 공유한다 — 한쪽이 닫혀도 다른 쪽의 락이 풀리지 않아야 한다
+  const { lock } = useBodyScrollLock('sidebar');
 
   watch(isSidebarOpen, (isOpen) => {
-    if (import.meta.client) {
-      if (isOpen && window.innerWidth < 768) {
-        isLocked.value = true;
-      } else {
-        isLocked.value = false;
-      }
-    }
+    if (!import.meta.client) return;
+    lock(isOpen && window.innerWidth < 768);
   });
 
   const route = useRoute();
