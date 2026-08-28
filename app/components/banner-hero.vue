@@ -5,9 +5,7 @@
 <template>
   <div class="relative z-0 flex h-screen w-full items-center justify-center">
     <div class="relative z-30 flex h-full flex-col items-center justify-center px-4 text-center">
-      <strong
-        class="animate-slide-up mb-8 text-5xl font-bold text-gray-800 transition-all duration-500 dark:text-gray-200"
-      >
+      <strong class="animate-slide-up mb-8 text-5xl font-bold text-gray-800 dark:text-gray-200">
         {{ "BlueNyang's Dev-log" }}
       </strong>
       <p class="animate-slide-up rounded-lg bg-black/50 px-4 pt-1 pb-2 text-xl">

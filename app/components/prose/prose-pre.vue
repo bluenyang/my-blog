@@ -39,7 +39,7 @@
     <pre
       :class="
         cn(
-          '[&>code]:font-cascadia-code scrollbar-thumb-sidebar-border min-w-0 scrollbar-thin scrollbar-track-transparent overflow-x-auto pt-2 pb-4 text-sm',
+          '[&>code]:font-cascadia-code min-w-0 scrollbar-thin overflow-x-auto pt-2 pb-4 text-sm',
           $props.class,
         )
       "
