@@ -11,7 +11,7 @@
   const config = useRuntimeConfig();
 
   const limit = 10;
-  const currentPage = ref(1);
+  const currentPage = usePageParam();
   const { onNavigate, isPending } = useNavFeedback();
 
   const options = computed(() => {
@@ -23,10 +23,13 @@
     };
   });
 
+  // 필터가 바뀌면 이전 필터의 페이지 번호가 URL에 남아 있으면 안 된다
   watch(
     () => [props.search, props.category, props.tag, props.series],
     () => {
-      currentPage.value = 1;
+      if (currentPage.value !== 1) {
+        currentPage.value = 1;
+      }
     },
   );
 

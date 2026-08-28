@@ -5,7 +5,7 @@
   const config = useRuntimeConfig();
 
   const limit = 10;
-  const currentPage = ref(1);
+  const currentPage = usePageParam();
   const { posts, pending, error, totalCount } = usePostList(limit, currentPage);
   const { onNavigate, isPending } = useNavFeedback();
 
