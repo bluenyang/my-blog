@@ -9,6 +9,29 @@
     link: [{ rel: 'canonical', href: canonicalUrl }],
   });
 
+  const { siteName, description: blogDescription, blogUrl, author } = useBlogIdentity();
+
+  useJsonLd(() => ({
+    '@context': 'https://schema.org',
+    '@type': 'Blog',
+    '@id': `${blogUrl}#blog`,
+    url: blogUrl,
+    name: siteName,
+    description: blogDescription,
+    inLanguage: 'ko-KR',
+    author,
+    publisher: author,
+    blogPost: (recentPosts.value ?? []).map((post) => ({
+      '@type': 'BlogPosting',
+      headline: post.title,
+      url: `${blogUrl}/posts/${post.postIdx}-${post.slug}`,
+      datePublished: post.publishedAt,
+      dateModified: post.updatedAt ?? post.publishedAt,
+      image: post.thumbnail ?? undefined,
+      author,
+    })),
+  }));
+
   useSeoMeta({
     title: 'Home',
     description: 'BlueNyang의 개발 log',
