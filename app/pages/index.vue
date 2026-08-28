@@ -35,13 +35,13 @@
   useSeoMeta({
     title: 'Home',
     description: 'BlueNyang의 개발 log',
-    ogTitle: `BlueNyang's Devlog`,
-    ogImage: `${canonicalUrl}/favicon.ico`,
+    ogTitle: siteName,
+    ogImage: `${canonicalUrl}/images/og-default.jpg`,
     ogDescription: 'BlueNyang의 개발 log',
     ogUrl: canonicalUrl,
     ogType: 'website',
     ogLocale: 'ko_KR',
-    ogSiteName: `BlueNyang's Devlog`,
+    ogSiteName: siteName,
   });
 </script>
 

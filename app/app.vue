@@ -26,7 +26,8 @@
   }));
 
   useHead({
-    titleTemplate: `%s · BlueNyang's Devlog`,
+    // 문자열 템플릿은 제목 없는 페이지에서 " · BlueNyang's Dev-log"로 렌더된다
+    titleTemplate: (title) => (title ? `${title} · ${siteName}` : siteName),
     link: [
       {
         rel: 'alternate',

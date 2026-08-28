@@ -1,4 +1,6 @@
 <script setup lang="ts">
+  const { siteName } = useBlogIdentity();
+
   const { settings } = useSetting();
   // sidebar fetch로 settings 채움
   useSidebar();
@@ -23,7 +25,7 @@
     ogUrl: canonicalUrl,
     ogType: 'website',
     ogLocale: 'ko_KR',
-    ogSiteName: `BlueNyang's Devlog`,
+    ogSiteName: siteName,
   });
 </script>
 

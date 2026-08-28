@@ -151,7 +151,7 @@
     totalPages,
   });
 
-  const { blogUrl, author } = useBlogIdentity();
+  const { siteName, blogUrl, author } = useBlogIdentity();
 
   useJsonLd(() => {
     // 검색 결과는 이미 noindex이고, 2페이지 이후도 색인 대상이 아니다
@@ -219,10 +219,10 @@
     ogImage: () =>
       resolvedType.value === 'series'
         ? metadata.value?.thumbnail
-        : `${config.public.blogUrl}/favicon.ico`,
+        : `${config.public.blogUrl}/images/og-default.jpg`,
     ogType: 'website',
     ogLocale: 'ko_KR',
-    ogSiteName: `BlueNyang's Devlog`,
+    ogSiteName: siteName,
     // 검색 결과 페이지와 2페이지 이후는 색인하지 않아 thin/duplicate를 피함
     robots: () => (resolvedType.value === 'search' ? 'noindex, follow' : paginationRobots.value),
   });

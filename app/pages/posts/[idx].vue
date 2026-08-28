@@ -75,7 +75,7 @@
     window.history.back();
   }
 
-  const { blogUrl, author } = useBlogIdentity();
+  const { siteName, blogUrl, author } = useBlogIdentity();
 
   useJsonLd(() => {
     const p = post.value;
@@ -142,7 +142,7 @@
     ogUrl: canonicalUrl,
     ogType: 'article',
     ogLocale: 'ko_KR',
-    ogSiteName: `BlueNyang's Devlog`,
+    ogSiteName: siteName,
     twitterCard: 'summary_large_image',
     articlePublishedTime: () => post.value?.publishedAt,
     articleModifiedTime: () => post.value?.updatedAt,
