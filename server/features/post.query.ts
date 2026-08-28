@@ -79,6 +79,32 @@ export function postDetailQuery(blogSlug: string, postIdx: number) {
         }
       }
     }
+  }
+  prevPost: posts(
+    filter: {
+      blog_id: { slug: { _eq: ${gqlString(blogSlug)} } }
+      status: { _eq: "published" }
+      post_idx: { _lt: "${postIdx}" }
+    }
+    sort: ["-post_idx"]
+    limit: 1
+  ) {
+    post_idx
+    title
+    slug
+  }
+  nextPost: posts(
+    filter: {
+      blog_id: { slug: { _eq: ${gqlString(blogSlug)} } }
+      status: { _eq: "published" }
+      post_idx: { _gt: "${postIdx}" }
+    }
+    sort: ["post_idx"]
+    limit: 1
+  ) {
+    post_idx
+    title
+    slug
   }`;
 }
 
