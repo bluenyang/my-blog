@@ -2,27 +2,20 @@ import { postMapper, postSearchMapper } from '~~/server/features/mapper';
 import type { RawCategoryTree, RawPosts } from '~~/server/types/raw-data';
 import type { PostsResponse } from '~~/shared/types';
 
+import { resolveSearchType } from '~~/shared/utils/resolve-search-type';
+
 import { parsePostsQuery, postsCacheKey } from '../utils/posts-query';
 
 export default defineCachedEventHandler(
   async (event): Promise<PostsResponse> => {
     const { limit, offset, search, categorySlug, tagSlug, seriesSlug } = parsePostsQuery(event);
 
-    const searchType: 'search' | 'category' | 'tag' | 'series' | null = (() => {
-      if (search) {
-        return 'search';
-      } else if (categorySlug && !seriesSlug && !tagSlug) {
-        return 'category';
-      } else if (tagSlug && !seriesSlug && !categorySlug) {
-        return 'tag';
-      } else if (seriesSlug && !categorySlug && !tagSlug) {
-        return 'series';
-      } else if (!search && !categorySlug && !tagSlug && !seriesSlug) {
-        return null;
-      } else {
-        return 'search';
-      }
-    })();
+    const searchType = resolveSearchType({
+      search,
+      category: categorySlug,
+      tag: tagSlug,
+      series: seriesSlug,
+    });
 
     const directus = useDirectus();
     const { buildQuery, posts, series, category, categoryTree, tag } = useQuery();

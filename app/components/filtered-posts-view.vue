@@ -42,26 +42,7 @@
   );
 
   // API searchType보다 props로 타입을 정해 SSR/클라이언트 헤더가 어긋나지 않게 함
-  const resolvedType = computed(() => {
-    if (options.value.search) {
-      return 'search';
-    } else if (options.value.category && !options.value.series && !options.value.tag) {
-      return 'category';
-    } else if (options.value.tag && !options.value.series && !options.value.category) {
-      return 'tag';
-    } else if (options.value.series && !options.value.category && !options.value.tag) {
-      return 'series';
-    } else if (
-      !options.value.search &&
-      !options.value.category &&
-      !options.value.tag &&
-      !options.value.series
-    ) {
-      return null;
-    } else {
-      return 'search';
-    }
-  });
+  const resolvedType = computed(() => resolveSearchType(options.value));
 
   const eyebrow = computed(() => {
     if (resolvedType.value === 'series') {
