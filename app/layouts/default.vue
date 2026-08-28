@@ -6,7 +6,7 @@
 
 <template>
   <div class="flex flex-row">
-    <Siderbar />
+    <SidebarShell />
 
     <div class="relative flex min-w-0 grow flex-col">
       <Header />
