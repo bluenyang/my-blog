@@ -111,6 +111,22 @@
             </li>
             <li>
               <NuxtLink
+                to="/tags"
+                class="text-muted-foreground hover:text-primary text-sm transition-colors"
+              >
+                {{ '태그' }}
+              </NuxtLink>
+            </li>
+            <li>
+              <NuxtLink
+                to="/series"
+                class="text-muted-foreground hover:text-primary text-sm transition-colors"
+              >
+                {{ '시리즈' }}
+              </NuxtLink>
+            </li>
+            <li>
+              <NuxtLink
                 to="/license"
                 class="text-muted-foreground hover:text-primary inline-flex items-center gap-1.5 text-sm transition-colors"
               >

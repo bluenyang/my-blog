@@ -74,7 +74,10 @@ export default defineNuxtConfig({
     '/posts': { swr: 180 },
     '/posts/**': { swr: 180 },
     '/categories/**': { swr: 180 },
+    // '/tags/**'는 맨 '/tags'와 매치되지 않으므로 인덱스를 따로 적는다
+    '/tags': { swr: 600 },
     '/tags/**': { swr: 180 },
+    '/series': { swr: 600 },
     '/series/**': { swr: 180 },
     '/search': { swr: 180 },
     '/license': { swr: 86400 },
