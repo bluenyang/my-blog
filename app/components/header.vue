@@ -109,7 +109,7 @@
         <!-- 읽기 진행률: 독 내부에 두어 모서리에 클리핑되게 한다 -->
         <div
           v-if="isReading"
-          class="absolute inset-x-0 bottom-0 h-[3px] bg-black/10 dark:bg-white/10"
+          class="absolute inset-x-0 bottom-0 h-0.75 bg-black/10 dark:bg-white/10"
           role="progressbar"
           aria-label="읽기 진행률"
           :aria-valuenow="Math.round(readingProgress * 100)"
