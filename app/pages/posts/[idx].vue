@@ -5,8 +5,28 @@
   const idxParam = route.params.idx as string;
   const postIdx = parseInt(idxParam, 10);
 
+  // /posts/abc 처럼 글 번호가 아닌 경로는 API를 때리기 전에 404로 끝낸다
+  if (!Number.isInteger(postIdx) || postIdx < 0) {
+    throw createError({
+      statusCode: 404,
+      statusMessage: '게시글을 찾을 수 없습니다.',
+      fatal: true,
+    });
+  }
+
   const { settings } = useSetting();
-  const { post, pending, error } = usePostDetail(postIdx);
+  // await해야 setup 안에서 error.value를 읽을 수 있다 (use-post.ts 주석 참고)
+  const { post, pending, error } = await usePostDetail(postIdx);
+
+  if (error.value) {
+    const notFound = error.value.statusCode === 404;
+    throw createError({
+      statusCode: notFound ? 404 : 500,
+      statusMessage: notFound ? '게시글을 찾을 수 없습니다.' : '게시글을 불러오지 못했습니다.',
+      fatal: true,
+    });
+  }
+
   const series = computed(() => post.value?.series?.[0]);
   const seriesName = computed(() => series.value?.name);
 
@@ -74,10 +94,7 @@
       <Icon name="lucide:loader-2" class="text-primary size-10 animate-spin" />
     </div>
 
-    <div
-      v-else-if="error || !post"
-      class="flex flex-col items-center justify-center py-24 text-center"
-    >
+    <div v-else-if="!post" class="flex flex-col items-center justify-center py-24 text-center">
       <Icon name="lucide:alert-circle" class="text-destructive mb-4 size-12" />
       <p class="text-destructive text-lg">{{ '게시글을 찾을 수 없습니다.' }}</p>
     </div>
