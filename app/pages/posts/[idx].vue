@@ -27,6 +27,13 @@
     });
   }
 
+  // 본문은 여기서 한 번만 파싱한다. useAsyncData가 결과를 payload로 넘겨
+  // 클라이언트가 comark + Shiki를 다시 돌리지 않는다.
+  const { tree, toc } = await usePostContent(
+    () => postIdx,
+    () => post.value?.content,
+  );
+
   const series = computed(() => post.value?.series?.[0]);
   const seriesName = computed(() => series.value?.name);
 
@@ -191,8 +198,8 @@
 
       <MarkdownContent
         v-if="post"
-        :post-content="post.content"
-        :post-idx="post.postIdx"
+        :tree="tree"
+        :toc="toc"
         :series="series"
         :current-post-idx="post.postIdx"
       />

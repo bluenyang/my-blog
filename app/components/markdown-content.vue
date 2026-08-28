@@ -1,20 +1,16 @@
 <script setup lang="ts">
   import type { MarkdownDocument } from 'comark';
+  import type { TocLink } from '~/components/toc-link.vue';
 
   interface MarkdownContentProps {
-    postContent: string;
-    postIdx: number;
+    /** 파싱은 페이지에서 usePostContent로 한 번만 한다 (SSR payload 재사용) */
+    tree: MarkdownDocument | null;
+    toc: TocLink[];
     series?: SeriesItemInPost;
     currentPostIdx: number;
   }
 
-  const { postContent, series, currentPostIdx } = defineProps<MarkdownContentProps>();
-
-  const tree = ref<MarkdownDocument | null>(null);
-
-  if (postContent) {
-    tree.value = await parseContent(postContent);
-  }
+  const { tree, toc, series, currentPostIdx } = defineProps<MarkdownContentProps>();
 </script>
 
 <template>
@@ -33,7 +29,7 @@
             <Icon name="lucide:chevron-down" class="size-5" />
           </summary>
           <div class="mt-4">
-            <TocLink v-if="tree?.meta.toc" :links="tree?.meta.toc.links" />
+            <TocLink v-if="toc.length" :links="toc" />
           </div>
         </details>
       </div>
@@ -49,10 +45,10 @@
       <MarkdownDocument v-if="tree" :value="tree" />
     </main>
     <!-- Floating Nav (TOC) - Left Side -->
-    <aside v-if="postContent" class="hidden w-52 shrink-0 rounded-md lg:sticky lg:top-36 lg:block">
+    <aside v-if="toc.length" class="hidden w-52 shrink-0 rounded-md lg:sticky lg:top-36 lg:block">
       <div class="flex flex-col text-sm">
         <div class="text-foreground mb-2 text-base font-semibold">{{ '목차' }}</div>
-        <TocLink v-if="tree?.meta.toc" :links="tree?.meta.toc.links" class="space-y-4" />
+        <TocLink v-if="toc.length" :links="toc" class="space-y-4" />
       </div>
     </aside>
   </div>
