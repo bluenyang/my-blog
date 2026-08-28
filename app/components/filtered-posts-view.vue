@@ -183,6 +183,9 @@
       <img
         :src="metadata?.thumbnail"
         :alt="metadata?.name ?? ''"
+        width="1200"
+        height="400"
+        loading="eager"
         class="aspect-3/1 w-full object-cover"
       />
     </div>

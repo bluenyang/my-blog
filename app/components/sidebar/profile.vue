@@ -10,7 +10,11 @@
     <div class="flex items-center justify-start gap-4">
       <img
         :src="profileData.githubProfileImage"
-        alt="BlueNyang"
+        :alt="profileData.nickname"
+        width="40"
+        height="40"
+        loading="lazy"
+        decoding="async"
         class="size-10 rounded-full border-2 border-white"
       />
       <div class="space-y-1">

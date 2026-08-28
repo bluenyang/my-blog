@@ -20,8 +20,12 @@
       src="/images/image.png"
       alt="Blog hero image"
       class="animate-slow-zoom absolute z-10 h-full w-full object-cover"
+      width="1408"
+      height="768"
+      sizes="100vw"
       format="webp"
       quality="80"
+      loading="eager"
       fetchpriority="high"
       preload
     />
