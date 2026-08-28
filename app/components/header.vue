@@ -22,6 +22,9 @@
   const paddingY = computed(() => 16 - smoothProgress.value * 4); // 16 -> 12
 
   const { isOpen, toggle } = useSidebar();
+
+  // 진행 바는 독의 자식이라 독이 좁아질 때 폭·여백·모서리를 그대로 따라간다
+  const { progress: readingProgress, isActive: isReading } = useReadingProgress();
 </script>
 
 <template>
@@ -41,7 +44,7 @@
         }"
         :class="
           cn(
-            'pointer-events-auto absolute flex h-full flex-row items-center justify-center px-4 backdrop-blur-xl backdrop-brightness-104 backdrop-saturate-190 transition-colors duration-500',
+            'pointer-events-auto absolute flex h-full flex-row items-center justify-center overflow-hidden px-4 backdrop-blur-xl backdrop-brightness-104 backdrop-saturate-190 transition-colors duration-500',
             smoothProgress > 0.3 ? 'bg-header-tp' : 'bg-header-bg',
           )
         "
@@ -79,6 +82,22 @@
         <!-- Right Items - Theme Control Button -->
         <div class="container flex flex-1 items-center justify-end">
           <ThemeButton />
+        </div>
+
+        <!-- 읽기 진행률: 독 내부에 두어 모서리에 클리핑되게 한다 -->
+        <div
+          v-if="isReading"
+          class="absolute inset-x-0 bottom-0 h-[3px] bg-black/10 dark:bg-white/10"
+          role="progressbar"
+          aria-label="읽기 진행률"
+          :aria-valuenow="Math.round(readingProgress * 100)"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        >
+          <span
+            class="bg-primary block h-full origin-left transition-transform duration-100 ease-out"
+            :style="{ transform: `scaleX(${readingProgress})` }"
+          />
         </div>
       </div>
       <template #fallback>
