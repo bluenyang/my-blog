@@ -1,5 +1,5 @@
 <template>
-  <ul class="my-2 ml-6 list-decimal">
+  <ol class="my-2 ml-6 list-decimal">
     <slot />
-  </ul>
+  </ol>
 </template>
