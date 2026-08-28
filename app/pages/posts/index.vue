@@ -33,6 +33,34 @@
     totalPages,
   });
 
+  const { blogUrl, author } = useBlogIdentity();
+
+  // noindex인 2페이지 이후에는 ItemList를 먹이지 않는다
+  useJsonLd(() => {
+    if (currentPage.value !== 1) return null;
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'CollectionPage',
+      '@id': `${canonicalUrl}#collection`,
+      url: canonicalUrl,
+      name: '전체 글',
+      inLanguage: 'ko-KR',
+      isPartOf: { '@id': `${blogUrl}#blog` },
+      mainEntity: {
+        '@type': 'ItemList',
+        itemListOrder: 'https://schema.org/ItemListOrderDescending',
+        numberOfItems: totalCount.value,
+        itemListElement: (posts.value ?? []).map((post, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          url: `${blogUrl}/posts/${post.postIdx}-${post.slug}`,
+          name: post.title,
+        })),
+      },
+      author,
+    };
+  });
+
   useHead({
     link: () => [
       ...(canonical.value ? [{ rel: 'canonical' as const, href: canonical.value }] : []),

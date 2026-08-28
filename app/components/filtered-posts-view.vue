@@ -151,6 +151,57 @@
     totalPages,
   });
 
+  const { blogUrl, author } = useBlogIdentity();
+
+  useJsonLd(() => {
+    // 검색 결과는 이미 noindex이고, 2페이지 이후도 색인 대상이 아니다
+    if (resolvedType.value === 'search' || currentPage.value !== 1) return null;
+    const url = pageCanonicalUrl.value;
+    if (!url) return null;
+
+    const isSeries = resolvedType.value === 'series';
+
+    return [
+      {
+        '@context': 'https://schema.org',
+        '@type': isSeries ? ['CollectionPage', 'CreativeWorkSeries'] : 'CollectionPage',
+        '@id': `${url}#collection`,
+        url,
+        name: metadata.value?.name ?? pageTitle.value,
+        description: metadata.value?.description ?? undefined,
+        image: isSeries ? (metadata.value?.thumbnail ?? undefined) : undefined,
+        inLanguage: 'ko-KR',
+        isPartOf: { '@id': `${blogUrl}#blog` },
+        mainEntity: {
+          '@type': 'ItemList',
+          itemListOrder: 'https://schema.org/ItemListOrderDescending',
+          numberOfItems: totalCount.value,
+          itemListElement: (posts.value ?? []).map((post, index) => ({
+            '@type': 'ListItem',
+            position: index + 1,
+            url: `${blogUrl}/posts/${post.postIdx}-${post.slug}`,
+            name: post.title,
+          })),
+        },
+        author,
+      },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: '홈', item: blogUrl },
+          { '@type': 'ListItem', position: 2, name: '전체 글', item: `${blogUrl}/posts` },
+          {
+            '@type': 'ListItem',
+            position: 3,
+            name: metadata.value?.name ?? pageTitle.value,
+            item: url,
+          },
+        ],
+      },
+    ];
+  });
+
   useHead({
     link: () => [
       ...(canonical.value ? [{ rel: 'canonical' as const, href: canonical.value }] : []),
