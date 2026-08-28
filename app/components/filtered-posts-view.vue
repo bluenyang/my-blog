@@ -126,22 +126,37 @@
       return `${config.public.blogUrl}/search${q}`;
     }
     if (resolvedType.value === 'category') {
-      return `${config.public.blogUrl}/categories/${props.category}`;
+      return `${config.public.blogUrl}/categories/${encodeURIComponent(props.category ?? '')}`;
     }
     if (resolvedType.value === 'tag') {
-      return `${config.public.blogUrl}/tags/${props.tag}`;
+      return `${config.public.blogUrl}/tags/${encodeURIComponent(props.tag ?? '')}`;
     }
     if (resolvedType.value === 'series') {
-      return `${config.public.blogUrl}/series/${props.series}`;
+      return `${config.public.blogUrl}/series/${encodeURIComponent(props.series ?? '')}`;
     }
     return `${config.public.blogUrl}`;
   });
 
+  const totalPages = computed(() => Math.ceil(totalCount.value / limit));
+
+  const {
+    canonical,
+    prev,
+    next,
+    robots: paginationRobots,
+  } = usePaginationSeo({
+    // 검색 결과는 canonical을 주지 않는다 (이미 noindex)
+    baseUrl: () => (resolvedType.value === 'search' ? undefined : pageCanonicalUrl.value),
+    page: currentPage,
+    totalPages,
+  });
+
   useHead({
-    link: () =>
-      resolvedType.value !== 'search' && pageCanonicalUrl.value
-        ? [{ rel: 'canonical', href: pageCanonicalUrl.value }]
-        : [],
+    link: () => [
+      ...(canonical.value ? [{ rel: 'canonical' as const, href: canonical.value }] : []),
+      ...(prev.value ? [{ rel: 'prev' as const, href: prev.value }] : []),
+      ...(next.value ? [{ rel: 'next' as const, href: next.value }] : []),
+    ],
   });
 
   useSeoMeta({
@@ -157,8 +172,8 @@
     ogType: 'website',
     ogLocale: 'ko_KR',
     ogSiteName: `BlueNyang's Devlog`,
-    // 검색 결과 페이지는 색인하지 않아 thin/duplicate를 피함
-    robots: () => (resolvedType.value === 'search' ? 'noindex, follow' : undefined),
+    // 검색 결과 페이지와 2페이지 이후는 색인하지 않아 thin/duplicate를 피함
+    robots: () => (resolvedType.value === 'search' ? 'noindex, follow' : paginationRobots.value),
   });
 
   function getFormattedDate(dateString: string | null) {

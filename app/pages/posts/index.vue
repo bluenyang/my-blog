@@ -25,9 +25,20 @@
   });
 
   const canonicalUrl = `${config.public.blogUrl}/posts`;
+  const totalPages = computed(() => Math.ceil(totalCount.value / limit));
+
+  const { canonical, prev, next, robots } = usePaginationSeo({
+    baseUrl: canonicalUrl,
+    page: currentPage,
+    totalPages,
+  });
 
   useHead({
-    link: [{ rel: 'canonical', href: canonicalUrl }],
+    link: () => [
+      ...(canonical.value ? [{ rel: 'canonical' as const, href: canonical.value }] : []),
+      ...(prev.value ? [{ rel: 'prev' as const, href: prev.value }] : []),
+      ...(next.value ? [{ rel: 'next' as const, href: next.value }] : []),
+    ],
   });
 
   useSeoMeta({
@@ -40,6 +51,7 @@
     ogType: 'website',
     ogLocale: 'ko_KR',
     ogSiteName: `BlueNyang's Devlog`,
+    robots,
   });
 </script>
 
