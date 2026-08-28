@@ -43,6 +43,11 @@
     return index >= 0 ? index + 1 : null;
   });
 
+  // 진행 바는 헤더 독 안에서 그려진다. 여기서는 스크롤 추적만 켠다.
+  useTrackReadingProgress();
+
+  const readingTime = computed(() => readingMinutes(post.value?.content));
+
   const formattedDate = computed(() => formatPostDateLong(post.value?.publishedAt));
 
   const categoryName = computed<string>(() => {
@@ -110,6 +115,7 @@
         mainEntityOfPage: canonicalUrl.value,
         inLanguage: 'ko-KR',
         articleSection: p.categories?.[0]?.name,
+        timeRequired: readingTime.value > 0 ? `PT${readingTime.value}M` : undefined,
         keywords: p.tags?.length ? p.tags.map((tag) => tag.name).join(', ') : undefined,
         isPartOf: { '@id': `${blogUrl}#blog` },
         author,
@@ -238,6 +244,13 @@
               <Icon name="lucide:calendar-days" class="size-4" />
               <time :datetime="post.publishedAt || ''">{{ formattedDate }}</time>
             </div>
+            <template v-if="readingTime > 0">
+              <span>{{ '·' }}</span>
+              <div class="flex items-center gap-1.5">
+                <Icon name="lucide:clock" class="size-4" />
+                <span>{{ `약 ${readingTime}분` }}</span>
+              </div>
+            </template>
             <template v-if="settings?.allowCCL">
               <span>{{ '·' }}</span>
               <NuxtLink to="/license" class="hover:text-foreground transition-colors">
