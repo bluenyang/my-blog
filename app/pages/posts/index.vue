@@ -33,7 +33,7 @@
     totalPages,
   });
 
-  const { blogUrl, author } = useBlogIdentity();
+  const { siteName, blogUrl, author } = useBlogIdentity();
 
   // noindex인 2페이지 이후에는 ItemList를 먹이지 않는다
   useJsonLd(() => {
@@ -73,12 +73,12 @@
     title: 'All Posts',
     description: 'BlueNyang의 개발 log',
     ogTitle: 'All Posts',
-    ogImage: `${config.public.blogUrl}/favicon.ico`,
+    ogImage: `${config.public.blogUrl}/images/og-default.jpg`,
     ogDescription: 'BlueNyang의 개발 log',
     ogUrl: canonicalUrl,
     ogType: 'website',
     ogLocale: 'ko_KR',
-    ogSiteName: `BlueNyang's Devlog`,
+    ogSiteName: siteName,
     robots,
   });
 </script>
