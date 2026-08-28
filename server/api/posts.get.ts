@@ -7,8 +7,11 @@ export default defineEventHandler(async (event): Promise<PostsResponse> => {
   const query = getQuery(event);
 
   // pagination
-  const limit = Number(query.limit) || 10;
-  const page = Number(query.page) || 1;
+  // 상한/하한을 두지 않으면 ?limit=100000 같은 요청이 그대로 Directus로 나가고,
+  // 캐시를 붙였을 때 서로 다른 limit 값마다 캐시 키가 무한정 늘어난다.
+  // Math.trunc까지 하는 이유: ?limit=2.5가 그대로 나가면 GraphQL Int 자리에 소수가 들어간다
+  const limit = Math.min(Math.max(Math.trunc(Number(query.limit)) || 10, 1), 50);
+  const page = Math.max(Math.trunc(Number(query.page)) || 1, 1);
   const offset = (page - 1) * limit;
 
   // search
