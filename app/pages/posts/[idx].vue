@@ -75,6 +75,60 @@
     window.history.back();
   }
 
+  const { blogUrl, author } = useBlogIdentity();
+
+  useJsonLd(() => {
+    const p = post.value;
+    if (!p || !canonicalUrl.value) return null;
+
+    const licenseUrl = getCclCreativeCommonsUrl(settings.value);
+
+    const breadcrumb = [
+      { name: '홈', item: blogUrl },
+      { name: '전체 글', item: `${blogUrl}/posts` },
+      ...(p.categories?.[0]
+        ? [
+            {
+              name: p.categories[0].name,
+              item: `${blogUrl}/categories/${encodeURIComponent(p.categories[0].slug)}`,
+            },
+          ]
+        : []),
+      { name: p.title, item: canonicalUrl.value },
+    ];
+
+    return [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        '@id': `${canonicalUrl.value}#article`,
+        headline: p.title,
+        description: p.summary ?? undefined,
+        image: p.thumbnail ?? undefined,
+        datePublished: p.publishedAt,
+        dateModified: p.updatedAt ?? p.publishedAt,
+        mainEntityOfPage: canonicalUrl.value,
+        inLanguage: 'ko-KR',
+        articleSection: p.categories?.[0]?.name,
+        keywords: p.tags?.length ? p.tags.map((tag) => tag.name).join(', ') : undefined,
+        isPartOf: { '@id': `${blogUrl}#blog` },
+        author,
+        publisher: author,
+        ...(licenseUrl ? { license: licenseUrl } : {}),
+      },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: breadcrumb.map((crumb, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          name: crumb.name,
+          item: crumb.item,
+        })),
+      },
+    ];
+  });
+
   useHead({
     link: () => (canonicalUrl.value ? [{ rel: 'canonical', href: canonicalUrl.value }] : []),
   });
