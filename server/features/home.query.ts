@@ -1,9 +1,11 @@
+import { gqlString } from '~~/server/utils/graphql';
+
 export function homeQuery(blogSlug: string) {
   return `homePosts: posts(
     sort: ["-published_at", "-updated_at"]
     limit: 6
     filter: {
-      blog_id: { slug: { _eq: "${blogSlug}" } }
+      blog_id: { slug: { _eq: ${gqlString(blogSlug)} } }
       status: { _eq: "published" }
     }
   ) {
@@ -42,7 +44,7 @@ export function homeQuery(blogSlug: string) {
   homeSeries: series(
     sort: ["slug"]
     filter: {
-      blog_id: { slug: { _eq: "${blogSlug}" } }
+      blog_id: { slug: { _eq: ${gqlString(blogSlug)} } }
     }
   ) {
     name

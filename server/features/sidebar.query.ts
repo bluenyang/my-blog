@@ -1,7 +1,9 @@
+import { gqlString } from '~~/server/utils/graphql';
+
 export function sidebarQuery(blogSlug: string) {
   return `sidebarPostCount: posts_aggregated(
     filter: {
-      blog_id: { slug: { _eq: "${blogSlug}" } }
+      blog_id: { slug: { _eq: ${gqlString(blogSlug)} } }
       status: { _eq: "published" }
     }
   ) {
@@ -10,7 +12,7 @@ export function sidebarQuery(blogSlug: string) {
   sidebarCategories: categories(
     sort: ["sort_order", "slug"]
     filter: {
-      blog_id: { slug: { _eq: "${blogSlug}" } }
+      blog_id: { slug: { _eq: ${gqlString(blogSlug)} } }
     }
   ) {
     id
@@ -22,7 +24,7 @@ export function sidebarQuery(blogSlug: string) {
   }
   sidebarSeries: series(
     filter: {
-      blog_id: { slug: { _eq: "${blogSlug}" } }
+      blog_id: { slug: { _eq: ${gqlString(blogSlug)} } }
     }
   ) {
     id
@@ -34,7 +36,7 @@ export function sidebarQuery(blogSlug: string) {
   }
   sidebarTags: tags(
     filter: {
-      blog_id: { slug: { _eq: "${blogSlug}" } }
+      blog_id: { slug: { _eq: ${gqlString(blogSlug)} } }
     }
     limit: 20
     sort: ["created_at", "slug"]
@@ -46,7 +48,7 @@ export function sidebarQuery(blogSlug: string) {
   }
   sidebarNavigations: navigations(
     filter: {
-      blog_id: { slug: { _eq: "${blogSlug}" } }
+      blog_id: { slug: { _eq: ${gqlString(blogSlug)} } }
     }
     sort: ["sort_order", "label"]
   ) {
@@ -59,7 +61,7 @@ export function sidebarQuery(blogSlug: string) {
   }
   blogSettings: blog_settings(
     filter: {
-      blog_id: { slug: { _eq: "${blogSlug}" } }
+      blog_id: { slug: { _eq: ${gqlString(blogSlug)} } }
     }
   ) {
     allow_ccl

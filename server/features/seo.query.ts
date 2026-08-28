@@ -1,7 +1,9 @@
+import { gqlString } from '~~/server/utils/graphql';
+
 export const sitemapQuery = (blogSlug: string) => {
   return `posts(
     filter: {
-      blog_id: { slug: { _eq: "${blogSlug}" } }
+      blog_id: { slug: { _eq: ${gqlString(blogSlug)} } }
       status: { _eq: "published" }
     }
     limit: -1
@@ -11,7 +13,7 @@ export const sitemapQuery = (blogSlug: string) => {
   }
   categories(
     filter: {
-      blog_id: { slug: { _eq: "${blogSlug}" } }
+      blog_id: { slug: { _eq: ${gqlString(blogSlug)} } }
     }
     limit: -1
   ) {
@@ -19,7 +21,7 @@ export const sitemapQuery = (blogSlug: string) => {
   }
   tags(
     filter: {
-      blog_id: { slug: { _eq: "${blogSlug}" } }
+      blog_id: { slug: { _eq: ${gqlString(blogSlug)} } }
     }
     limit: -1
   ) {
@@ -27,7 +29,7 @@ export const sitemapQuery = (blogSlug: string) => {
   }
   series(
     filter: {
-      blog_id: { slug: { _eq: "${blogSlug}" } }
+      blog_id: { slug: { _eq: ${gqlString(blogSlug)} } }
     }
     limit: -1
   ) {
@@ -38,7 +40,7 @@ export const sitemapQuery = (blogSlug: string) => {
 export const rssQuery = (blogSlug: string) => {
   return `posts(
     filter: {
-      blog_id: { slug: { _eq: "${blogSlug}" } }
+      blog_id: { slug: { _eq: ${gqlString(blogSlug)} } }
       status: { _eq: "published" }
     }
     limit: 50

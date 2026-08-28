@@ -1,8 +1,10 @@
+import { gqlString } from '~~/server/utils/graphql';
+
 export function seriesQuery(blogSlug: string, seriesSlug: string) {
   return `series(
     filter: {
-      blog_id: { slug: { _eq: "${blogSlug}" } }
-      slug: { _eq: "${seriesSlug}" }
+      blog_id: { slug: { _eq: ${gqlString(blogSlug)} } }
+      slug: { _eq: ${gqlString(seriesSlug)} }
     }
   ) {
     name
