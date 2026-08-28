@@ -1,6 +1,21 @@
 import type { RawRssPosts, RssPost } from '../types/rss';
 
-import type { RawSitemapItems, SitemapItems } from '~~/server/types/sitemap';
+import type {
+  RawSitemapItems,
+  RawSitemapSlugItem,
+  SitemapItems,
+  SitemapSlugItem,
+} from '~~/server/types/sitemap';
+
+/*
+ * 글이 0건인 카테고리/태그/시리즈는 사이트맵에서 뻐다.
+ * 빈 목록 페이지를 신고하면 thin content로 취급된다.
+ */
+function withPosts(items: RawSitemapSlugItem[]): SitemapSlugItem[] {
+  return items
+    .filter((item) => Number(item.posts_func?.count ?? 0) > 0)
+    .map(({ slug }) => ({ slug }));
+}
 
 export function sitemapMapper(raw: RawSitemapItems): SitemapItems {
   return {
@@ -8,9 +23,9 @@ export function sitemapMapper(raw: RawSitemapItems): SitemapItems {
       postIdx: post.post_idx,
       slug: post.slug,
     })),
-    categories: raw.categories,
-    tags: raw.tags,
-    series: raw.series,
+    categories: withPosts(raw.categories),
+    tags: withPosts(raw.tags),
+    series: withPosts(raw.series),
   };
 }
 

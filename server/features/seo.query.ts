@@ -17,7 +17,8 @@ export const sitemapQuery = (blogSlug: string) => {
     }
     limit: -1
   ) {
-    slug  
+    slug
+    posts_func { count }
   }
   tags(
     filter: {
@@ -26,6 +27,7 @@ export const sitemapQuery = (blogSlug: string) => {
     limit: -1
   ) {
     slug
+    posts_func { count }
   }
   series(
     filter: {
@@ -34,6 +36,7 @@ export const sitemapQuery = (blogSlug: string) => {
     limit: -1
   ) {
     slug
+    posts_func { count }
   }`;
 };
 
