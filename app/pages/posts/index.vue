@@ -81,14 +81,14 @@
           v-for="post in posts"
           :key="post.slug"
           :to="`/posts/${post.postIdx}-${post.slug}`"
-          :aria-busy="isPending(`post-${post.slug}`)"
+          :aria-busy="isPending(`post-${post.postIdx}`)"
           :class="
             cn(
               'group hover:bg-card relative flex flex-col transition-opacity sm:flex-row sm:justify-between',
-              isPending(`post-${post.slug}`) && 'pointer-events-none opacity-60',
+              isPending(`post-${post.postIdx}`) && 'pointer-events-none opacity-60',
             )
           "
-          @click="onNavigate(`post-${post.slug}`)"
+          @click="onNavigate(`post-${post.postIdx}`)"
         >
           <div
             class="flex-1 p-4 transition-all before:absolute before:inset-y-0 before:left-0 before:w-1 before:rounded-l-md before:bg-linear-to-b before:from-sky-500 before:to-indigo-500 before:opacity-0 before:transition-opacity before:duration-200 group-hover:before:opacity-100 sm:py-8"
