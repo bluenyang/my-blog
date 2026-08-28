@@ -947,6 +947,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@iconify-json/simple-icons@npm:^1.2.93":
+  version: 1.2.93
+  resolution: "@iconify-json/simple-icons@npm:1.2.93"
+  dependencies:
+    "@iconify/types": "npm:*"
+  checksum: 10c0/46ec09a6e64e0e1e8eb7a345f58ada831560af146c394b10edc0baf96e9d7baa516b73398e21e655cc57bdf46cb6977e0e3504ce7f85aad4619cceb91ebf5003
+  languageName: node
+  linkType: hard
+
 "@iconify/collections@npm:^1.0.702":
   version: 1.0.723
   resolution: "@iconify/collections@npm:1.0.723"
@@ -7086,6 +7095,7 @@ __metadata:
     "@iconify-json/devicon": "npm:^1.2.62"
     "@iconify-json/lucide": "npm:^1.2.123"
     "@iconify-json/mdi": "npm:^1.2.3"
+    "@iconify-json/simple-icons": "npm:^1.2.93"
     "@nuxt/fonts": "npm:^0.14.0"
     "@nuxt/icon": "npm:~2.3.1"
     "@nuxt/image": "npm:^2.1.0"
