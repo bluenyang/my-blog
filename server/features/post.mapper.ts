@@ -26,7 +26,9 @@ export function postMapper(raw: RawPostItem[]): PostItem[] {
     title: item.title,
     slug: item.slug,
     summary: item.summary,
-    thumbnail: item.thumbnail?.id ? getDirectusImageUrl(item.thumbnail.id) : null,
+    thumbnail: item.thumbnail?.id
+      ? getDirectusImageUrl(item.thumbnail.id, cardThumbnailQuery)
+      : null,
     publishedAt: item.published_at,
     updatedAt: item.updated_at,
     categories: item.categories.map((category) => category.categories_id.name),
@@ -55,7 +57,7 @@ export function postDetailMapper(raw: RawPostDetail): PostDetail {
     title: post.title,
     slug: post.slug,
     summary: post.summary,
-    thumbnail: post.thumbnail?.id ? getDirectusImageUrl(post.thumbnail.id) : null,
+    thumbnail: post.thumbnail?.id ? getDirectusImageUrl(post.thumbnail.id, coverImageQuery) : null,
     content: post.content,
     publishedAt: post.published_at,
     updatedAt: post.updated_at,
@@ -72,7 +74,9 @@ export function postSearchMapper(raw: RawCategoryItem | RawSeriesItem | RawTagIt
       slug: raw.slug,
       totalCount: raw.posts_func.count,
       description: raw.description ? raw.description : undefined,
-      thumbnail: raw.thumbnail ? getDirectusImageUrl(raw.thumbnail.id) : undefined,
+      thumbnail: raw.thumbnail
+        ? getDirectusImageUrl(raw.thumbnail.id, bannerImageQuery)
+        : undefined,
     };
   }
   return {
@@ -81,6 +85,30 @@ export function postSearchMapper(raw: RawCategoryItem | RawSeriesItem | RawTagIt
     totalCount: raw.posts_func.count,
   };
 }
+
+/*
+ * 목록 카드 썸네일. 소비자가 전부 object-cover라 width만 지정해 종횡비를 보존한다.
+ * (실측: 원본 160KB/203KB -> 8.3KB/7.2KB, 94~96% 감소)
+ */
+const cardThumbnailQuery: ImageQuery = {
+  width: 960,
+  format: 'webp',
+  quality: 75,
+};
+
+/** 글 상세 커버. 이 URL이 og:image로도 재사용되므로 OG 권장 폭에 맞춘다. */
+const coverImageQuery: ImageQuery = {
+  width: 1280,
+  format: 'webp',
+  quality: 80,
+};
+
+/** 시리즈·카테고리 상단 배너 */
+const bannerImageQuery: ImageQuery = {
+  width: 1200,
+  format: 'webp',
+  quality: 75,
+};
 
 /** size-12(48px) @2x 기준 — Directus 아바타 transform */
 const avatarImageQuery: ImageQuery = {

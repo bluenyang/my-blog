@@ -1,3 +1,4 @@
+import type { ImageQuery } from '../types/image';
 import { getDirectusImageUrl } from '../utils/directus';
 
 import type { RawSeriesItem, RawSeriesItemInPost } from '~~/server/types/raw-data';
@@ -8,7 +9,9 @@ export function seriesMapper(raw: RawSeriesItem[]): SeriesItem[] {
     name: item.name,
     slug: item.slug,
     description: item.description,
-    thumbnail: item.thumbnail?.id ? getDirectusImageUrl(item.thumbnail.id) : null,
+    thumbnail: item.thumbnail?.id
+      ? getDirectusImageUrl(item.thumbnail.id, seriesThumbnailQuery)
+      : null,
     postCount: Number(item.posts_func.count),
   }));
 }
@@ -25,3 +28,10 @@ export function seriesInPostMapper(raw: RawSeriesItemInPost[]): SeriesItemInPost
     })),
   }));
 }
+
+/** 시리즈 카드 썸네일 — 홈 시리즈 그리드와 사이드바가 공유한다 */
+const seriesThumbnailQuery: ImageQuery = {
+  width: 1200,
+  format: 'webp',
+  quality: 75,
+};
