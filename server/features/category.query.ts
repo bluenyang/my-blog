@@ -1,8 +1,10 @@
+import { gqlString } from '~~/server/utils/graphql';
+
 export function categoryQuery(blogSlug: string, categorySlug: string) {
   return `categories(
     filter: {
-      blog_id: { slug: { _eq: "${blogSlug}" } }
-      slug: { _eq: "${categorySlug}" }
+      blog_id: { slug: { _eq: ${gqlString(blogSlug)} } }
+      slug: { _eq: ${gqlString(categorySlug)} }
     }
   ) {
     name
@@ -14,7 +16,7 @@ export function categoryQuery(blogSlug: string, categorySlug: string) {
 export function categoryTreeQuery(blogSlug: string) {
   return `categories(
     filter: {
-      blog_id: { slug: { _eq: "${blogSlug}" } }
+      blog_id: { slug: { _eq: ${gqlString(blogSlug)} } }
     }
   ) {
     slug

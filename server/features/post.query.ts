@@ -1,7 +1,39 @@
+import { gqlString, gqlStringList } from '~~/server/utils/graphql';
+
+export interface PostsFilterOptions {
+  search?: string;
+  categories?: string[];
+  tag?: string;
+  series?: string;
+}
+
+/**
+ * posts(...)와 posts_aggregated(...)가 같은 필터를 쓰도록 한 곳에서 조립한다.
+ * 목록/집계/검색이 서로 다른 조건으로 어긋나면 총계와 페이지가 맞지 않는다.
+ */
+export function postsFilter(blogSlug: string, options: PostsFilterOptions = {}) {
+  const { search, categories, tag, series } = options;
+
+  return [
+    `blog_id: { slug: { _eq: ${gqlString(blogSlug)} } }`,
+    `status: { _eq: "published" }`,
+    search
+      ? `_or: [{ title: { _contains: ${gqlString(search)} } }, { summary: { _contains: ${gqlString(search)} } }, { content: { _contains: ${gqlString(search)} } }]`
+      : '',
+    categories?.length
+      ? `categories: { categories_id: { slug: { _in: ${gqlStringList(categories)} } } }`
+      : '',
+    tag ? `tags: { tags_id: { slug: { _eq: ${gqlString(tag)} } } }` : '',
+    series ? `series: { series_id: { slug: { _eq: ${gqlString(series)} } } }` : '',
+  ]
+    .filter(Boolean)
+    .join('\n    ');
+}
+
 export function postDetailQuery(blogSlug: string, postIdx: number) {
   return `posts(
     filter: {
-      blog_id: { slug: { _eq: "${blogSlug}" } }
+      blog_id: { slug: { _eq: ${gqlString(blogSlug)} } }
       post_idx: { _eq: "${postIdx}" }
       status: { _eq: "published" }
     }
@@ -27,7 +59,7 @@ export function postDetailQuery(blogSlug: string, postIdx: number) {
         slug
       }
     }
-    tags { 
+    tags {
       tags_id {
         name
         slug
@@ -59,14 +91,7 @@ export function postsQuery(
   tag?: string,
   series?: string,
 ) {
-  const filter = `
-    blog_id: { slug: { _eq: "${blogSlug}" } }
-    status: { _eq: "published" }
-    ${search ? `_or: [{ title: { _contains: "${search}" } }, { summary: { _contains: "${search}" } }, { content: { _contains: "${search}" } }]` : ''}
-    ${categories?.length ? `categories: { categories_id: { slug: { _in: ${JSON.stringify(categories)} } } }` : ''}
-    ${tag ? `tags: { tags_id: { slug: { _eq: "${tag}" } } }` : ''}
-    ${series ? `series: { series_id: { slug: { _eq: "${series}" } } }` : ''}
-  `;
+  const filter = postsFilter(blogSlug, { search, categories, tag, series });
 
   return `posts(
     sort: ["-published_at"]
