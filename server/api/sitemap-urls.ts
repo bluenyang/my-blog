@@ -27,7 +27,10 @@ export default defineCachedEventHandler(
       const tagUrls = sitemapItems.tags.map((item) => toEntry(`/tags/${item.slug}`));
       const seriesUrls = sitemapItems.series.map((item) => toEntry(`/series/${item.slug}`));
 
-      return [...postUrls, ...categoryUrls, ...tagUrls, ...seriesUrls];
+      // 목록 인덱스 라우트도 사이트맵에 포함한다 (홈은 @nuxtjs/sitemap이 자동 추가)
+      const indexUrls = ['/posts', '/license'].map(toEntry);
+
+      return [...indexUrls, ...postUrls, ...categoryUrls, ...tagUrls, ...seriesUrls];
     } catch (error) {
       console.error('Failed to fetch sitemap URLs:', error);
       return [];
