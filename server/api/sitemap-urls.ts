@@ -28,7 +28,7 @@ export default defineCachedEventHandler(
       const seriesUrls = sitemapItems.series.map((item) => toEntry(`/series/${item.slug}`));
 
       // 목록 인덱스 라우트도 사이트맵에 포함한다 (홈은 @nuxtjs/sitemap이 자동 추가)
-      const indexUrls = ['/posts', '/license'].map(toEntry);
+      const indexUrls = ['/posts', '/tags', '/series', '/license'].map(toEntry);
 
       return [...indexUrls, ...postUrls, ...categoryUrls, ...tagUrls, ...seriesUrls];
     } catch (error) {
