@@ -1,108 +1,104 @@
 import { postMapper, postSearchMapper } from '~~/server/features/mapper';
 import type { RawCategoryTree, RawPosts } from '~~/server/types/raw-data';
 import type { PostsResponse } from '~~/shared/types';
-import { decodeRouteSlug } from '~~/shared/utils/decode-route-slug';
 
-export default defineEventHandler(async (event): Promise<PostsResponse> => {
-  const query = getQuery(event);
+import { parsePostsQuery, postsCacheKey } from '../utils/posts-query';
 
-  // pagination
-  // 상한/하한을 두지 않으면 ?limit=100000 같은 요청이 그대로 Directus로 나가고,
-  // 캐시를 붙였을 때 서로 다른 limit 값마다 캐시 키가 무한정 늘어난다.
-  // Math.trunc까지 하는 이유: ?limit=2.5가 그대로 나가면 GraphQL Int 자리에 소수가 들어간다
-  const limit = Math.min(Math.max(Math.trunc(Number(query.limit)) || 10, 1), 50);
-  const page = Math.max(Math.trunc(Number(query.page)) || 1, 1);
-  const offset = (page - 1) * limit;
+export default defineCachedEventHandler(
+  async (event): Promise<PostsResponse> => {
+    const { limit, offset, search, categorySlug, tagSlug, seriesSlug } = parsePostsQuery(event);
 
-  // search
-  const search = query.search ? decodeRouteSlug(String(query.search)) : undefined;
-  const categorySlug = query.category ? decodeRouteSlug(String(query.category)) : undefined;
-  const tagSlug = query.tag ? decodeRouteSlug(String(query.tag)) : undefined;
-  const seriesSlug = query.series ? decodeRouteSlug(String(query.series)) : undefined;
+    const searchType: 'search' | 'category' | 'tag' | 'series' | null = (() => {
+      if (search) {
+        return 'search';
+      } else if (categorySlug && !seriesSlug && !tagSlug) {
+        return 'category';
+      } else if (tagSlug && !seriesSlug && !categorySlug) {
+        return 'tag';
+      } else if (seriesSlug && !categorySlug && !tagSlug) {
+        return 'series';
+      } else if (!search && !categorySlug && !tagSlug && !seriesSlug) {
+        return null;
+      } else {
+        return 'search';
+      }
+    })();
 
-  const searchType: 'search' | 'category' | 'tag' | 'series' | null = (() => {
-    if (search) {
-      return 'search';
-    } else if (categorySlug && !seriesSlug && !tagSlug) {
-      return 'category';
-    } else if (tagSlug && !seriesSlug && !categorySlug) {
-      return 'tag';
-    } else if (seriesSlug && !categorySlug && !tagSlug) {
-      return 'series';
-    } else if (!search && !categorySlug && !tagSlug && !seriesSlug) {
-      return null;
-    } else {
-      return 'search';
-    }
-  })();
+    const directus = useDirectus();
+    const { buildQuery, posts, series, category, categoryTree, tag } = useQuery();
 
-  const directus = useDirectus();
-  const { buildQuery, posts, series, category, categoryTree, tag } = useQuery();
+    try {
+      const categorySlugs = categorySlug
+        ? collectCategorySlugs(
+            (await directus.query<RawCategoryTree>(buildQuery(categoryTree))).categories ?? [],
+            categorySlug,
+          )
+        : undefined;
 
-  try {
-    const categorySlugs = categorySlug
-      ? collectCategorySlugs(
-          (await directus.query<RawCategoryTree>(buildQuery(categoryTree))).categories ?? [],
-          categorySlug,
-        )
-      : undefined;
+      const result = await directus.query<RawPosts>(
+        buildQuery(
+          posts(limit, offset, search, categorySlugs, tagSlug, seriesSlug),
+          seriesSlug ? series(seriesSlug) : undefined,
+          categorySlug ? category(categorySlug) : undefined,
+          tagSlug ? tag(tagSlug) : undefined,
+        ),
+      );
 
-    const result = await directus.query<RawPosts>(
-      buildQuery(
-        posts(limit, offset, search, categorySlugs, tagSlug, seriesSlug),
-        seriesSlug ? series(seriesSlug) : undefined,
-        categorySlug ? category(categorySlug) : undefined,
-        tagSlug ? tag(tagSlug) : undefined,
-      ),
-    );
+      const postsData = postMapper(result.posts);
+      const totalCount = Number(result.postsCount?.[0]?.count?.id ?? 0);
 
-    const postsData = postMapper(result.posts);
-    const totalCount = Number(result.postsCount?.[0]?.count?.id ?? 0);
+      const metadataSource =
+        searchType === 'category'
+          ? result.categories?.[0]
+          : searchType === 'tag'
+            ? result.tags?.[0]
+            : searchType === 'series'
+              ? result.series?.[0]
+              : undefined;
 
-    const metadataSource =
-      searchType === 'category'
-        ? result.categories?.[0]
-        : searchType === 'tag'
-          ? result.tags?.[0]
-          : searchType === 'series'
-            ? result.series?.[0]
-            : undefined;
+      if (
+        (searchType === 'category' || searchType === 'tag' || searchType === 'series') &&
+        !metadataSource
+      ) {
+        throw createError({
+          statusCode: 404,
+          statusMessage: `${searchType} not found`,
+        });
+      }
 
-    if (
-      (searchType === 'category' || searchType === 'tag' || searchType === 'series') &&
-      !metadataSource
-    ) {
+      const metadata = metadataSource
+        ? {
+            ...postSearchMapper(metadataSource),
+            // 상위 카테고리는 posts_func가 직접 연결만 세므로, 자손 포함 집계값으로 덮어씀
+            ...(searchType === 'category' ? { totalCount } : {}),
+          }
+        : undefined;
+
+      return {
+        searchType,
+        metadata,
+        totalCount,
+        posts: postsData,
+      };
+    } catch (error) {
+      if (isError(error)) {
+        throw error;
+      }
+      console.error('Failed to fetch posts:', error);
       throw createError({
-        statusCode: 404,
-        statusMessage: `${searchType} not found`,
+        statusCode: 500,
+        statusMessage: 'Failed to fetch posts',
       });
     }
-
-    const metadata = metadataSource
-      ? {
-          ...postSearchMapper(metadataSource),
-          // 상위 카테고리는 posts_func가 직접 연결만 세므로, 자손 포함 집계값으로 덮어씀
-          ...(searchType === 'category' ? { totalCount } : {}),
-        }
-      : undefined;
-
-    return {
-      searchType,
-      metadata,
-      totalCount,
-      posts: postsData,
-    };
-  } catch (error) {
-    if (isError(error)) {
-      throw error;
-    }
-    console.error('Failed to fetch posts:', error);
-    throw createError({
-      statusCode: 500,
-      statusMessage: 'Failed to fetch posts',
-    });
-  }
-});
+  },
+  {
+    name: 'posts',
+    maxAge: 180,
+    swr: true,
+    // 핸들러와 동일한 클램프 결과로 키를 만든다 (posts-query.ts 주석 참고)
+    getKey: postsCacheKey,
+  },
+);
 
 function collectCategorySlugs(
   categories: RawCategoryTree['categories'],
