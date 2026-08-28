@@ -20,7 +20,10 @@ export async function usePostContent(
       const source = toValue(content);
       return source ? parseContent(source) : Promise.resolve(null);
     },
-    { watch: [() => toValue(postIdx)] },
+    // content도 감시해야 한다. 하이드레이션 시점에 본문이 아직 없으면
+    // 핸들러가 null을 돌려주고, postIdx만 감시하면 그 null이 그대로 굳어
+    // 글 본문이 영영 렌더되지 않는다.
+    { watch: [() => toValue(postIdx), () => toValue(content)] },
   );
 
   return {
