@@ -252,7 +252,7 @@
 }
 
 /*
- * tailwind-scrollbar 플러그인이 설치돼 있지 않아 scrollbar-thin/-thumb-*/-track-* 클래스가
+ * tailwind-scrollbar 플러그인이 설치돼 있지 않아 scrollbar-thin | -thumb-* | -track-* 클래스가
  * 전부 무시되고 있었다. 폭만 표준 속성으로 대체한다.
  *
  * 썸 색상(scrollbar-color)은 넣지 않는다 — Tailwind CLI 단독으로는 방출되지만 Nuxt/Vite

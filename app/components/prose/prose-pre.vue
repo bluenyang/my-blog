@@ -25,12 +25,12 @@
 
 <template>
   <div
-    class="bg-codeblock-bg border-codeblock-accent divide-sidebar-border my-4 flex flex-col gap-2 divide-y rounded-2xl border-s-3 px-4"
+    class="bg-codeblock-bg border-codeblock-accent divide-sidebar-border my-4 flex flex-col gap-2 divide-y overflow-hidden rounded-2xl border-s-3"
   >
-    <div class="flex items-center justify-between px-2 py-4">
+    <div class="flex items-center justify-between bg-white/40 px-4 py-2">
       <div class="flex items-center gap-2">
         <Icon v-if="iconName" :name="iconName" class="size-6" />
-        <span class="font-jua text-emerald-300">{{ language || 'text' }}</span>
+        <span class="font-jua text-amber-400">{{ language || 'text' }}</span>
       </div>
       <button class="size-4 cursor-pointer" @click="copyCode(code || '')">
         <Icon :name="copied ? 'lucide:copy-check' : 'lucide:copy'" class="size-4 text-white" />
@@ -39,7 +39,7 @@
     <pre
       :class="
         cn(
-          '[&>code]:font-cascadia-code min-w-0 scrollbar-thin overflow-x-auto pt-2 pb-4 text-sm',
+          '[&>code]:font-cascadia-code min-w-0 scrollbar-thin overflow-x-auto px-4 pt-2 pb-4 text-sm',
           $props.class,
         )
       "
