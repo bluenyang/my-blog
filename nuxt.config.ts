@@ -124,14 +124,16 @@ export default defineNuxtConfig({
         '@shikijs/langs/yaml',
         '@shikijs/langs/yml',
         '@shikijs/themes/one-dark-pro',
-        '@vue/devtools-core',
-        '@vue/devtools-kit',
         'clsx',
         'comark',
         'comark/plugins/highlight',
         'comark/plugins/toc',
         'comark/utils',
         'tailwind-merge',
+        // devtools는 개발 환경에서만 로드되므로 프로덕션 pre-bundle 대상에서 뺀다
+        ...(process.env.NODE_ENV === 'development'
+          ? ['@vue/devtools-core', '@vue/devtools-kit']
+          : []),
       ],
     },
   },

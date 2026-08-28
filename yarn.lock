@@ -920,32 +920,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@floating-ui/core@npm:^1.8.0":
-  version: 1.8.0
-  resolution: "@floating-ui/core@npm:1.8.0"
-  dependencies:
-    "@floating-ui/utils": "npm:^0.2.12"
-  checksum: 10c0/cece958f6fab0f8cd7740cd57988c4f8bc5356dca39dd4c093433d44c91952c3a02c7a54d93d7ed6c078b6544d531a29f66621d2839c8bfbb4467dca6aed7df0
-  languageName: node
-  linkType: hard
-
-"@floating-ui/dom@npm:^1.8.0":
-  version: 1.8.0
-  resolution: "@floating-ui/dom@npm:1.8.0"
-  dependencies:
-    "@floating-ui/core": "npm:^1.8.0"
-    "@floating-ui/utils": "npm:^0.2.12"
-  checksum: 10c0/c32b2de7a596b69cfffa909c7028825e14f6319be1b45da529f8943c89fe16b75a49c214e800c87ded3f172353d3b99163d50072f11410488e756961b7b629cc
-  languageName: node
-  linkType: hard
-
-"@floating-ui/utils@npm:^0.2.12":
-  version: 0.2.12
-  resolution: "@floating-ui/utils@npm:0.2.12"
-  checksum: 10c0/bb910b90d56991a62011afaf5f8e0c4b7fb6dab69403f4dd17fbd6eb25560b28d533dff9791f270b4f459852e9006a1077b5d73cbedb5e34d9424afc6a828314
-  languageName: node
-  linkType: hard
-
 "@iconify-json/devicon@npm:^1.2.62":
   version: 1.2.62
   resolution: "@iconify-json/devicon@npm:1.2.62"
@@ -970,15 +944,6 @@ __metadata:
   dependencies:
     "@iconify/types": "npm:*"
   checksum: 10c0/4d11426abba03464e5ebe4675c87cc39c720e54b7c28265ff9ccd93f229a51f7616bb0a8f1c01412eac3cc9a1ebdc0a122bbaa3395c14d30834d96f8a141e96d
-  languageName: node
-  linkType: hard
-
-"@iconify-json/simple-icons@npm:^1.2.93":
-  version: 1.2.93
-  resolution: "@iconify-json/simple-icons@npm:1.2.93"
-  dependencies:
-    "@iconify/types": "npm:*"
-  checksum: 10c0/46ec09a6e64e0e1e8eb7a345f58ada831560af146c394b10edc0baf96e9d7baa516b73398e21e655cc57bdf46cb6977e0e3504ce7f85aad4619cceb91ebf5003
   languageName: node
   linkType: hard
 
@@ -3004,7 +2969,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@shikijs/langs@npm:4.4.3":
+"@shikijs/langs@npm:4.4.3, @shikijs/langs@npm:^4.4.3":
   version: 4.4.3
   resolution: "@shikijs/langs@npm:4.4.3"
   dependencies:
@@ -3024,7 +2989,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@shikijs/themes@npm:4.4.3":
+"@shikijs/themes@npm:4.4.3, @shikijs/themes@npm:^4.4.3":
   version: 4.4.3
   resolution: "@shikijs/themes@npm:4.4.3"
   dependencies:
@@ -3235,17 +3200,6 @@ __metadata:
     "@tailwindcss/oxide-win32-x64-msvc":
       optional: true
   checksum: 10c0/6c38b25226dad252347451ed8953a998432b51f1e068b25e021215b886ccf8bcf3af58faf5f4ab50368091e657ca2fa341df1deca6101651eddb567122f2acb5
-  languageName: node
-  linkType: hard
-
-"@tailwindcss/typography@npm:^0.5.20":
-  version: 0.5.20
-  resolution: "@tailwindcss/typography@npm:0.5.20"
-  dependencies:
-    postcss-selector-parser: "npm:6.0.10"
-  peerDependencies:
-    tailwindcss: "*"
-  checksum: 10c0/e42f9347a7802d620c56ea3379dc7986c0eece9af2d0ae170d530a8c8ef9815f6fdb6b23b2ae76c9832314dcca125e6a166bfec1c88326495896afeab64c1c2e
   languageName: node
   linkType: hard
 
@@ -7129,18 +7083,17 @@ __metadata:
   dependencies:
     "@comark/nuxt": "npm:^0.6.2"
     "@directus/sdk": "npm:^24.0.0"
-    "@floating-ui/dom": "npm:^1.8.0"
     "@iconify-json/devicon": "npm:^1.2.62"
     "@iconify-json/lucide": "npm:^1.2.123"
     "@iconify-json/mdi": "npm:^1.2.3"
-    "@iconify-json/simple-icons": "npm:^1.2.93"
     "@nuxt/fonts": "npm:^0.14.0"
     "@nuxt/icon": "npm:~2.3.1"
     "@nuxt/image": "npm:^2.1.0"
     "@nuxtjs/color-mode": "npm:^4.0.1"
     "@nuxtjs/robots": "npm:^6.1.4"
     "@nuxtjs/sitemap": "npm:^8.3.4"
-    "@tailwindcss/typography": "npm:^0.5.20"
+    "@shikijs/langs": "npm:^4.4.3"
+    "@shikijs/themes": "npm:^4.4.3"
     "@tailwindcss/vite": "npm:^4.3.3"
     "@types/node": "npm:^26.2.0"
     "@vueuse/core": "npm:^14.4.0"
@@ -8323,16 +8276,6 @@ __metadata:
   peerDependencies:
     postcss: ^8.5.15
   checksum: 10c0/c7ac989ff811321736344f3a35a72175fdf0b09e8acf080240248e37204661cfc2f36868927e091c07cd5f4ca35a407e2fb58fca08f483a60d5e6f45e27294b3
-  languageName: node
-  linkType: hard
-
-"postcss-selector-parser@npm:6.0.10":
-  version: 6.0.10
-  resolution: "postcss-selector-parser@npm:6.0.10"
-  dependencies:
-    cssesc: "npm:^3.0.0"
-    util-deprecate: "npm:^1.0.2"
-  checksum: 10c0/a0b27c5e3f7604c8dc7cd83f145fdd7b21448e0d86072da99e0d78e536ba27aa9db2d42024c50aa530408ee517c4bdc0260529e1afb56608f9a82e839c207e82
   languageName: node
   linkType: hard
 
