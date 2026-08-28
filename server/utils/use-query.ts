@@ -3,6 +3,7 @@ import {
   categoryTreeQuery,
   homeQuery,
   postDetailQuery,
+  postSearchQuery,
   postsQuery,
   rssQuery,
   seriesQuery,
@@ -32,6 +33,8 @@ export function useQuery() {
       tag?: string,
       series?: string,
     ) => postsQuery(config.public.blogSlug, limit, offset, search, categories, tag, series),
+    postSearch: (search: string, limit: number) =>
+      postSearchQuery(config.public.blogSlug, search, limit),
     series: (seriesSlug: string) => seriesQuery(config.public.blogSlug, seriesSlug),
     sitemap: sitemapQuery(config.public.blogSlug),
     rss: rssQuery(config.public.blogSlug),

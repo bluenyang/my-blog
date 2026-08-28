@@ -15,5 +15,7 @@
       </div>
       <Footer />
     </div>
+
+    <SearchPalette />
   </div>
 </template>

@@ -22,6 +22,14 @@
   const paddingY = computed(() => 16 - smoothProgress.value * 4); // 16 -> 12
 
   const { isOpen, toggle } = useSidebar();
+  const { open: openSearch } = useSearchPalette();
+
+  // 단축키 힌트는 플랫폼마다 다르다. 마운트 이후에 정해야 SSR과 어긋나지 않는다.
+  const shortcutHint = ref('');
+  onMounted(() => {
+    const isMac = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
+    shortcutHint.value = isMac ? '⌘K' : 'Ctrl K';
+  });
 
   // 진행 바는 독의 자식이라 독이 좁아질 때 폭·여백·모서리를 그대로 따라간다
   const { progress: readingProgress, isActive: isReading } = useReadingProgress();
@@ -80,7 +88,21 @@
         </div>
 
         <!-- Right Items - Theme Control Button -->
-        <div class="container flex flex-1 items-center justify-end">
+        <div class="container flex flex-1 items-center justify-end gap-1">
+          <button
+            type="button"
+            aria-label="검색 열기"
+            class="text-muted-foreground hover:text-foreground group inline-flex h-10 cursor-pointer items-center gap-2 rounded-full px-3 transition-colors hover:bg-white/80 dark:hover:bg-white/20"
+            @click="openSearch()"
+          >
+            <Icon name="lucide:search" class="size-5" />
+            <kbd
+              v-if="shortcutHint"
+              class="border-border hidden rounded border px-1.5 py-0.5 text-[11px] sm:block"
+            >
+              {{ shortcutHint }}
+            </kbd>
+          </button>
           <ThemeButton />
         </div>
 
@@ -123,7 +145,13 @@
               </NuxtLink>
             </div>
           </div>
-          <div class="container flex flex-1 items-center justify-end">
+          <div class="container flex flex-1 items-center justify-end gap-1">
+            <span
+              aria-hidden="true"
+              class="text-muted-foreground inline-flex h-10 items-center gap-2 rounded-full px-3"
+            >
+              <Icon name="lucide:search" class="size-5" />
+            </span>
             <ThemeButton />
           </div>
         </div>

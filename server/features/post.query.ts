@@ -163,3 +163,29 @@ export function postsQuery(
     count { id }
   }`;
 }
+
+/*
+ * ⌘K 팔레트 전용 경량 검색.
+ * /api/posts와 달리 총계 집계를 돌리지 않고 본문·태그·시리즈도 가져오지 않는다 —
+ * 키 입력마다 도는 쿼리라 비용을 최소화해야 한다.
+ */
+export function postSearchQuery(blogSlug: string, search: string, limit: number) {
+  return `searchPosts: posts(
+    sort: ["-published_at"]
+    filter: { ${postsFilter(blogSlug, { search })} }
+    limit: ${limit}
+  ) {
+    post_idx
+    title
+    slug
+    summary
+    thumbnail { id }
+    published_at
+    categories {
+      categories_id {
+        name
+        slug
+      }
+    }
+  }`;
+}

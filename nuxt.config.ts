@@ -158,10 +158,18 @@ export default defineNuxtConfig({
 
   sitemap: {
     sources: ['/api/sitemap-urls'],
-    exclude: ['/api/post/**', '/api/home', '/api/posts', '/api/sidebar', '/rss.xml', '/search'],
+    exclude: [
+      '/api/post/**',
+      '/api/home',
+      '/api/posts',
+      '/api/search',
+      '/api/sidebar',
+      '/rss.xml',
+      '/search',
+    ],
   },
 
   robots: {
-    disallow: ['/search', '/api/post/**', '/api/home', '/api/posts', '/api/sidebar'],
+    disallow: ['/search', '/api/post/**', '/api/home', '/api/posts', '/api/search', '/api/sidebar'],
   },
 });
