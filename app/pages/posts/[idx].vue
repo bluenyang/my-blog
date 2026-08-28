@@ -18,13 +18,24 @@
   // await해야 setup 안에서 error.value를 읽을 수 있다 (use-post.ts 주석 참고)
   const { post, pending, error } = await usePostDetail(postIdx);
 
-  if (error.value) {
-    const notFound = error.value.statusCode === 404;
+  /*
+   * 없는 글만 하드 404로 끝립니다.
+   *
+   * 그 외의 오류(네트워크·5xx)를 fatal로 만들면 안 된다 — 프로덕션 엣지에서
+   * SSR 내부 fetch가 실패하는 사례가 실제로 있고(.ai/ROADMAP.md 참고),
+   * 그때 던져버리면 클라이언트가 다시 받아 스스로 복구하던 페이지가
+   * 하드 에러 페이지로 바뀜다. 이 경우는 빈 상태로 두고 클라이언트 렌더에 맡긴다.
+   */
+  if (error.value?.statusCode === 404) {
     throw createError({
-      statusCode: notFound ? 404 : 500,
-      statusMessage: notFound ? '게시글을 찾을 수 없습니다.' : '게시글을 불러오지 못했습니다.',
+      statusCode: 404,
+      statusMessage: '게시글을 찾을 수 없습니다.',
       fatal: true,
     });
+  }
+
+  if (import.meta.server && error.value) {
+    console.error('[posts/:idx] SSR fetch 실패, 클라이언트 렌더로 폴백:', error.value.statusCode);
   }
 
   // 본문은 여기서 한 번만 파싱한다. useAsyncData가 결과를 payload로 넘겨
