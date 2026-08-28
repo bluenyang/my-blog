@@ -58,6 +58,8 @@ export interface RawPostDetail {
     tags: RawTagItemInPost[] | null;
     series: RawSeriesItemInPost[] | null;
   }[];
+  prevPost: RawPostLink[];
+  nextPost: RawPostLink[];
 }
 export interface RawPosts {
   posts: RawPostItem[];
@@ -69,4 +71,11 @@ export interface RawPosts {
   series?: RawSeriesItem[];
   categories?: RawCategoryItem[];
   tags?: RawTagItem[];
+}
+
+/** 이전/다음 글 링크용 최소 필드 */
+export interface RawPostLink {
+  post_idx: number;
+  title: string;
+  slug: string;
 }

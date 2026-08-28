@@ -43,6 +43,8 @@
     return index >= 0 ? index + 1 : null;
   });
 
+  const { activeId } = useActiveHeading(toc);
+
   // 진행 바는 헤더 독 안에서 그려진다. 여기서는 스크롤 추적만 켠다.
   useTrackReadingProgress();
 
@@ -279,9 +281,12 @@
         v-if="post"
         :tree="tree"
         :toc="toc"
+        :active-id="activeId"
         :series="series"
         :current-post-idx="post.postIdx"
       />
+
+      <PostNav v-if="post" :prev="post.prev" :next="post.next" />
 
       <footer class="border-border mt-12 max-w-7xl border-t pt-8">
         <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">

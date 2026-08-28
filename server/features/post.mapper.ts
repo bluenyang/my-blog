@@ -7,10 +7,11 @@ import type {
   RawCategoryItem,
   RawPostDetail,
   RawPostItem,
+  RawPostLink,
   RawSeriesItem,
   RawTagItem,
 } from '~~/server/types/raw-data';
-import type { PostDetail, PostItem, PostSearch } from '~~/shared/types';
+import type { PostDetail, PostItem, PostLink, PostSearch } from '~~/shared/types';
 
 export function postMapper(raw: RawPostItem[]): PostItem[] {
   return raw.map<PostItem>((item) => ({
@@ -64,7 +65,16 @@ export function postDetailMapper(raw: RawPostDetail): PostDetail {
     categories: post.categories ? categoryInPostMapper(post.categories) : null,
     tags: post.tags ? tagInPostMapper(post.tags) : null,
     series: post.series ? seriesInPostMapper(post.series) : null,
+    prev: postLinkMapper(raw.prevPost),
+    next: postLinkMapper(raw.nextPost),
   };
+}
+
+/** 이전/다음 글은 limit 1로 가져오므로 배열의 첫 항목만 쓴다 */
+function postLinkMapper(raw: RawPostLink[] | undefined): PostLink | null {
+  const item = raw?.[0];
+  if (!item) return null;
+  return { postIdx: item.post_idx, title: item.title, slug: item.slug };
 }
 
 export function postSearchMapper(raw: RawCategoryItem | RawSeriesItem | RawTagItem): PostSearch {

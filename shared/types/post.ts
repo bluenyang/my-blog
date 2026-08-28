@@ -36,6 +36,8 @@ export interface PostDetail {
   categories: CategoryItemInPost[] | null;
   tags: TagItemInPost[] | null;
   series: SeriesItemInPost[] | null;
+  prev: PostLink | null;
+  next: PostLink | null;
 }
 
 export interface PostsResponse {
@@ -51,4 +53,11 @@ export interface PostSearch {
   totalCount: number;
   description?: string;
   thumbnail?: string;
+}
+
+/** 이전/다음 글 링크 */
+export interface PostLink {
+  postIdx: number;
+  title: string;
+  slug: string;
 }

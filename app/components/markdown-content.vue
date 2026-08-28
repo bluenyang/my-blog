@@ -6,11 +6,12 @@
     /** 파싱은 페이지에서 usePostContent로 한 번만 한다 (SSR payload 재사용) */
     tree: MarkdownDocument | null;
     toc: TocLink[];
+    activeId?: string;
     series?: SeriesItemInPost;
     currentPostIdx: number;
   }
 
-  const { tree, toc, series, currentPostIdx } = defineProps<MarkdownContentProps>();
+  const { tree, toc, activeId, series, currentPostIdx } = defineProps<MarkdownContentProps>();
 </script>
 
 <template>
@@ -29,7 +30,7 @@
             <Icon name="lucide:chevron-down" class="size-5" />
           </summary>
           <div class="mt-4">
-            <TocLink v-if="toc.length" :links="toc" />
+            <TocLink v-if="toc.length" :links="toc" :active-id="activeId" />
           </div>
         </details>
       </div>
@@ -48,7 +49,7 @@
     <aside v-if="toc.length" class="hidden w-52 shrink-0 rounded-md lg:sticky lg:top-36 lg:block">
       <div class="flex flex-col text-sm">
         <div class="text-foreground mb-2 text-base font-semibold">{{ '목차' }}</div>
-        <TocLink v-if="toc.length" :links="toc" class="space-y-4" />
+        <TocLink v-if="toc.length" :links="toc" :active-id="activeId" class="space-y-4" />
       </div>
     </aside>
   </div>
