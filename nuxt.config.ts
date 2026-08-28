@@ -78,6 +78,15 @@ export default defineNuxtConfig({
     '/series/**': { swr: 180 },
     '/search': { swr: 180 },
     '/license': { swr: 86400 },
+
+    /*
+     * /api/* 에는 swr을 걸지 않는다. defineCachedEventHandler가 응답에
+     * cache-control: no-cache 를 직접 써서 routeRules가 넣는 s-maxage를 덮어버리기 때문에
+     * 실제로는 아무 효과가 없다(측정으로 확인). API 캐시는 핸들러 쪽에만 둔다.
+     */
+
+    // rss.xml은 setHeader를 쓰므로 defineCachedEventHandler로 감싸지 않고 여기서 캐시한다
+    '/rss.xml': { swr: 3600 },
   },
 
   compatibilityDate: '2026-06-15',
