@@ -17,7 +17,11 @@
           <div class="flex items-center gap-4">
             <img
               :src="profileData.githubProfileImage"
-              alt="Profile"
+              :alt="profileData.nickname"
+              width="48"
+              height="48"
+              loading="lazy"
+              decoding="async"
               class="size-12 rounded-full border-2 border-white shadow-sm"
             />
             <div>

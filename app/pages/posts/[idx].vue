@@ -123,7 +123,15 @@
           v-if="post.thumbnail"
           class="relative mb-8 w-full max-w-4xl overflow-hidden rounded-2xl bg-linear-to-br shadow-lg md:from-blue-200 md:to-purple-300 dark:md:from-blue-800 dark:md:to-purple-900"
         >
-          <img :src="post.thumbnail" :alt="post.title" class="aspect-2/1 w-full object-cover" />
+          <img
+            :src="post.thumbnail"
+            :alt="post.title"
+            width="1280"
+            height="640"
+            loading="eager"
+            fetchpriority="high"
+            class="aspect-2/1 w-full object-cover"
+          />
         </div>
 
         <div class="flex flex-col">
@@ -156,7 +164,11 @@
               <img
                 v-if="post.author.avatar"
                 :src="post.author.avatar"
-                alt="Author Avatar"
+                :alt="post.author.nickname ?? '작성자'"
+                width="24"
+                height="24"
+                loading="lazy"
+                decoding="async"
                 class="size-6 rounded-full"
               />
               <div
@@ -210,7 +222,11 @@
             <img
               v-if="post.author.avatar"
               :src="post.author.avatar"
-              alt="Author Avatar"
+              :alt="post.author.nickname ?? '작성자'"
+              width="48"
+              height="48"
+              loading="lazy"
+              decoding="async"
               class="size-12 rounded-full"
             />
             <div
