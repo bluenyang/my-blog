@@ -38,6 +38,8 @@ export function rssMapper(raw: RawRssPosts): RssPost[] {
     slug: post.slug,
     summary: post.summary,
     content: post.content,
-    publishedAt: new Date(post.published_at),
+    // Directus가 오프셋 없는 KST 문자열을 주므로 그대로 new Date()에 넣으면
+    // 서버 타임존으로 해석돼 RSS pubDate가 9시간 어김난다
+    publishedAt: new Date(`${post.published_at}+09:00`),
   }));
 }
