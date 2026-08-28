@@ -1,4 +1,30 @@
 <script setup lang="ts">
+  const { siteName, description, blogUrl, author } = useBlogIdentity();
+
+  /*
+   * 사이트 전역 구조화 데이터.
+   * SearchAction의 target은 실제 검색 라우트와 파라미터 이름이 맞아야 한다 —
+   * search/index.vue가 route.query.search를 읽으므로 ?search= 이다.
+   */
+  useJsonLd(() => ({
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': `${blogUrl}#website`,
+    url: blogUrl,
+    name: siteName,
+    description,
+    inLanguage: 'ko-KR',
+    publisher: author,
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: `${blogUrl}/search?search={search_term_string}`,
+      },
+      'query-input': 'required name=search_term_string',
+    },
+  }));
+
   useHead({
     titleTemplate: `%s · BlueNyang's Devlog`,
     link: [
